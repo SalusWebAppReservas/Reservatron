@@ -14,7 +14,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "ui": "browser-sync start --proxy=localhost:3000 --files='**/*.css, **/*.js' --ignore=node_modules --reload-delay 10 --no-ui --no-notify",
+    "start": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",

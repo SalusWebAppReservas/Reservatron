@@ -1,5 +1,27 @@
 const btnCreateAccount = document.getElementById('btnCreateAccount');
+const btnLogin = document.getElementById('btnLogin');
 const url = window.location.href;
+
+const checkLogin = async (isLoginOk) => {
+    const { user, password, userID } = await isLoginOk.json();
+    if (userID) alert('Login correcto. Falta redireccionar');
+    else if (user) alert('Password incorrecto');
+    else alert('Usuario no existe');
+};
+const sendLoginUser = async (event) => {
+    event.preventDefault();
+    const user = document.getElementById('user').value;
+    const password = document.getElementById('password').value;
+
+    const login = {
+        user,
+        password,
+    };
+
+    const isLoginOk = await fetch(`${url}loginUser/${login}`);
+
+    checkLogin(isLoginOk);
+};
 
 const getFirebaseConfig = async () => await (await fetch(`${url}getFirebaseConfig`)).json();
 
@@ -41,4 +63,5 @@ const verifyUserBySMS = async () => {
     ui.start('#firebaseui-auth-container', uiConfig);
 };
 
+btnLogin.addEventListener('click', loginUser);
 btnCreateAccount.addEventListener('click', verifyUserBySMS);

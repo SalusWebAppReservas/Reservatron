@@ -1,0 +1,67 @@
+<body>
+    <div class="root">
+        <form action="" class="form-register">
+            <div class="form-register__header">
+                <ul class="progressbar">
+                    <li class="progressbar__option active">step 1</li>
+                    <li class="progressbar__option">step 2</li>
+                    <li class="progressbar__option">step 3</li>
+                </ul>
+                <h1 class="form-register__title">Resgístrate </h1>
+            </div>
+            <div class="form-register__body">
+                <div class="step active" id="step-1">
+                    <div class="step__header">
+                        <h2 class="step__title">Información de cuenta<small>(Paso 1)</small></h2>
+                    </div>
+                    <div class="step__body">
+                        <input type="username" name="username" placeholder="Username" class="step__input">
+                        <input type="password" name="password" placeholder="Contraseña" class="step__input">
+                    </div>
+                    <div class="step__footer">
+                        <button type="button" class="step__button step__button--next" data-to_step="2"
+                            data-step="1">Siguiente</button>
+                    </div>
+                </div>
+                <div class="step" id="step-2">
+                    <div class="step__header">
+                        <h2 class="step__title">Información de personal<small>(Paso 2)</small></h2>
+                    </div>
+                    <div class="step__body">
+                        <input type="text" name="name" placeholder="Nombre" class="step__input">
+                        <input type="text" name="surename" placeholder="Apellidos" class="step__input">
+                        <textarea rows="4" name="address" cols="80" placeholder="Dirección"
+                            class="step__input"></textarea>
+                        <input type="text" name="postalCode" placeholder="Código Postal" class="step__input">
+                    </div>
+                    <div class="step__footer">
+                        <button type="button" class="step__button step__button--back" data-to_step="1"
+                            data-step="2">Anterior</button>
+                        <button type="button" class="step__button step__button--next" data-to_step="3"
+                            data-step="2">Siguiente</button>
+                    </div>
+                </div>
+                <div class="step" id="step-3">
+                    <div class="step__header">
+                        <h2 class="step__title">Información de Contacto<small>(Paso 3)</small></h2>
+                    </div>
+                    <div class="step__body">
+                        <input type="email" name="email" placeholder="Correo Electrónico" class="step__input">
+                        <input type="tel" name="tel" placeholder="Teléfono" class="step__input">
+                    </div>
+                    <div class="step__footer">
+                        <button type="button" class="step__button step__button--back" data-to_step="2"
+                            data-step="3">Anteriorr</button>
+                        <button type="submit" class="step__button">Registrarse</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="js/view/register.js"></script>
+</body>
+
+</html>
+</body>
+
+</html>

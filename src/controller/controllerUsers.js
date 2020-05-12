@@ -1,11 +1,6 @@
-const verifyUser = (req, res, next) => {};
-const getUser = (req, res, next) => {};
-const addUser = (req, res, next) => {};
-const modifyUser = (req, res, next) => {};
+const { findUser } = require('../model/modelLogin.js');
 
-module.exports = {
-    verifyUser,
-    getUser,
-    addUser,
-    modifyUser,
-};
+// Devuelve los datos sin procesar, ya que se los damos formateados desde model.finduser.
+const verifyUser = async (user, password) => await findUser(user, password);
+
+module.exports = { verifyUser };

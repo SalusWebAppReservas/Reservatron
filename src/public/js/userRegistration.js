@@ -1,4 +1,6 @@
-const url = window.location.href;
+// const url = window.location.href;
+
+console.log('userRegistration');
 
 const getDataFromInputs = () => {
     return {
@@ -35,10 +37,12 @@ const verifyUserBySMS = async () => {
                     },
                     body: JSON.stringify(userDataWithPhone),
                 });
-                return false;
+                alert('Usuario registrado en la base de datos con éxito');
+                return true;
             },
         },
         signInFlow: 'popup',
+        signInSuccessUrl: url,
         signInOptions: [
             {
                 provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
@@ -58,5 +62,5 @@ const verifyUserBySMS = async () => {
     ui.start('#firebaseui-auth-container', uiConfig);
 };
 
-const btnCreateAccount = document.getElementById('btnCreateAccount');
-btnCreateAccount.addEventListener('click', verifyUserBySMS);
+// const btnCreateAccount = document.getElementById('btnCreateAccount');
+// btnCreateAccount.addEventListener('click', verifyUserBySMS);

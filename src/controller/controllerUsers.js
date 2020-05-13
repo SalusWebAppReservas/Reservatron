@@ -1,7 +1,7 @@
 const { getUserID, getUser, insertUser } = require('../model/modelUsers.js');
 
 const loginUser = async (req, res) => {
-    const { user, password } = req.params;
+    const { user, password } = JSON.parse(req.params.user);
     res.json(await getUserID(user, password));
 };
 

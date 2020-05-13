@@ -16,17 +16,20 @@ const getUserID = async (user, password) => {
             .orderByChild('user')
             .equalTo(user)
             .on(
-                'child_added',
+                'value',
                 (snapshot) => {
                     const userData = snapshot.val();
-                    resolve({
-                        user: userData.user === user ? true : false,
-                        password: userData.password === password ? true : false,
-                        userID:
-                            userData.user === user && userData.password === password
-                                ? snapshot.key
-                                : false,
-                    });
+                    if (!userData) resolve({ user: false, password: false, userID: false });
+                    else {
+                        const _userID = Object.keys(userData)[0];
+                        const _user = userData[_userID].user;
+                        const _pass = userData[_userID].password;
+                        resolve({
+                            user: _user === user ? true : false,
+                            password: _pass === password ? true : false,
+                            userID: _user === user && _pass === password ? _userID : false,
+                        });
+                    }
                 },
                 (errorObject) => reject('The read failed: ', errorObject.code)
             )

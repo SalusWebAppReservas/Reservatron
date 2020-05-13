@@ -9,6 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
 }
 
 .registro {
@@ -22,17 +23,31 @@ body {
 .registro__pasos {
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 .registro__pasos__paso {
     padding: 0.5em 2em;
 }
+
+.registro__pasos__paso active {
+}
+
 .active {
     background-color: #d8f3ec;
 }
 
+input {
+    display: block;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
 .registro__formulario {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
     background-color: darkcyan;
     height: 640px;
     width: 1080px;
@@ -45,8 +60,10 @@ body {
     align-items: center;
     flex-direction: column;
     display: flex;
-    height: 640px;
+    height: 300px;
     width: 360px;
+    box-shadow: 5px 10px 8p;
+    border-radius: 5px;
 }
 
 .formulario__paso1 {
@@ -59,4 +76,10 @@ body {
 
 .formulario__paso3 {
     background-color: lightgreen;
+}
+button {
+    padding: 10px;
+    background-color: lightblue;
+    color: white;
+    border-radius: 5px;
 }

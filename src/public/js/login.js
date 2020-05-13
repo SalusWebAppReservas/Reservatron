@@ -24,4 +24,4 @@ const sendLoginUser = async () => {
     showLoginResult(isLoginOk);
 };
 
-btnLogin.addEventListener('click', sendLoginUser);
+// btnLogin.addEventListener('click', sendLoginUser);

@@ -10,7 +10,7 @@ const getUserData = async (req, res) => {
     res.json(await getUser(userID).String());
 };
 const addUser = (req, res) => {
-    const { user } = req.params;
+    const user = req.body;
     insertUser(user);
 };
 const modifyUser = (req, res) => {};

@@ -1,5 +1,17 @@
 const url = window.location.href;
 
+const getDataFromInputs = () => {
+    return {
+        user: document.getElementById('user').value,
+        password: document.getElementById('password').value,
+        userName: document.getElementById('userName').value,
+        userSurnames: document.getElementById('userSurnames').value,
+        userAddress: document.getElementById('userAddress').value,
+        userPostalCode: document.getElementById('userPostalCode').value,
+        userEmail: document.getElementById('userEmail').value,
+    };
+};
+
 const getFirebaseConfig = async () => await (await fetch(`${url}getFirebaseConfig`)).json();
 
 const connectFirebase = async () => {
@@ -8,16 +20,22 @@ const connectFirebase = async () => {
 };
 
 const verifyUserBySMS = async () => {
+    const userData = getDataFromInputs();
+    document.getElementById('registro').style.display = 'none';
     await connectFirebase();
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
     var uiConfig = {
         callbacks: {
             signInSuccessWithAuthResult: (authResult) => {
-                alert(
-                    `Falta Mandar datos de registro a servidor con fetch...Telefono de usuario: ${authResult.user.phoneNumber}`
-                );
+                const userDataWithPhone = { ...userData, userPhone: authResult.user.phoneNumber };
+                fetch(`${url}addUser`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userDataWithPhone),
+                });
                 return false;
-                // document.getElementById("formulario").style.display = "none";
             },
         },
         signInFlow: 'popup',

@@ -1,33 +1,33 @@
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/styles.css">
 <div class="registro">
     <div class="registro__pasos">
-        <div class="registro__pasos ">
-            <p class="registro__pasos__paso active">Paso 1</p>
-        </div>
-        <div class="registro_pasos">
-            <p class="registro__pasos__paso">Paso 2</p>
-        </div>
-        <div class="registro_pasos ">
-            <p class="registro__pasos__paso">Paso 3</p>
-        </div>
+        {{!-- <div class="registro__pasos"> --}}
+        <p class="registro__pasos__paso active">Paso 1</p>
+        {{!-- </div> --}}
+        {{!-- <div class="registro_pasos"> --}}
+        <p class="registro__pasos__paso">Paso 2</p>
+        {{!-- </div> --}}
+        {{!-- <div class="registro_pasos "> --}}
+        <p class="registro__pasos__paso">Paso 3</p>
+        {{!-- </div> --}}
     </div>
     <div class="registro__formulario">
-        <div class="formulario__paso1">
+        <div class="formulario__paso1" id="paso-1">
             <input id="user" name="user" type="text" placeholder="User">
             <input id="password" name="password" type="text" placeholder="Password">
             <div>
-                <button>Siguiente</button>
+                <button class="button-next">Siguiente</button>
             </div>
         </div>
-        <div class="formulario__paso2">
+        <div class="formulario__paso2" id="paso-2">
 
             <input id="userName" name="userName" type="text" placeholder="Nombre">
             <input id="userSurnames" name="userSurnames" type="text" placeholder="Apellidos">
             <input id="userAddress" name="userAddress" type="text" placeholder="Dirección">
             <input id="userPostalCode" name="userPostalCode" type="text" placeholder="Codigo postal">
-            <button>Siguiente</button>
+            <button class="button-next">Siguiente</button>
         </div>
-        <div class="formulario__paso3">
+        <div class="formulario__paso3" id="paso-3">
 
             <input id="email" name="email" type="text" placeholder="Email">
             <button id="btnCreateAccount">Crear cuenta con verificación SMS</button>

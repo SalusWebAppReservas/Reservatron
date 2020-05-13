@@ -11,9 +11,9 @@ app.set('view engine', 'hbs');
 app.set('views', join(__dirname, 'view'));
 
 app.use(express.static(join(__dirname, 'public')));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => res.render('login'));
 app.use('/', router);
 
 app.listen(port, () => console.log(`APP funcionado en http://localhost:${port}`));

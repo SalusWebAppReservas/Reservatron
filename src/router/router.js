@@ -10,7 +10,7 @@ router.get('/registro', registro);
 router.get('/getFirebaseConfig', getFirebaseConfig);
 router.get('/loginUser/:user', loginUser);
 router.get('/getUserData/:userID', getUserData);
-router.get('/addUser/:user', addUser);
+router.post('/addUser', addUser);
 router.get('/modifyUser/:user', modifyUser);
 
 module.exports = router;

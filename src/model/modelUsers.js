@@ -67,21 +67,30 @@ const getUser = (userID) => {
     return user;
 };
 
-const insertUser = (user) => {
+const insertUser = ({
+    user,
+    password,
+    userName,
+    userSurnames,
+    userAddress,
+    userPostalCode,
+    userPhone,
+    userEmail,
+}) => {
     const db = admin.database();
     const ref = db.ref('usuarios');
 
     const isSaveOk = new Promise((resolve) =>
         ref.push(
             {
-                user: user.user,
-                password: user.password,
-                name: user.name,
-                surnames: user.surnames,
-                phone: user.phone,
-                email: user.email,
-                postalCode: user.postalCode,
-                address: user.address,
+                user,
+                password,
+                userName,
+                userSurnames,
+                userPhone,
+                userEmail,
+                userPostalCode,
+                userAddress,
             },
             (error) => (error ? resolve(false) : resolve(true))
         )

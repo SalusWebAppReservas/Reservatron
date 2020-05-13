@@ -1,17 +1,20 @@
-const { findUser } = require('../model/modelLogin.js');
+const { getUserID, getUser } = require('../model/modelUsers.js');
 
-const verifyUser = async (req, res) => {
+const loginUser = async (req, res) => {
     const { user, password } = req.body;
-    res.json(await findUser(user, password));
+    res.json(await getUserID(user, password));
 };
 
-const getUser = (req, res, next) => {};
+const getUserData = async (req, res) => {
+    const { userID } = req.body;
+    res.json(await getUser(userID));
+};
 const addUser = (req, res, next) => {};
 const modifyUser = (req, res, next) => {};
 
 module.exports = {
-    verifyUser,
-    getUser,
+    loginUser,
+    getUserData,
     addUser,
     modifyUser,
 };

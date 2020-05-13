@@ -1,0 +1,62 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.registro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.registro__pasos {
+    display: flex;
+    justify-content: center;
+}
+
+.registro__pasos__paso {
+    padding: 0.5em 2em;
+}
+.active {
+    background-color: #d8f3ec;
+}
+
+.registro__formulario {
+    display: flex;
+    background-color: darkcyan;
+    height: 640px;
+    width: 1080px;
+}
+
+.formulario__paso1,
+.formulario__paso2,
+.formulario__paso3 {
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    height: 640px;
+    width: 360px;
+}
+
+.formulario__paso1 {
+    background-color: lightblue;
+}
+
+.formulario__paso2 {
+    background-color: lightcoral;
+}
+
+.formulario__paso3 {
+    background-color: lightgreen;
+}

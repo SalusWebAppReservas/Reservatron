@@ -1,28 +1,45 @@
-<form method="post"></form>
-<div>
-    <p>Paso 1/3</p>
-    <input id="user" name="user" type="text" placeholder="User">
-    <input id="password" name="password" type="text" placeholder="Password">
-    <button>Siguiente</button>
+<div class="registro">
+    <div class="registro__pasos">
+        <div class="registro__pasos ">
+            <p class="registro__pasos__paso active">Paso 1</p>
+        </div>
+        <div class="registro_pasos">
+            <p class="registro__pasos__paso">Paso 2</p>
+        </div>
+        <div class="registro_pasos ">
+            <p class="registro__pasos__paso">Paso 3</p>
+        </div>
+    </div>
+    <div class="registro__formulario">
+        <div class="formulario__paso1">
+            <input id="user" name="user" type="text" placeholder="User">
+            <input id="password" name="password" type="text" placeholder="Password">
+            <div>
+                <button>Siguiente</button>
+            </div>
+        </div>
+
+        <div class="formulario__paso2">
+
+            <input id="userName" name="userName" type="text" placeholder="Nombre">
+            <input id="userSurnames" name="userSurnames" type="text" placeholder="Apellidos">
+            <input id="userAddress" name="userAddress" type="text" placeholder="Dirección">
+            <input id="userPostalCode" name="userPostalCode" type="text" placeholder="Codigo postal">
+            <button>Siguiente</button>
+        </div>
+        <div class="formulario__paso3">
+
+            <input id="email" name="email" type="text" placeholder="Email">
+            <button id="btnCreateAccount">Crear cuenta con verificación SMS</button>
+        </div>
+    </div>
+
 </div>
-<div>
-    <p>Paso 2/3</p>
-    <input id="userName" name="userName" type="text" placeholder="Nombre">
-    <input id="userSurnames" name="userSurnames" type="text" placeholder="Apellidos">
-    <input id="userAddress" name="userAddress" type="text" placeholder="Dirección">
-    <input id="userPostalCode" name="userPostalCode" type="text" placeholder="Codigo postal">
-    <button>Siguiente</button>
 </div>
-<div>
-    <p>Paso 3/3</p>
-    <input id="email" name="email" type="text" placeholder="Email">
-    <button id="btnCreateAccount">Crear cuenta con verificación SMS</button>
-</div>
-</form>
 <div id="firebaseui-auth-container"></div>
 <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth__es.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
 <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth.css" />
-<script src="js/controller/controllerLogin.js "></script>
+<script src="js/userRegistration.js "></script>

@@ -13,7 +13,7 @@ app.set('views', join(__dirname, 'view'));
 app.use(express.static(join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => res.render('userRegistration.hbs'));
+app.get('/', (req, res) => res.render('login'));
 app.use('/', router);
 
 app.listen(port, () => console.log(`APP funcionado en http://localhost:${port}`));

@@ -1,3 +1,5 @@
+#keys
+db.json
 # Logs
 logs
 *.log

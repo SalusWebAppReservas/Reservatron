@@ -3,7 +3,11 @@ const btnLogin = document.getElementById('btnLogin');
 
 const showLoginResult = async (isLoginOk) => {
     const { user, userID } = await isLoginOk.json();
-    if (userID) alert('Login correcto. Falta redireccionar');
+
+    if (userID) {
+        alert('Login correcto. Falta redireccionar');
+        return;
+    }
     if (user) alert('Password incorrecto');
     else alert('Usuario no existe');
 };
@@ -16,8 +20,7 @@ const sendLoginUser = async () => {
         password,
     };
 
-    const isLoginOk = await fetch(`${url}loginUser/${login}`);
-
+    const isLoginOk = await fetch(`${url}loginUser/${JSON.stringify(login)}`);
     showLoginResult(isLoginOk);
 };
 

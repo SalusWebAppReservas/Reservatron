@@ -1,21 +1,23 @@
 <link rel="stylesheet" href="css/home.css">
 <header>
-    <div id="contenedor" class="contenedor">
-        <div>
-            <h1>Reservatron</h1>
-            <h4>Organiza, reserva, planifica </h4>
-            <a id="mainLogin" href="">Login</a>
-            <a id="mainRegister" href="">Registrarse</a>
+    <div id="contenedor" class="main__contenedor">
+        <div class="main__svg">
+            <img src="img/imghome.svg" alt="">
         </div>
-        <img src="img/imghome.svg" alt="">
+        <div class="main__menu">
+            <div class="main__titulos">
+                <h1>Reservatron</h1>
+                <h4>Organiza, reserva, planifica </h4>
+            </div>
+            <div class="main__botones">
+                <button class="main__button" id="mainLogin">Login</button>
+                <button class="main__button" id="mainRegister">Registrarse</button>
+            </div>
+        </div>
+
     </div>
 </header>
-<div class="wave">
-    <div style="height: 150px; overflow: hidden;"><svg viewBox="0 0 500 150" preserveAspectRatio="none"
-            style="height: 100%; width: 100%;">
-            <path d="M0.00,49.98 C150.00,150.00 349.20,-50.00 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
-                style="stroke: none; fill: #fff;"></path>
-        </svg></div>
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.runtime.js"></script>
 <script src="js/view/precompiled/login.precompiled.js"></script>

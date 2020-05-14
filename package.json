@@ -1,0 +1,31 @@
+{
+  "name": "reservatron",
+  "version": "1.0.0",
+  "description": "aplicacion de reservas generica",
+  "main": "server.js",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^4.0.4",
+    "firebase-admin": "^8.12.1"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "nodemon": "^2.0.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ui": "browser-sync start --proxy=localhost:3000 --files='**/*.css, **/*.js' --ignore=node_modules --reload-delay 10 --no-ui --no-notify",
+    "start": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diegofr-98/Reservatron.git"
+  },
+  "author": "TeamSalus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diegofr-98/Reservatron/issues"
+  },
+  "homepage": "https://github.com/diegofr-98/Reservatron#readme"
+}

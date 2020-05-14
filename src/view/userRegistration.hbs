@@ -1,15 +1,15 @@
 <link rel="stylesheet" href="css/styles.css">
 <div id="registro" class="registro">
     <div class="registro__pasos">
-        <div class="registro__pasos ">
-            <p class="registro__pasos__paso active">Paso 1</p>
-        </div>
-        <div class="registro_pasos">
-            <p class="registro__pasos__paso">Paso 2</p>
-        </div>
-        <div class="registro_pasos ">
-            <p class="registro__pasos__paso">Paso 3</p>
-        </div>
+        {{!-- <div class="registro__pasos"> --}}
+        <p class="registro__pasos__paso active">Paso 1</p>
+        {{!-- </div> --}}
+        {{!-- <div class="registro_pasos"> --}}
+        <p class="registro__pasos__paso">Paso 2</p>
+        {{!-- </div> --}}
+        {{!-- <div class="registro_pasos "> --}}
+        <p class="registro__pasos__paso">Paso 3</p>
+        {{!-- </div> --}}
     </div>
     <div class="registro__formulario">
         <div id="formulario__paso1" class="formulario__paso1">
@@ -19,7 +19,7 @@
                 <button id="btnFormulario__siguiente1" class="btnFormulario">Siguiente</button>
             </div>
         </div>
-        <div class="formulario__paso2">
+        <div class="formulario__paso2" id="paso-2">
 
             <input id="userName" name="userName" type="text" placeholder="Nombre">
             <input id="userSurnames" name="userSurnames" type="text" placeholder="Apellidos">
@@ -27,7 +27,7 @@
             <input id="userPostalCode" name="userPostalCode" type="text" placeholder="Codigo postal">
             <button id="btnFormulario__siguiente2" class="btnFormulario">Siguiente</button>
         </div>
-        <div class="formulario__paso3">
+        <div class="formulario__paso3" id="paso-3">
 
             <input id="userEmail" name="email" type="text" placeholder="Email">
             <button class="btnFormulario" id="btnCreateAccount">Crear cuenta con verificación SMS</button>
@@ -44,3 +44,4 @@
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
 <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth.css" />
 <script src="js/userRegistration.js "></script>
+<script src="js/registration.js"></script>

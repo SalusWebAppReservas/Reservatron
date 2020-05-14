@@ -1,19 +1,8 @@
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/style.css">
 <div id="registro" class="registro">
-    <div class="registro__pasos">
-        <div class="registro__pasos ">
-            <p class="registro__pasos__paso active">Paso 1</p>
-        </div>
-        <div class="registro_pasos">
-            <p class="registro__pasos__paso">Paso 2</p>
-        </div>
-        <div class="registro_pasos ">
-            <p class="registro__pasos__paso">Paso 3</p>
-        </div>
-    </div>
     <div class="registro__formulario">
         <div id="formulario__paso1" class="formulario__paso1">
-            <input id="user" name="user" type="text" placeholder="User">
+            <input id="user" name="user" type="text" placeholder="User" pattern="/^[a-z0-9_-]{3,16}$/">
             <input id="password" name="password" type="text" placeholder="Password">
             <div>
                 <button id="btnFormulario__siguiente1" class="btnFormulario">Siguiente</button>
@@ -21,16 +10,21 @@
         </div>
         <div class="formulario__paso2">
 
-            <input id="userName" name="userName" type="text" placeholder="Nombre">
-            <input id="userSurnames" name="userSurnames" type="text" placeholder="Apellidos">
+            <input id="userName" name="userName" type="text" placeholder="Nombre"
+                pattern="/^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$/">
+            <input id="userSurnames" name="userSurnames" type="text" placeholder="Apellidos"
+                pattern="/^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$/">
             <input id="userAddress" name="userAddress" type="text" placeholder="Dirección">
-            <input id="userPostalCode" name="userPostalCode" type="text" placeholder="Codigo postal">
+            <input id="userPostalCode" name="userPostalCode" type="text" placeholder="Codigo postal"
+                pattern="0[1-9][0-9]{3}|[1-4][0-9]{4}|5[0-2][0-9]{3}">
             <button id="btnFormulario__siguiente2" class="btnFormulario">Siguiente</button>
         </div>
         <div class="formulario__paso3">
 
-            <input id="userEmail" name="email" type="text" placeholder="Email">
-            <button class="btnFormulario" id="btnCreateAccount">Crear cuenta con verificación SMS</button>
+            <input id="userEmail" name="email" type="text" placeholder="Email"
+                pattern="/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/">
+            <button class="btnFormulario" id="btnCreateAccount">Crear cuenta</button>
+            <pre>*Verificación SMS</pre>
         </div>
     </div>
 </div>

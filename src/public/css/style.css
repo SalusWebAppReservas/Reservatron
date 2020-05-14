@@ -37,8 +37,12 @@ input {
     display: block;
     padding: 10px;
     border: 1px solid #ddd;
+    border-radius: 3px;
 }
-
+input:focus {
+    border-color: #575a89;
+    transition: 1s ease;
+}
 .registro__formulario {
     display: flex;
     align-items: center;
@@ -46,7 +50,7 @@ input {
     border-radius: 5px;
     background-color: darkcyan;
     height: 640px;
-    width: 100vw;
+    width: 35vw;
     overflow: hidden;
 }
 
@@ -58,34 +62,29 @@ input {
     flex-direction: column;
     display: flex;
     height: 300px;
-    width: 100vw;
+    width: 35vw;
     flex-shrink: 0;
     box-shadow: 5px 10px 8p;
     border-radius: 5px;
 }
 
-.formulario__paso1 {
-    background-color: lightblue;
-}
-
-.formulario__paso2 {
-    background-color: lightcoral;
-}
-
-.formulario__paso3 {
-    background-color: lightgreen;
-}
 .btnFormulario {
-    padding: 10px;
-    background-color: lightblue;
-    color: white;
+    color: #fff;
+    margin-right: 1em;
+    border: 1px solid #575a89;
     border-radius: 5px;
+    padding: 5px;
+    background-color: #868bda;
+}
+.btnFormulario:hover {
+    background-color: #575a89;
+    transition: 0.5 ease;
 }
 
 .step2 {
-    margin-left: -100vw;
+    margin-left: -35vw;
 }
 
 .step3 {
-    margin-left: -200vw;
+    margin-left: -70vw;
 }

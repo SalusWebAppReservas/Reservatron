@@ -1,6 +1,6 @@
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['login.hbs'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<input id=\"user\" type=\"text\" placeholder=\"Introduce Usuario\">\r\n<input id=\"password\" type=\"text\" placeholder=\"Contraseña\">\r\n<button id=\"btnLogin\">Log In</button>\r\n\r\n\r\n<script src=\"js/login.js\"></script>";
+    return "<link rel=\"stylesheet\" href=\"css/login.css\">\r\n<form id=\"loginForm\" action=\"#\">\r\n    <div class=\"login__container\">\r\n        <div class=\"login__LogoContainer\">\r\n            <img id=\"logoHome\" class=\"login__logo\" src=\"img/logo.png\" alt=\"\">\r\n        </div>\r\n        <div id=\"loginContainer\" class=\"loginContainer__subContainerForm\">\r\n            <div class=\"login__form\">\r\n                <input id=\"user\" type=\"text\" placeholder=\"Introduce Usuario\" required>\r\n                <input id=\"password\" type=\"text\" placeholder=\"Contraseña\" required>\r\n                <button id=\"btnLogin\">Iniciar sesión</button>\r\n                <p>o puedes usar:</p>\r\n                <div id=\"firebaseui-login\"></div>\r\n            </div>\r\n        </div>\r\n\r\n</form>\r\n\r\n</div>\r\n\r\n\r\n\r\n<script src=\"js/login.js\"></script>";
 },"useData":true});
 })();

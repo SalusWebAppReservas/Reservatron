@@ -1,32 +1,29 @@
-<link rel="stylesheet" href="css/home.css">
-<header>
-    <div id="contenedor" class="main__contenedor">
-        <div class="main__svg">
-            <img src="img/imghome.svg" alt="">
-        </div>
-        <div class="main__menu">
-            <div class="main__titulos">
-                <h1>Reservatron</h1>
-                <h4>Organiza, reserva, planifica </h4>
-            </div>
-            <div class="main__botones">
-                <button class="main__button" id="mainLogin">Login</button>
-                <button class="main__button" id="mainRegister">Registrarse</button>
-            </div>
-        </div>
+<div id="contenedor">
+    <div class="home__titulo">
+        <h1>Organízate</span></h1>
+        <h1>Sé <span>Creativo</span></h1>
 
     </div>
-</header>
+    <div class="home__subtitulo">
+        <p>Únete a nosotros, manten tu vida organizada y haz algo creativo cada día.</p>
+    </div>
+    <div class="home__register">
+        <button id="btnRegister" class="home__register_button">Empieza ahora - Regístrate</button>
+    </div>
 
+    <div class="home__img">
+        <img class="home__mobileLaptop" src="img/mobileLaptop.png" alt="">
+    </div>
+
+    <div class="home__organiza">
+        <h2>Organiza todo</h2>
+        <p>Sea relacionado con trabajo o personal, <span>Reservatron</span> te ayudará a controlar todas tus tareas</p>
+    </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.runtime.js"></script>
-<script src="js/view/precompiled/login.precompiled.js"></script>
-<script src="js/view/precompiled/userRegistration.precompiled.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth__es.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
 <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth.css" />
-<script src="js/userRegistration.js "></script>
-<script src="js/login.js "></script>
-<script src="js/app.js"></script>
+<script type="module" src="js/home.js"></script>

@@ -14,6 +14,7 @@ app.use(express.static(join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+app.get('/', (req, res) => res.render('admin/adminShowReservas'));
 app.use('/', router);
 
 app.listen(port, () => console.log(`APP funcionado en http://localhost:${port}`));

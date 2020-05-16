@@ -1,0 +1,201 @@
+.asr {
+    min-height: 82vh;
+    background-color: #f7fbfe;
+    min-height: 100vh;
+    color: #667f96;
+}
+.asr__container {
+    margin: 3em auto auto;
+    max-width: 700px;
+}
+
+.asr__container__top {
+    position: sticky;
+    z-index: 50;
+    width: 100%;
+    background-color: #f7fbfe;
+    /* box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.13); */
+}
+
+.asr__title {
+    display: flex;
+    align-items: baseline;
+    padding: 1em 1em 0 1em;
+}
+
+.asr__title i {
+    font-size: 1.2rem;
+    padding: 0;
+    margin: 0;
+}
+
+.asr__title h2 {
+    margin-left: 0.5em;
+}
+
+.asr__buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    color: whitesmoke;
+}
+
+.asr__buttons p {
+    margin-top: 0.5em;
+    color: #5c6b7a;
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+.asr__buttons__icon {
+    background-color: whitesmoke;
+    padding: 0.6em 0.8em;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    line-height: 1rem;
+    color: #5c6b7a;
+    box-shadow: 0px 0px 13px #4b71e270;
+}
+.asr__buttons__icon-active {
+    background-color: #6ea0f7;
+    color: whitesmoke;
+}
+
+.asr__buttons__today,
+.asr__buttons__month {
+    padding: 1em;
+}
+
+.asr__fecha {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.asr__fecha__diaMes {
+    text-align: center;
+    font-weight: 600;
+}
+.asr__fecha i {
+    display: flex;
+    font-size: 2rem;
+}
+
+.asr__citas__itemContainer {
+    overflow: visible;
+    position: relative;
+}
+
+.asr__citas__itemContainer:first-of-type {
+    margin-top: 0em;
+}
+
+.asr__citas__itemContainer:nth-of-type(2n) .arc__citas__item__citaNombre {
+    background-color: hotpink;
+}
+.asr__citas__itemContainer:nth-of-type(3n) .arc__citas__item__citaNombre {
+    background-color: rgb(0, 102, 128);
+}
+.asr__citas__itemContainer:nth-of-type(4n) .arc__citas__item__citaNombre {
+    background-color: rgb(0, 162, 255);
+}
+
+.asr__citas__itemContainer:nth-of-type(2n)::before {
+    content: 'p';
+}
+.asr__citas__itemContainer:nth-of-type(3n)::before {
+    content: 't';
+}
+.asr__citas__itemContainer:nth-of-type(4n)::before {
+    content: 'r';
+}
+
+.asr__citas__itemContainer:last-of-type {
+    padding-bottom: 5em;
+}
+
+.arc__citas__item {
+    background-color: white;
+    margin: 0 2em;
+    height: 6em;
+    border: 1px solid #f7a878;
+    color: #f7a878;
+    box-shadow: 0px 0px 13px #e2a64b70;
+    border-radius: 30px 0 30px 0;
+    margin-top: 1em;
+
+    overflow: hidden;
+}
+
+.asr__citas__itemContainer::before {
+    content: 'l';
+    font-family: 'reservatron';
+    position: absolute;
+    top: 1.5em;
+    left: 0.5em;
+    width: 40px;
+    height: 40px;
+    /* background: linear-gradient(-10deg, #ff8500, #fff4ee); */
+    /* background: linear-gradient(-10deg, black, #0092ff); */
+    background: linear-gradient(-10deg, #cd3521, #f3991a);
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    line-height: 2.5rem;
+    font-size: 1.5rem;
+}
+
+.arc__citas__item__citaNombre {
+    width: 100%;
+    height: 1em;
+    background-color: #ff6200af;
+}
+
+.arc__citas__item__citaNombre p {
+    color: whitesmoke;
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-align: right;
+    margin-right: 1em;
+}
+
+.arc__citas__item__texto {
+    margin: 0.3em 1em 0.3em 2em;
+}
+
+.arc__citas__item__texto__nombre {
+    font-weight: 600;
+}
+
+.asr__citas__item__texto__diaIconosContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arc__citas__item__texto__diaContainer {
+    display: flex;
+    align-items: center;
+    color: #5c6b7a77;
+    margin-bottom: 0.25em;
+}
+
+.arc__citas__item__texto__diaContainer.first {
+    margin-top: 0.5em;
+}
+
+.arc__citas__item__texto__diaContainer i {
+    display: flex;
+}
+
+.arc__citas__item__texto__dia {
+    font-size: 0.7rem;
+    margin-left: 0.5em;
+    font-weight: 600;
+}
+.asr__citas__item__texto__diaIconosContainer-right i {
+    font-size: 3rem;
+    display: flex;
+    color: blueviolet;
+}

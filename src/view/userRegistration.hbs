@@ -1,25 +1,28 @@
 <link rel="stylesheet" href="css/userRegistration.css">
-<div class="registro">
+<form id="formRegistro" action="#" class="registro">
     <div id="registro" class="registro__container">
-        <div class="registro__pasos">
-            <div class="registro__pasos ">
-                <p class="registro__pasos__paso registro__pasos__paso-active">Paso 1</p>
+        <div class="registro__pasosYTitulo">
+            <div class="registro__pasosContainer">
+                <div class="registro__pasos">
+                    <p id="registroPaso1" class="registro__pasos__paso registro__pasos__paso-active">Paso 1</p>
+                </div>
+                <div class="registro_pasos">
+                    <p id="registroPaso2" class="registro__pasos__paso">Paso 2</p>
+                </div>
+                <div class="registro_pasos ">
+                    <p id="registroPaso3" class="registro__pasos__paso">Paso 3</p>
+                </div>
             </div>
-            <div class="registro_pasos">
-                <p class="registro__pasos__paso">Paso 2</p>
-            </div>
-            <div class="registro_pasos ">
-                <p class="registro__pasos__paso">Paso 3</p>
+            <div class="registro__titulos">
+                <h2>Un poco sobre ti</h2>
+                <h4>Por favor rellena estos campos básicos</h4>
             </div>
         </div>
-        <div class="registro__titulos">
-            <h2>Un poco sobre ti</h2>
-            <h4>Por favor rellena estos campos básicos</h4>
-        </div>
+
         <div id="registro__formulario" class="registro__formulario">
             <div id="formulario__paso1" class="formulario__paso1">
                 <div class="fomulario__input__container">
-                    <input class="formulario__input" id="user" name="user" type="text" placeholder="User">
+                    <input class="formulario__input" id="user" name="user" type="text" placeholder="User" required>
                     <input class="formulario__input" id="password" name="password" type="text" placeholder="Password">
                 </div>
                 <div class="formulario__botones">
@@ -34,7 +37,7 @@
                 </div>
                 <div class="formulario__botones">
                     <button id="btnFormulario__siguiente2" class="btnFormulario">Siguiente</button>
-                    <button id="btnFormulario__volver1" class="btnFormulario">Volver</button>
+                    <button id="btnFormulario__volverTo1" class="btnFormulario">Volver</button>
                 </div>
             </div>
             <div class="formulario__paso3">
@@ -47,10 +50,10 @@
                 </div>
                 <div class="formulario__botones">
                     <button id="btnCreateAccount" class="btnFormulario">Crear cuenta</button>
-                    <button id="btnFormulario__voler2" class="btnFormulario">Volver</button>
+                    <button id="btnFormulario__volverTo2" class="btnFormulario">Volver</button>
                 </div>
             </div>
         </div>
     </div>
     <div id="firebaseui-auth-container"></div>
-</div>
+</form>

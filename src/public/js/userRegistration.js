@@ -14,7 +14,8 @@ const getDataFromInputs = () => {
     };
 };
 
-const verifyUserBySMS = async () => {
+const verifyUserBySMS = async (e) => {
+    e.preventDefault();
     const userData = getDataFromInputs();
     document.getElementById('registro').style.display = 'none';
     if (firebase.apps.length === 0) {

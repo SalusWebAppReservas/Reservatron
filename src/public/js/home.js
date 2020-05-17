@@ -1,6 +1,5 @@
 // Ojo, modificada linea 36 en handlebars.js porque usando imports se usa strict mode
 // added (|| window) to 'this' porque en strict mode 'this' no puede acceder a 'window'.
-
 import { connectFirebase } from './model/fireBase.js';
 import {
     homeTemplate,
@@ -9,6 +8,10 @@ import {
     adminShowReservasTemplate,
     changeIconToLogOut,
     changeIconToLogIn,
+    registerGoToStep2,
+    registerGoToStep3,
+    registerBackToStep2,
+    registerBackToStep1,
 } from './view/UI.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
@@ -22,8 +25,10 @@ const logout = async () => {
     await connectFirebase();
     if (firebase) await firebase.auth().signOut();
     sessionStorage.removeItem('RVuserID');
-    renderTemplate(homeTemplate);
+    renderHome();
     changeIconToLogIn();
+    login.removeEventListener('click', logout);
+    login.addEventListener('click', renderLogin);
 };
 const isUserLogued = async () => {
     if (sessionStorage.getItem('RVuserID')) {
@@ -57,7 +62,7 @@ const renderTemplate = (template) => {
     contenedor.innerHTML = template();
     setTimeout(() => {
         contenedor.style.visibility = 'visible';
-    }, 1);
+    }, 100);
 };
 
 const renderAdminReservas = () => {
@@ -87,13 +92,31 @@ const renderLogin = async (e) => {
 const renderRegister = (e) => {
     e.preventDefault();
     renderTemplate(userRegistrationTemplate);
+
+    const formulario = document.getElementById('formulario__paso1');
+
     const btnSiguiente1 = document.getElementById('btnFormulario__siguiente1');
     const btnSiguiente2 = document.getElementById('btnFormulario__siguiente2');
-    const formPaso1 = document.getElementById('formulario__paso1');
+
+    const btnVolverTo1 = document.getElementById('btnFormulario__volverTo1');
+    const btnVolverTo2 = document.getElementById('btnFormulario__volverTo2');
+
+    const paso1 = document.getElementById('registroPaso1');
+    const paso2 = document.getElementById('registroPaso2');
+    const paso3 = document.getElementById('registroPaso3');
+
+    btnSiguiente1.addEventListener('click', registerGoToStep2);
+    btnSiguiente2.addEventListener('click', registerGoToStep3);
+
+    btnVolverTo2.addEventListener('click', registerBackToStep2);
+    btnVolverTo1.addEventListener('click', registerBackToStep1);
+
     const btnCreateAccount = document.getElementById('btnCreateAccount');
-    btnSiguiente1.addEventListener('click', () => formPaso1.classList.add('step2'));
-    btnSiguiente2.addEventListener('click', () => formPaso1.classList.add('step3'));
     btnCreateAccount.addEventListener('click', verifyUserBySMS);
+
+    document.querySelector('form').addEventListener('keydown', (e) => {
+        if (e.which == 9) e.preventDefault();
+    });
 };
 
 renderHome();

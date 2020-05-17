@@ -21,3 +21,59 @@ export const changeIconToLogIn = () => {
     logoHome.classList.remove('icon-logout');
     logoHome.classList.add('icon-user');
 };
+
+export const registerGoToStep2 = (e) => {
+    const formRegistro = document.getElementById('formRegistro');
+    const formulario = document.getElementById('formulario__paso1');
+    const paso1 = document.getElementById('registroPaso1');
+    const paso2 = document.getElementById('registroPaso2');
+    formRegistro.checkValidity();
+    if (formRegistro.checkValidity()) {
+        e.preventDefault();
+        formulario.classList.add('step2');
+        paso1.classList.remove('registro__pasos__paso-active');
+        paso2.classList.add('registro__pasos__paso-active');
+    }
+};
+
+export const registerGoToStep3 = (e) => {
+    const formRegistro = document.getElementById('formRegistro');
+    const formulario = document.getElementById('formulario__paso1');
+    const paso2 = document.getElementById('registroPaso2');
+    const paso3 = document.getElementById('registroPaso3');
+    formRegistro.checkValidity();
+    if (formRegistro.checkValidity()) {
+        e.preventDefault();
+        formulario.classList.add('step3');
+        paso2.classList.remove('registro__pasos__paso-active');
+        paso3.classList.add('registro__pasos__paso-active');
+    }
+};
+
+export const registerBackToStep2 = (e) => {
+    const formRegistro = document.getElementById('formRegistro');
+    const formulario = document.getElementById('formulario__paso1');
+    const paso2 = document.getElementById('registroPaso2');
+    const paso3 = document.getElementById('registroPaso3');
+    formRegistro.checkValidity();
+    if (formRegistro.checkValidity()) {
+        e.preventDefault();
+        formulario.classList.remove('step3');
+        paso3.classList.remove('registro__pasos__paso-active');
+        paso2.classList.add('registro__pasos__paso-active');
+    }
+};
+
+export const registerBackToStep1 = (e) => {
+    const formRegistro = document.getElementById('formRegistro');
+    const formulario = document.getElementById('formulario__paso1');
+    const paso1 = document.getElementById('registroPaso1');
+    const paso2 = document.getElementById('registroPaso2');
+    formRegistro.checkValidity();
+    if (formRegistro.checkValidity()) {
+        e.preventDefault();
+        formulario.classList.remove('step2');
+        paso2.classList.remove('registro__pasos__paso-active');
+        paso1.classList.add('registro__pasos__paso-active');
+    }
+};

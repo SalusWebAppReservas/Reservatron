@@ -1,4 +1,4 @@
-const renderAPP = (req, res) => res.render('home');
+const renderAPP = (req, res) => res.render('app');
 
 module.exports = {
     renderAPP,

@@ -1,7 +1,15 @@
 // Ojo, modificada linea 36 en handlebars.js porque usando imports se usa strict mode
 // added (|| window) to 'this' porque en strict mode 'this' no puede acceder a 'window'.
 
-import { homeTemplate, loginTemplate, userRegistrationTemplate } from './view/UI.js';
+import { connectFirebase } from './model/fireBase.js';
+import {
+    homeTemplate,
+    loginTemplate,
+    userRegistrationTemplate,
+    adminShowReservasTemplate,
+    changeIconToLogOut,
+    changeIconToLogIn,
+} from './view/UI.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
 
@@ -10,30 +18,75 @@ const register = document.getElementById('btnRegister');
 const contenedor = document.getElementById('contenedor');
 const logoHome = document.getElementById('logoHome');
 
-const showStepTwo = () => {
-    formPaso1.classList.add('step2');
+const logout = async () => {
+    await connectFirebase();
+    if (firebase) await firebase.auth().signOut();
+    sessionStorage.removeItem('RVuserID');
+    renderTemplate(homeTemplate);
+    changeIconToLogIn();
+};
+const isUserLogued = async () => {
+    if (sessionStorage.getItem('RVuserID')) {
+        changeIconToLogOut();
+        login.removeEventListener('click', renderLogin);
+        login.addEventListener('click', logout);
+        return true;
+    }
+    const promesa = new Promise(async (resolve, reject) => {
+        await connectFirebase();
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                renderTemplate(adminShowReservasTemplate);
+                changeIconToLogOut();
+                resolve(true);
+                login.removeEventListener('click', renderLogin);
+                login.addEventListener('click', logout);
+            } else {
+                changeIconToLogIn();
+                resolve(false);
+            }
+        });
+    });
+    return promesa;
 };
 
-const showStepThree = () => {
-    formPaso1.classList.add('step2');
+const renderTemplate = (template) => {
+    // Hago que se oculte y el timeout de 1ms para que cuando se cargue la pagina ya esté aplicado el css
+    // de lo contrario se ve durante 1ms la página sin el css aplicado.
+    contenedor.style.visibility = 'hidden';
+    contenedor.innerHTML = template();
+    setTimeout(() => {
+        contenedor.style.visibility = 'visible';
+    }, 1);
 };
 
-const renderHome = () => {
-    contenedor.innerHTML = homeTemplate();
-    const register = document.getElementById('btnRegister');
-    register.addEventListener('click', renderRegister);
+const renderAdminReservas = () => {
+    renderTemplate(adminShowReservasTemplate);
 };
 
-const renderLogin = (e) => {
-    contenedor.innerHTML = loginTemplate();
-    e.preventDefault();
-    verifyLoginUser();
-    const btnLogin = document.getElementById('btnLogin');
-    btnLogin.addEventListener('click', sendLoginUser);
+const renderHome = async () => {
+    if (await isUserLogued()) renderAdminReservas();
+    else {
+        renderTemplate(homeTemplate);
+        const register = document.getElementById('btnRegister');
+        register.addEventListener('click', renderRegister);
+    }
 };
+
+const renderLogin = async (e) => {
+    if (await isUserLogued()) logout();
+    else {
+        renderTemplate(loginTemplate);
+        e.preventDefault();
+        verifyLoginUser();
+        const btnLogin = document.getElementById('btnLogin');
+        btnLogin.addEventListener('click', sendLoginUser);
+    }
+};
+
 const renderRegister = (e) => {
     e.preventDefault();
-    contenedor.innerHTML = userRegistrationTemplate();
+    renderTemplate(userRegistrationTemplate);
     const btnSiguiente1 = document.getElementById('btnFormulario__siguiente1');
     const btnSiguiente2 = document.getElementById('btnFormulario__siguiente2');
     const formPaso1 = document.getElementById('formulario__paso1');
@@ -43,6 +96,7 @@ const renderRegister = (e) => {
     btnCreateAccount.addEventListener('click', verifyUserBySMS);
 };
 
+renderHome();
+
 login.addEventListener('click', renderLogin);
 logoHome.addEventListener('click', renderHome);
-register.addEventListener('click', renderRegister);

@@ -98,3 +98,6 @@
 .icon-heart:before {
   content: "\74";
 }
+.icon-logout:before {
+  content: "\75";
+}

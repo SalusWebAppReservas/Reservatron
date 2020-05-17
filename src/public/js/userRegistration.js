@@ -17,8 +17,6 @@ const getDataFromInputs = () => {
 const verifyUserBySMS = async () => {
     const userData = getDataFromInputs();
     document.getElementById('registro').style.display = 'none';
-    console.log(firebase.apps.length);
-
     if (firebase.apps.length === 0) {
         await connectFirebase();
     }
@@ -38,8 +36,7 @@ const verifyUserBySMS = async () => {
                     },
                     body: JSON.stringify(userDataWithPhone),
                 });
-                alert('Usuario registrado en la base de datos con éxito');
-                return true;
+                return false;
             },
         },
         signInFlow: 'popup',
@@ -53,6 +50,7 @@ const verifyUserBySMS = async () => {
                     badge: 'bottomleft', //' bottomright' or 'inline' applies to invisible.
                 },
                 defaultCountry: 'ES',
+                displayName: userData.userName,
             },
         ],
         // Terms of service url.

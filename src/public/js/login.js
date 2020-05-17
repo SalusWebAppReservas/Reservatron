@@ -7,8 +7,9 @@ const showLoginResult = async (isLoginOk) => {
     const { user, userID } = await isLoginOk.json();
 
     if (userID) {
-        alert('Login correcto. Falta redireccionar');
-        return;
+        sessionStorage.setItem('RVuserID', userID);
+        window.location.href = url;
+        return true;
     }
     if (user) alert('Password incorrecto');
     else alert('Usuario no existe');

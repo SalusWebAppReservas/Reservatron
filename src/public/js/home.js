@@ -15,6 +15,7 @@ import {
 } from './view/UI.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
+import { getReservas } from './model/db.js';
 
 const login = document.getElementById('mainLogin');
 const register = document.getElementById('btnRegister');
@@ -41,13 +42,15 @@ const isUserLogued = async () => {
         await connectFirebase();
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-                renderTemplate(adminShowReservasTemplate);
+                renderAdminReservas();
                 changeIconToLogOut();
-                resolve(true);
                 login.removeEventListener('click', renderLogin);
                 login.addEventListener('click', logout);
+                resolve(true);
             } else {
                 changeIconToLogIn();
+                login.removeEventListener('click', logout);
+                login.addEventListener('click', renderLogin);
                 resolve(false);
             }
         });
@@ -55,18 +58,21 @@ const isUserLogued = async () => {
     return promesa;
 };
 
-const renderTemplate = (template) => {
+const renderTemplate = (template, datos) => {
     // Hago que se oculte y el timeout de 1ms para que cuando se cargue la pagina ya esté aplicado el css
     // de lo contrario se ve durante 1ms la página sin el css aplicado.
     contenedor.style.visibility = 'hidden';
-    contenedor.innerHTML = template();
+    console.log(datos);
+    contenedor.innerHTML = template(datos);
     setTimeout(() => {
         contenedor.style.visibility = 'visible';
     }, 100);
 };
 
-const renderAdminReservas = () => {
-    renderTemplate(adminShowReservasTemplate);
+const renderAdminReservas = async (fecha) => {
+    const reservas = await getReservas(fecha);
+
+    renderTemplate(adminShowReservasTemplate, reservas);
 };
 
 const renderHome = async () => {

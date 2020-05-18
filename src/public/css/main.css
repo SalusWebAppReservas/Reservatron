@@ -34,11 +34,13 @@ nav {
 
 .nav__container__left__logo {
     width: 4em;
+    cursor: pointer;
 }
 
 .nav__container__mobileMenu {
     font-size: 1.5rem;
     margin-right: 0.5em;
+    cursor: pointer;
 }
 
 footer {
@@ -51,6 +53,7 @@ footer {
     box-shadow: 0px 5px 10px black;
     color: #f3731b;
     font-size: 0.7rem;
+    z-index: 100;
 }
 
 .footer__container__left {
@@ -95,6 +98,7 @@ footer {
     border-radius: 5px;
     outline: none;
     border: none;
+    cursor: pointer;
 }
 
 .home__register_button:hover {
@@ -106,6 +110,9 @@ footer {
     justify-content: center;
     margin-top: 2em;
     width: 100vw;
+    max-width: 500px;
+    margin-left: auto;
+    margin: auto;
 }
 .home__mobileLaptop {
     width: 90%;

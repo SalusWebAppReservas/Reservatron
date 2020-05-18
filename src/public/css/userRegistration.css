@@ -3,8 +3,7 @@
     display: flex;
     justify-content: center;
     /* height: -webkit-fill-available; */
-    background-color: #f7fbfe;
-    min-height: 30em;
+    min-height: 100vh;
 }
 
 .registro__container {
@@ -29,6 +28,8 @@
 .registro__pasos__paso {
     margin: 1em 0 2em;
     padding: 0.5em 2em;
+    font-size: 0.9rem;
+    font-weight: 400;
 }
 
 .registro__pasos__paso-active {
@@ -120,6 +121,7 @@
     border-radius: 5px;
     outline: none;
     border: none;
+    cursor: pointer;
 }
 
 .btnFormulario:hover {

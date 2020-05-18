@@ -1,46 +1,64 @@
-<link rel="stylesheet" href="css/styles.css">
-<div id="registro" class="registro">
-    <div class="registro__pasos">
-        <div class="registro__pasos ">
-            <p class="registro__pasos__paso active">Paso 1</p>
-        </div>
-        <div class="registro_pasos">
-            <p class="registro__pasos__paso">Paso 2</p>
-        </div>
-        <div class="registro_pasos ">
-            <p class="registro__pasos__paso">Paso 3</p>
-        </div>
-    </div>
-    <div class="registro__formulario">
-        <div id="formulario__paso1" class="formulario__paso1">
-            <input id="user" name="user" type="text" placeholder="User">
-            <input id="password" name="password" type="text" placeholder="Password">
-            <div>
-                <button id="btnFormulario__siguiente1" class="btnFormulario">Siguiente</button>
+<link rel="stylesheet" href="css/userRegistration.css">
+<form id="formRegistro" action="#" class="registro">
+    <div id="registro" class="registro__container">
+        <div class="registro__pasosYTitulo">
+            <div class="registro__pasosContainer">
+                <div class="registro__pasos">
+                    <p id="registroPaso1" class="registro__pasos__paso registro__pasos__paso-active">Paso 1</p>
+                </div>
+                <div class="registro_pasos">
+                    <p id="registroPaso2" class="registro__pasos__paso">Paso 2</p>
+                </div>
+                <div class="registro_pasos ">
+                    <p id="registroPaso3" class="registro__pasos__paso">Paso 3</p>
+                </div>
+            </div>
+            <div class="registro__titulos">
+                <h2>Un poco sobre ti</h2>
+                <h4>Por favor rellena estos campos básicos</h4>
             </div>
         </div>
-        <div class="formulario__paso2">
 
-            <input id="userName" name="userName" type="text" placeholder="Nombre">
-            <input id="userSurnames" name="userSurnames" type="text" placeholder="Apellidos">
-            <input id="userAddress" name="userAddress" type="text" placeholder="Dirección">
-            <input id="userPostalCode" name="userPostalCode" type="text" placeholder="Codigo postal">
-            <button id="btnFormulario__siguiente2" class="btnFormulario">Siguiente</button>
-        </div>
-        <div class="formulario__paso3">
-
-            <input id="userEmail" name="email" type="text" placeholder="Email">
-            <button class="btnFormulario" id="btnCreateAccount">Crear cuenta con verificación SMS</button>
+        <div id="registro__formulario" class="registro__formulario">
+            <div id="formulario__paso1" class="formulario__paso1">
+                <div class="fomulario__input__container">
+                    <input class="formulario__input" id="user" name="user" type="text" placeholder="User"
+                        pattern="^[a-z0-9_-]{3,16}$" required>
+                    <input class="formulario__input" id="password" name="password" type="password"
+                        placeholder="Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" required
+                        title="Eight or more characters">
+                </div>
+                <div class="formulario__botones">
+                    <button id="btnFormulario__siguiente1" class="btnFormulario">Siguiente</button>
+                </div>
+            </div>
+            <div class="formulario__paso2">
+                <div class="fomulario__input__container">
+                    <input class="formulario__input" id="userName" name="userName" type="text" placeholder="Nombre"
+                        pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$">
+                    <input class="formulario__input" id="userSurnames" name="userSurnames" type="text"
+                        placeholder="Apellidos" pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$">
+                </div>
+                <div class="formulario__botones">
+                    <button id="btnFormulario__siguiente2" class="btnFormulario">Siguiente</button>
+                    <button id="btnFormulario__volverTo1" class="btnFormulario">Volver</button>
+                </div>
+            </div>
+            <div class="formulario__paso3">
+                <div class="fomulario__input__container">
+                    <input class="formulario__input" id="userAddress" name="userAddress" type="text"
+                        placeholder="Dirección">
+                    <input class="formulario__input" id="userPostalCode" name="userPostalCode" type="text"
+                        placeholder="Codigo postal" pattern="0[1-9][0-9]{3}|[1-4][0-9]{4}|5[0-2][0-9]{3}">
+                    <input class="formulario__input" id="userEmail" name="email" type="text" placeholder="Email"
+                        pattern="^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$">
+                </div>
+                <div class="formulario__botones">
+                    <button id="btnCreateAccount" class="btnFormulario">Crear cuenta</button>
+                    <button id="btnFormulario__volverTo2" class="btnFormulario">Volver</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-
-</div>
-</div>
-<div id="firebaseui-auth-container"></div>
-<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
-<script src="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth__es.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
-<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.4.0/firebase-ui-auth.css" />
-<script src="js/userRegistration.js "></script>
+    <div id="firebaseui-auth-container"></div>
+</form>

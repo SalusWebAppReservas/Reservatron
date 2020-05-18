@@ -1,6 +1,23 @@
-<input id="user" type="text" placeholder="Introduce Usuario">
-<input id="password" type="text" placeholder="Contraseña">
-<button id="btnLogin">Log In</button>
+<link rel="stylesheet" href="css/login.css">
+<form id="loginForm" action="#">
+    <div class="login__container">
+        <div class="login__LogoContainer">
+            <img id="logoHome" class="login__logo" src="img/logo.png" alt="">
+        </div>
+        <div id="loginContainer" class="loginContainer__subContainerForm">
+            <div class="login__form">
+                <input id="user" type="text" placeholder="Introduce Usuario" required>
+                <input id="password" type="text" placeholder="Contraseña" required>
+                <button id="btnLogin">Iniciar sesión</button>
+                <p>o puedes usar:</p>
+                <div id="firebaseui-login"></div>
+            </div>
+        </div>
+
+</form>
+
+</div>
+
 
 
 <script src="js/login.js"></script>

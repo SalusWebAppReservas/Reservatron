@@ -1,6 +1,6 @@
-// const url = window.location.href;
+import { connectFirebase } from './model/fireBase.js';
 
-console.log('userRegistration');
+const url = window.location.href;
 
 const getDataFromInputs = () => {
     return {
@@ -14,22 +14,22 @@ const getDataFromInputs = () => {
     };
 };
 
-const getFirebaseConfig = async () => await (await fetch(`${url}getFirebaseConfig`)).json();
-
-const connectFirebase = async () => {
-    firebase.initializeApp(await getFirebaseConfig());
-    firebase.analytics();
-};
-
-const verifyUserBySMS = async () => {
+const verifyUserBySMS = async (e) => {
+    e.preventDefault();
     const userData = getDataFromInputs();
     document.getElementById('registro').style.display = 'none';
-    await connectFirebase();
-    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    if (firebase.apps.length === 0) {
+        await connectFirebase();
+    }
+    let ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+
     var uiConfig = {
         callbacks: {
             signInSuccessWithAuthResult: (authResult) => {
-                const userDataWithPhone = { ...userData, userPhone: authResult.user.phoneNumber };
+                const userDataWithPhone = {
+                    ...userData,
+                    userPhone: authResult.user.phoneNumber,
+                };
                 fetch(`${url}addUser`, {
                     method: 'POST',
                     headers: {
@@ -37,8 +37,7 @@ const verifyUserBySMS = async () => {
                     },
                     body: JSON.stringify(userDataWithPhone),
                 });
-                alert('Usuario registrado en la base de datos con éxito');
-                return true;
+                return false;
             },
         },
         signInFlow: 'popup',
@@ -52,6 +51,7 @@ const verifyUserBySMS = async () => {
                     badge: 'bottomleft', //' bottomright' or 'inline' applies to invisible.
                 },
                 defaultCountry: 'ES',
+                displayName: userData.userName,
             },
         ],
         // Terms of service url.
@@ -64,3 +64,5 @@ const verifyUserBySMS = async () => {
 
 // const btnCreateAccount = document.getElementById('btnCreateAccount');
 // btnCreateAccount.addEventListener('click', verifyUserBySMS);
+
+export default verifyUserBySMS;

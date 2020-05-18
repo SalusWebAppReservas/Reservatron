@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    background-color: white;
+    box-shadow: 0px -6px 10px black;
+    color: #f3731b;
+    font-size: 0.7rem;
+    z-index: 100;
+}
+
+.nav__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100vw;
+    padding: 0.7em 1em 0.25em 0.5em;
+}
+.nav__container__left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav__container__left__logo {
+    width: 4em;
+    cursor: pointer;
+}
+
+.nav__container__mobileMenu {
+    font-size: 1.5rem;
+    margin-right: 0.5em;
+    cursor: pointer;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    background-color: white;
+    box-shadow: 0px 5px 10px black;
+    color: #f3731b;
+    font-size: 0.7rem;
+    z-index: 100;
+}
+
+.footer__container__left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer__container__right {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex: 1;
+}
+
+.home__titulo {
+    margin-top: 5em;
+    line-height: 3rem;
+    text-align: center;
+    font-size: 1rem;
+    /* color: #f3731b; */
+}
+
+.home__subtitulo {
+    text-align: center;
+    margin: 2em 2em;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+}
+
+.home__register {
+    display: flex;
+    justify-content: center;
+}
+.home__register_button {
+    margin-top: 1em;
+    padding: 1em;
+    font-weight: 700;
+    color: white;
+    background-color: #4b71e2;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.home__register_button:hover {
+    background-color: #4061c4;
+}
+
+.home__img {
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+    width: 100vw;
+    max-width: 500px;
+    margin-left: auto;
+    margin: auto;
+}
+.home__mobileLaptop {
+    width: 90%;
+}
+
+.home__organiza {
+    text-align: center;
+    /* margin: 2em 3em; */
+    margin: 0 2em 4em 2em;
+}
+
+.home__organiza p {
+    margin-top: 1em;
+    line-height: 1.5rem;
+}
+
+.home__organiza span {
+    margin-top: 1em;
+    line-height: 1.5rem;
+}

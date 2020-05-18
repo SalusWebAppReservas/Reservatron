@@ -1,0 +1,68 @@
+{{!-- asr es abreviatura de adminShowReservas que es el nombre de la plantilla. --}}
+<link rel="stylesheet" href="css/adminShowReservas.css">
+<div class="asr">
+    <div class="asr__container">
+        <div class="asr__container__top">
+            <div class="asr__title">
+                <i class="icon-reservas"></i>
+                <h2>Reservas</h2>
+            </div>
+            <div class="asr__buttons">
+                <div class="asr__buttons__today">
+                    <div class="asr__buttons__icon asr__buttons__icon-active">
+                        <i class="icon-calendar-day"></i>
+                    </div>
+                    <p>Día</p>
+                </div>
+                <div class="asr__buttons__month">
+                    <div class="asr__buttons__icon">
+                        <i class="icon-calendar-full"></i>
+                    </div>
+                    <p>Mes</p>
+                </div>
+            </div>
+            <div class="asr__fecha">
+                <i class="icon-back"></i>
+                <div class="asr__fecha__diaMes">
+                    <p>Sábado</p>
+                    <p>16/05/2020</p>
+                </div>
+                <i class="icon-next"></i>
+            </div>
+        </div>
+
+        <div class="asr__citas">
+
+            {{#each reserva}}
+            <div class="asr__citas__itemContainer" data-serviceID={{serviceID}} data-userID={{userID}}>
+                <div class="asr__citas__item">
+                    <div class="asr__citas__item__citaNombre">
+                        <p>{{serviceName}}</p>
+                    </div>
+                    <div class="asr__citas__item__texto">
+                        <p class="asr__citas__item__texto__nombre">{{userName}} {{userSurnames}}</p>
+                        <div class="asr__citas__item__texto__diaIconosContainer">
+                            <div class="asr__citas__item__texto__diaIconosContainer-left">
+                                <div class="asr__citas__item__texto__diaContainer first">
+                                    <i class="icon-calendar-check"></i>
+                                    <p class="asr__citas__item__texto__dia">{{day}}</p>
+                                </div>
+                                <div class="asr__citas__item__texto__diaContainer">
+                                    <i class="icon-clock"></i>
+                                    <p class="asr__citas__item__texto__dia">{{time}}</p>
+                                </div>
+                            </div>
+
+                            <div class="asr__citas__item__texto__diaIconosContainer-right">
+                                <i class="icon-new"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+
+
+        </div>
+    </div>
+</div>

@@ -4,7 +4,7 @@ export const getReservas = async (fecha) => {
             serviceID: '-Afasf34fasdfFASfs3',
             serviceName: 'Masaje deportivo',
             date: '1213123134565131', //fecha salvada en formato misilegundos en DB
-            day: 'Hoy', //Calcular ei es hoy
+            day: 'Hoy', //Calcular si es hoy
             time: '11:30', //Sacar la hora y minutos de date
             userID: '-M7WqbYa00JPQqRKDLxQ',
             userName: 'Pedro',

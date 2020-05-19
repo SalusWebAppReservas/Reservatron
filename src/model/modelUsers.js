@@ -98,4 +98,22 @@ const insertUser = ({
     return isSaveOk;
 };
 
-module.exports = { insertUser, getUser, getUserID };
+const modelGetReservas = (fecha) => {
+    const ref = db.ref('reservas');
+    const reservas = new Promise((resolve, reject) =>
+        ref
+            //.orderByKey()
+            //  .equalTo(userID)
+            .on(
+                'value',
+                (snapshot) => {
+                    resolve(snapshot.val());
+                },
+                (errorObject) => {
+                    reject('The read failed: ' + errorObject.code);
+                }
+            )
+    );
+    return reservas;
+};
+module.exports = { insertUser, getUser, getUserID, modelGetReservas };

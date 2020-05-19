@@ -1,14 +1,14 @@
 export const getReservas = async (fecha) => {
-    const url = window.location.href
+    const url = window.location.href;
     const reservas = await fetch(`${url}getReservas`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'applicatison/json',
         },
         body: JSON.stringify(fecha),
     });
     const reservasJson = await reservas.json();
-    console.log(reservasJson)
+    console.log(reservasJson);
     return reservasJson;
     //     const reservas = [
     //         {

@@ -12,6 +12,10 @@ import {
     registerGoToStep3,
     registerBackToStep2,
     registerBackToStep1,
+    changeIconDayMonth,
+    changeIconMonthToDay,
+    adminReservasDay,
+    adminReservasMonth,
 } from './view/UI.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
@@ -58,21 +62,34 @@ const isUserLogued = async () => {
     return promesa;
 };
 
-const renderTemplate = (template, datos) => {
+const renderTemplate = (template, datos, container = 'contenedor') => {
     // Hago que se oculte y el timeout de 1ms para que cuando se cargue la pagina ya esté aplicado el css
     // de lo contrario se ve durante 1ms la página sin el css aplicado.
+    const contenedor = document.getElementById(container);
     contenedor.style.visibility = 'hidden';
-    console.log(datos);
     contenedor.innerHTML = template(datos);
     setTimeout(() => {
         contenedor.style.visibility = 'visible';
     }, 100);
 };
 
+const selectDayOrMonth = async ({ target }) => {
+    if (target.id === 'asrBtnMonth' || target.id === 'asrIconMonth') {
+        changeIconDayMonth();
+        renderTemplate(adminReservasMonth, { month: 3, year: 2020 }, 'asrCitasContainer');
+    } else if (target.id === 'asrBtnDay' || target.id === 'asrIconDay') {
+        changeIconMonthToDay();
+        const reservas = await getReservas();
+        renderTemplate(adminReservasDay, reservas, 'asrCitasContainer');
+    }
+};
+
 const renderAdminReservas = async (fecha) => {
     const reservas = await getReservas(fecha);
 
     renderTemplate(adminShowReservasTemplate, reservas);
+    const btnSelectDayMonth = document.getElementById('asr_btnSelectDayMonth');
+    btnSelectDayMonth.addEventListener('click', selectDayOrMonth);
 };
 
 const renderHome = async () => {
@@ -99,17 +116,11 @@ const renderRegister = (e) => {
     e.preventDefault();
     renderTemplate(userRegistrationTemplate);
 
-    const formulario = document.getElementById('formulario__paso1');
-
     const btnSiguiente1 = document.getElementById('btnFormulario__siguiente1');
     const btnSiguiente2 = document.getElementById('btnFormulario__siguiente2');
 
     const btnVolverTo1 = document.getElementById('btnFormulario__volverTo1');
     const btnVolverTo2 = document.getElementById('btnFormulario__volverTo2');
-
-    const paso1 = document.getElementById('registroPaso1');
-    const paso2 = document.getElementById('registroPaso2');
-    const paso3 = document.getElementById('registroPaso3');
 
     btnSiguiente1.addEventListener('click', registerGoToStep2);
     btnSiguiente2.addEventListener('click', registerGoToStep3);

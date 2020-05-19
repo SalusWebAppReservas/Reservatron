@@ -1,0 +1,44 @@
+/* arm abreviatura de adminReservasMonth */
+
+.armContainer {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 0.5em;
+    padding: 1em;
+    min-height: 20em;
+    margin-top: 1em;
+}
+
+.arm__day {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 2em;
+    background-color: lightpink;
+    border-radius: 15px 0px 15px 0px;
+    box-shadow: 0px 0px 5px black;
+}
+
+.arm__day:nth-of-type(2n) {
+    background-color: lightgoldenrodyellow;
+}
+.arm__day:nth-of-type(3n) {
+    background-color: lightgreen;
+}
+.arm__day:nth-of-type(4n) {
+    background-color: lightcoral;
+}
+.arm__day:nth-of-type(4n) {
+    background-color: transparent;
+}
+
+.arm__day__number {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.arm__day__name {
+    font-size: 0.6rem;
+    font-weight: 600;
+}

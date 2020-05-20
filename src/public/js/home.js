@@ -62,7 +62,6 @@ const renderTemplate = (template, datos) => {
     // Hago que se oculte y el timeout de 1ms para que cuando se cargue la pagina ya esté aplicado el css
     // de lo contrario se ve durante 1ms la página sin el css aplicado.
     contenedor.style.visibility = 'hidden';
-    console.log(datos);
     contenedor.innerHTML = template(datos);
     setTimeout(() => {
         contenedor.style.visibility = 'visible';

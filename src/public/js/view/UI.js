@@ -7,11 +7,7 @@ import './precompiled/adminShowReservas.precompiled.js';
 export const homeTemplate = () => Handlebars.templates['home.hbs']();
 export const loginTemplate = () => Handlebars.templates['login.hbs']();
 export const userRegistrationTemplate = () => Handlebars.templates['userRegistration.hbs']();
-export const adminShowReservasTemplate = (reserva) => {
-    console.log(reserva);
-
-    return Handlebars.templates['adminShowReservas.hbs']({ reserva });
-};
+export const adminShowReservasTemplate = (reserva) => Handlebars.templates['adminShowReservas.hbs']({ reserva });
 
 export const changeIconToLogOut = () => {
     const logoHome = document.getElementById('mainLogin');

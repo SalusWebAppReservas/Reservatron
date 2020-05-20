@@ -33,6 +33,16 @@
     background-color: transparent;
 }
 
+.arm__day:nth-of-type(7n) {
+    background-color: rgb(192, 119, 119);
+    color: rgb(39, 39, 39);
+}
+
+.arm__day:nth-of-type(7n-1) {
+    background-color: rgb(162, 190, 199);
+    color: rgb(22, 75, 75)
+}
+
 .arm__day__number {
     font-size: 1rem;
     font-weight: 700;

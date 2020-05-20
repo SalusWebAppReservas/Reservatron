@@ -54,14 +54,15 @@
     line-height: 1rem;
     color: #5c6b7a;
     box-shadow: 0px 0px 13px #4b71e270;
+    cursor: pointer;
 }
 .asr__buttons__icon-active {
     background-color: #6ea0f7;
     color: whitesmoke;
 }
 
-.asr__buttons__today,
-.asr__buttons__month {
+.asr__button__today,
+.asr__button__month {
     padding: 1em;
 }
 
@@ -79,6 +80,7 @@
 .asr__fecha i {
     display: flex;
     font-size: 2rem;
+    cursor: pointer;
 }
 
 .asr__citas__itemContainer {

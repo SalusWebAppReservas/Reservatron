@@ -5,16 +5,28 @@ import './precompiled/userRegistration.precompiled.js';
 import './precompiled/adminShowReservas.precompiled.js';
 import './precompiled/adminReservasDay.precompiled.js';
 import './precompiled/adminReservasMonth.precompiled.js';
+import './precompiled/adminCreateReserva.precompiled.js';
+import './precompiled/adminCreateReservaMonth.precompiled.js';
 
 export const homeTemplate = () => Handlebars.templates['home.hbs']();
 export const loginTemplate = () => Handlebars.templates['login.hbs']();
 export const userRegistrationTemplate = () => Handlebars.templates['userRegistration.hbs']();
+export const adminCreateReserva = () => Handlebars.templates['adminCreateReserva.hbs']();
 export const adminShowReservasTemplate = (reserva) =>
     Handlebars.templates['adminShowReservas.hbs']({ reserva });
 export const adminReservasDay = (reserva) =>
     Handlebars.templates['adminReservasDay.hbs']({ reserva });
 
 export const adminReservasMonth = ({ month, year }) => {
+    const dias = daysOfMonth({ month, year });
+    return Handlebars.templates['adminReservasMonth.hbs']({ dias });
+};
+
+export const adminCreateReservaMonth = ({ month, year }) => {
+    const dias = daysOfMonth({ month, year });
+    return Handlebars.templates['adminCreateReservaMonth.hbs']({ dias });
+};
+export const daysOfMonth = ({ month, year }) => {
     const getDaysOfMonth = (_month, _year) =>
         new Array(31)
             .fill('')
@@ -44,6 +56,11 @@ export const adminReservasMonth = ({ month, year }) => {
             )
                 .toLocaleString('es-ES', { weekday: 'short' })
                 .slice(0, -1),
+            date: new Date(
+                _year,
+                _month === 0 ? 11 : _month - 1,
+                getDaysOfMonth(_month === 0 ? 11 : _month - 1, _year).length - i
+            ).getTime(),
         };
     });
 
@@ -60,6 +77,7 @@ export const adminReservasMonth = ({ month, year }) => {
             name: new Date(_year, _month === 11 ? 0 : _month + 1, 1 + i)
                 .toLocaleString('es-ES', { weekday: 'short' })
                 .slice(0, -1),
+            date: new Date(_year, _month === 11 ? 0 : _month + 1, 1 + i).getTime(),
         };
     });
 
@@ -67,12 +85,12 @@ export const adminReservasMonth = ({ month, year }) => {
         return {
             day: v.getDate(),
             name: v.toLocaleString('es-ES', { weekday: 'short' }).slice(0, -1),
+            date: v.getTime(),
         };
     });
 
     const dias = [...firstWeek.reverse().concat(middleWeeks, lastWeek)];
-
-    return Handlebars.templates['adminReservasMonth.hbs']({ dias });
+    return dias;
 };
 
 export const changeIconToLogOut = () => {

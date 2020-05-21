@@ -3,12 +3,10 @@
 import { connectFirebase } from './model/fireBase.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
-import { getReservas } from './model/db.js';
+import { getReservas, getClientes } from './model/db.js';
 import * as UI from './view/UI.js';
 
 const login = document.getElementById('mainLogin');
-const register = document.getElementById('btnRegister');
-const contenedor = document.getElementById('contenedor');
 const logoHome = document.getElementById('logoHome');
 
 const logout = async () => {
@@ -56,7 +54,7 @@ const renderTemplate = (template, datos, container = 'contenedor') => {
     contenedor.innerHTML = template(datos);
     setTimeout(() => {
         contenedor.style.visibility = 'visible';
-    }, 100);
+    }, 200);
 };
 
 const addMonth = () => {
@@ -126,18 +124,84 @@ const selectDayOrMonth = async ({ target }) => {
     }
 };
 
+const createReservaNextMonth = () => {
+    UI.incrementMonth();
+    const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
+    const month = fechaSelected.getMonth();
+    const year = fechaSelected.getFullYear();
+    renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
+    UI.showNameMonth(fechaSelected);
+};
+
+const createReservaBackMonth = () => {
+    UI.decreaseMonth();
+    const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
+    const month = fechaSelected.getMonth();
+    const year = fechaSelected.getFullYear();
+    renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
+    UI.showNameMonth(fechaSelected);
+};
+
+const unselectDay = () => {
+    const days = document.querySelectorAll('.acr__day');
+    days.forEach((days) => days.classList.remove('acrActive'));
+};
+const selectDay = ({ target }) => {
+    unselectDay();
+    let date;
+    if (target.tagName === 'P') {
+        date = new Date(Number(target.parentNode.id));
+        target.parentNode.classList.add('acrActive');
+    } else {
+        date = new Date(Number(target.id));
+        target.classList.add('acrActive');
+    }
+
+    const nombreDia = document.getElementById('nombreDia');
+    nombreDia.textContent = date.toLocaleString('es-ES', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+    });
+};
+
+const showClientes = async ({ target }) => {
+    const clientes = await getClientes(target.value);
+    console.log(clientes);
+};
+
+const renderCreateReserva = () => {
+    let fechaSelected = sessionStorage.getItem('RVfechaSelected');
+    if (fechaSelected) fechaSelected = new Date(fechaSelected);
+    else {
+        fechaSelected = new Date();
+        sessionStorage.setItem('RVfechaSelected', fechaSelected);
+    }
+    const month = fechaSelected.getMonth();
+    const year = fechaSelected.getFullYear();
+    renderTemplate(UI.adminCreateReserva);
+    renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
+    UI.showNameMonth(fechaSelected);
+    const btnNext = document.getElementById('acrBtnNext');
+    const btnBack = document.getElementById('acrBtnBack');
+    btnNext.addEventListener('click', createReservaNextMonth);
+    btnBack.addEventListener('click', createReservaBackMonth);
+    const btnDia = document.getElementById('acrCalendar');
+    btnDia.addEventListener('click', selectDay);
+
+    const clientName = document.getElementById('clientName');
+    clientName.addEventListener('keyup', showClientes);
+};
 const renderAdminReservas = async (_fecha) => {
     const reservas = await getReservas(_fecha);
     let fechaSelected = sessionStorage.getItem('RVfechaSelected');
-    if (fechaSelected === null) {
+    if (fechaSelected) fechaSelected = new Date(fechaSelected);
+    else {
         fechaSelected = new Date();
         sessionStorage.setItem('RVfechaSelected', fechaSelected);
-    } else fechaSelected = new Date(fechaSelected);
+    }
 
     renderTemplate(UI.adminShowReservasTemplate, reservas);
-
-    const isBtnDaySelected = document.getElementById('asrBtnDay').dataset.selected;
-    const isBtnMonthSelected = document.getElementById('asrBtnMonth').dataset.selected;
 
     const btnNext = document.getElementById('asrBtnNext');
     const btnBack = document.getElementById('asrBtnBack');
@@ -155,6 +219,11 @@ const renderAdminReservas = async (_fecha) => {
 
     const btnSelectDayMonth = document.getElementById('asr_btnSelectDayMonth');
     btnSelectDayMonth.addEventListener('click', selectDayOrMonth);
+
+    const addReserva = document.getElementById('footerAdd');
+    addReserva.addEventListener('click', renderCreateReserva);
+    const allReservas = document.getElementById('footerAll');
+    allReservas.addEventListener('click', renderHome);
 };
 
 const renderHome = async () => {

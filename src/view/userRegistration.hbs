@@ -23,35 +23,39 @@
             <div id="formulario__paso1" class="formulario__paso1">
                 <div class="fomulario__input__container">
                     <input class="formulario__input" id="user" name="user" type="text" placeholder="User"
-                        pattern="^[a-z0-9_-]{3,16}$" required>
+                        pattern="^[a-z0-9_-]{3,16}$" required autocomplete="on" title="entre 3 y 16 letras o números">
                     <input class="formulario__input" id="password" name="password" type="password"
                         placeholder="Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$" required
-                        title="Eight or more characters">
+                        title="mínimo 8 caracteres, No debe empezar por mayúscula y debe incluir un número, una letra y una mayúscula"
+                        autocomplete="on">
                 </div>
                 <div class="formulario__botones">
                     <button id="btnFormulario__siguiente1" class="btnFormulario">Siguiente</button>
                 </div>
             </div>
-            <div class="formulario__paso2">
+            <div id="formulario__paso2" class="formulario__paso2 ">
                 <div class="fomulario__input__container">
                     <input class="formulario__input" id="userName" name="userName" type="text" placeholder="Nombre"
-                        pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$">
+                        pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$" autocomplete="on"
+                        title="Debe empezar por máyuscula, mínimo dos letras y no contener números">
                     <input class="formulario__input" id="userSurnames" name="userSurnames" type="text"
-                        placeholder="Apellidos" pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$">
+                        placeholder="Apellidos" pattern="^([A-ZÁÉÍÓÚ]{1}[a-zñáéíóú]+[\s]*)+$" autocomplete="on"
+                        title="Debe empezar por máyuscula, mínimo dos letras y no contener números">
                 </div>
-                <div class="formulario__botones">
+                <div class=" formulario__botones">
                     <button id="btnFormulario__siguiente2" class="btnFormulario">Siguiente</button>
                     <button id="btnFormulario__volverTo1" class="btnFormulario">Volver</button>
                 </div>
             </div>
-            <div class="formulario__paso3">
+            <div id="formulario__paso3" class="formulario__paso3 ">
                 <div class="fomulario__input__container">
                     <input class="formulario__input" id="userAddress" name="userAddress" type="text"
                         placeholder="Dirección">
                     <input class="formulario__input" id="userPostalCode" name="userPostalCode" type="text"
-                        placeholder="Codigo postal" pattern="0[1-9][0-9]{3}|[1-4][0-9]{4}|5[0-2][0-9]{3}">
+                        placeholder="Codigo postal" pattern="0[1-9][0-9]{3}|[1-4][0-9]{4}|5[0-2][0-9]{3}"
+                        title="Debe ser un código postal correcto">
                     <input class="formulario__input" id="userEmail" name="email" type="text" placeholder="Email"
-                        pattern="^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$">
+                        pattern="^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$" title="Tiene que ser un email válido">
                 </div>
                 <div class="formulario__botones">
                     <button id="btnCreateAccount" class="btnFormulario">Crear cuenta</button>

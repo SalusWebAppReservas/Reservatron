@@ -85,6 +85,10 @@
     border-radius: 5px;
 }
 
+.formulario__paso-hidden{
+    visibility: hidden;
+}
+
 .fomulario__input__container {
     display: flex;
     flex-direction: column;

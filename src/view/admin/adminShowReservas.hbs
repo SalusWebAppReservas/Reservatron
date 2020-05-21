@@ -7,31 +7,31 @@
                 <i class="icon-reservas"></i>
                 <h2>Reservas</h2>
             </div>
-            <div class="asr__buttons">
-                <div class="asr__buttons__today">
-                    <div class="asr__buttons__icon asr__buttons__icon-active">
-                        <i class="icon-calendar-day"></i>
+            <div id="asr_btnSelectDayMonth" class="asr__buttons">
+                <div class="asr__button__today">
+                    <div id="asrIconDay" class="asr__buttons__icon asr__buttons__icon-active">
+                        <i id="asrBtnDay" data-selected="true" class="icon-calendar-day"></i>
                     </div>
                     <p>Día</p>
                 </div>
-                <div class="asr__buttons__month">
-                    <div class="asr__buttons__icon">
-                        <i class="icon-calendar-full"></i>
+                <div class="asr__button__month">
+                    <div id="asrIconMonth" class="asr__buttons__icon">
+                        <i id="asrBtnMonth" data-selected="false" class="icon-calendar-full"></i>
                     </div>
                     <p>Mes</p>
                 </div>
             </div>
             <div class="asr__fecha">
-                <i class="icon-back"></i>
+                <i id="asrBtnBack" class="icon-back"></i>
                 <div class="asr__fecha__diaMes">
-                    <p>Sábado</p>
-                    <p>16/05/2020</p>
+                    <p id="asrFechaNombreDia"></p>
+                    <p id="asrFechaDDMMYYYY"></p>
                 </div>
-                <i class="icon-next"></i>
+                <i id="asrBtnNext" class="icon-next"></i>
             </div>
         </div>
 
-        <div class="asr__citas">
+        <div id="asrCitasContainer" class="asr__citas">
 
             {{#each reserva}}
             <div class="asr__citas__itemContainer" data-serviceID={{serviceID}} data-userID={{userID}}>

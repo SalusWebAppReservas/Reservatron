@@ -3,14 +3,76 @@ import './precompiled/home.precompiled.js';
 import './precompiled/login.precompiled.js';
 import './precompiled/userRegistration.precompiled.js';
 import './precompiled/adminShowReservas.precompiled.js';
+import './precompiled/adminReservasDay.precompiled.js';
+import './precompiled/adminReservasMonth.precompiled.js';
 
 export const homeTemplate = () => Handlebars.templates['home.hbs']();
 export const loginTemplate = () => Handlebars.templates['login.hbs']();
 export const userRegistrationTemplate = () => Handlebars.templates['userRegistration.hbs']();
-export const adminShowReservasTemplate = (reserva) => {
-    console.log(reserva);
+export const adminShowReservasTemplate = (reserva) =>
+    Handlebars.templates['adminShowReservas.hbs']({ reserva });
+export const adminReservasDay = (reserva) =>
+    Handlebars.templates['adminReservasDay.hbs']({ reserva });
 
-    return Handlebars.templates['adminShowReservas.hbs']({ reserva });
+export const adminReservasMonth = ({ month, year }) => {
+    const getDaysOfMonth = (_month, _year) =>
+        new Array(31)
+            .fill('')
+            .map((day, index) => new Date(_year, _month, index + 1))
+            .filter((fecha) => fecha.getMonth() === _month);
+
+    const getFirstDay = new Date(year, month, 1).getDay();
+    const getLastDay = new Date(year, month + 1, 0).getDay();
+
+    const firstWeek = new Array(getFirstDay === 0 ? 6 : getFirstDay - 1).fill('').map((v, i) => {
+        let _year = year;
+        let _month = month;
+        if (month === 0) {
+            _year = year - 1;
+            _month = month + 1;
+        }
+        return {
+            day: new Date(
+                _year,
+                _month === 0 ? 11 : _month - 1,
+                getDaysOfMonth(_month === 0 ? 11 : _month - 1, _year).length - i
+            ).getDate(),
+            name: new Date(
+                _year,
+                _month === 0 ? 11 : _month - 1,
+                getDaysOfMonth(_month === 0 ? 11 : _month - 1, _year).length - i
+            )
+                .toLocaleString('es-ES', { weekday: 'short' })
+                .slice(0, -1),
+        };
+    });
+
+    const lastWeek = new Array(getLastDay === 0 ? 0 : 7 - getLastDay).fill('').map((v, i) => {
+        let _year = year;
+        let _month = month;
+
+        if (month === 11) {
+            _year = year + 1;
+            _month = -1;
+        }
+        return {
+            day: new Date(_year, _month === 11 ? 0 : _month + 1, 1 + i).getDate(),
+            name: new Date(_year, _month === 11 ? 0 : _month + 1, 1 + i)
+                .toLocaleString('es-ES', { weekday: 'short' })
+                .slice(0, -1),
+        };
+    });
+
+    const middleWeeks = getDaysOfMonth(month, year).map((v, i) => {
+        return {
+            day: v.getDate(),
+            name: v.toLocaleString('es-ES', { weekday: 'short' }).slice(0, -1),
+        };
+    });
+
+    const dias = [...firstWeek.reverse().concat(middleWeeks, lastWeek)];
+
+    return Handlebars.templates['adminReservasMonth.hbs']({ dias });
 };
 
 export const changeIconToLogOut = () => {
@@ -27,13 +89,15 @@ export const changeIconToLogIn = () => {
 
 export const registerGoToStep2 = (e) => {
     const formRegistro = document.getElementById('formRegistro');
-    const formulario = document.getElementById('formulario__paso1');
+    const formulario1 = document.getElementById('formulario__paso1');
     const paso1 = document.getElementById('registroPaso1');
     const paso2 = document.getElementById('registroPaso2');
     formRegistro.checkValidity();
     if (formRegistro.checkValidity()) {
         e.preventDefault();
-        formulario.classList.add('step2');
+        document.getElementById('userName').required = true;
+        document.getElementById('userSurnames').required = true;
+        formulario1.classList.add('step2');
         paso1.classList.remove('registro__pasos__paso-active');
         paso2.classList.add('registro__pasos__paso-active');
     }
@@ -41,13 +105,16 @@ export const registerGoToStep2 = (e) => {
 
 export const registerGoToStep3 = (e) => {
     const formRegistro = document.getElementById('formRegistro');
-    const formulario = document.getElementById('formulario__paso1');
+    const formulario1 = document.getElementById('formulario__paso1');
     const paso2 = document.getElementById('registroPaso2');
     const paso3 = document.getElementById('registroPaso3');
     formRegistro.checkValidity();
     if (formRegistro.checkValidity()) {
         e.preventDefault();
-        formulario.classList.add('step3');
+        document.getElementById('userAddress').required = true;
+        document.getElementById('userPostalCode').required = true;
+        document.getElementById('userEmail').required = true;
+        formulario1.classList.add('step3');
         paso2.classList.remove('registro__pasos__paso-active');
         paso3.classList.add('registro__pasos__paso-active');
     }
@@ -58,6 +125,9 @@ export const registerBackToStep2 = (e) => {
     const formulario = document.getElementById('formulario__paso1');
     const paso2 = document.getElementById('registroPaso2');
     const paso3 = document.getElementById('registroPaso3');
+    document.getElementById('userAddress').required = false;
+    document.getElementById('userPostalCode').required = false;
+    document.getElementById('userEmail').required = false;
     formRegistro.checkValidity();
     if (formRegistro.checkValidity()) {
         e.preventDefault();
@@ -72,6 +142,8 @@ export const registerBackToStep1 = (e) => {
     const formulario = document.getElementById('formulario__paso1');
     const paso1 = document.getElementById('registroPaso1');
     const paso2 = document.getElementById('registroPaso2');
+    document.getElementById('userName').required = false;
+    document.getElementById('userSurnames').required = false;
     formRegistro.checkValidity();
     if (formRegistro.checkValidity()) {
         e.preventDefault();
@@ -79,4 +151,79 @@ export const registerBackToStep1 = (e) => {
         paso2.classList.remove('registro__pasos__paso-active');
         paso1.classList.add('registro__pasos__paso-active');
     }
+};
+
+export const changeIconDayMonth = () => {
+    const iconDay = document.getElementById('asrIconDay');
+    const iconMonth = document.getElementById('asrIconMonth');
+
+    iconDay.classList.remove('asr__buttons__icon-active');
+    iconMonth.classList.add('asr__buttons__icon-active');
+};
+
+export const changeIconMonthToDay = () => {
+    const iconDay = document.getElementById('asrIconDay');
+    const iconMonth = document.getElementById('asrIconMonth');
+
+    iconDay.classList.add('asr__buttons__icon-active');
+    iconMonth.classList.remove('asr__buttons__icon-active');
+};
+
+export const incrementDay = () => {
+    const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
+    fechaSelected.setDate(fechaSelected.getDate() + 1);
+    sessionStorage.setItem('RVfechaSelected', fechaSelected);
+    document.getElementById('asrFechaDDMMYYYY').textContent = fechaSelected.toLocaleDateString(
+        'es-ES',
+        {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }
+    );
+    document.getElementById(
+        'asrFechaNombreDia'
+    ).textContent = fechaSelected.toLocaleDateString('es-ES', { weekday: 'long' });
+};
+
+export const decreaseDay = () => {
+    const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
+    fechaSelected.setDate(fechaSelected.getDate() + -1);
+    sessionStorage.setItem('RVfechaSelected', fechaSelected);
+    document.getElementById('asrFechaDDMMYYYY').textContent = fechaSelected.toLocaleDateString(
+        'es-ES',
+        {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }
+    );
+    document.getElementById(
+        'asrFechaNombreDia'
+    ).textContent = fechaSelected.toLocaleDateString('es-ES', { weekday: 'long' });
+};
+
+export const showNameMonth = (fechaSelected) => {
+    document.getElementById(
+        'asrFechaNombreDia'
+    ).textContent = fechaSelected.toLocaleDateString('es-ES', { month: 'long' });
+    document.getElementById(
+        'asrFechaDDMMYYYY'
+    ).textContent = fechaSelected.toLocaleDateString('es-ES', { year: 'numeric' });
+};
+
+export const incrementMonth = () => {
+    const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
+    fechaSelected.setMonth(fechaSelected.getMonth() + 1);
+    sessionStorage.setItem('RVfechaSelected', fechaSelected);
+    showNameMonth(fechaSelected);
+    // document.getElementById('asrFechaDDMMYYYY').textContent = fechaSelected.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    // document.getElementById('asrFechaNombreDia').textContent = fechaSelected.toLocaleDateString('es-ES', { weekday: 'long' });
+};
+
+export const decreaseMonth = () => {
+    const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
+    fechaSelected.setMonth(fechaSelected.getMonth() - 1);
+    sessionStorage.setItem('RVfechaSelected', fechaSelected);
+    showNameMonth(fechaSelected);
 };

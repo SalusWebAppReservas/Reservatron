@@ -10,3 +10,8 @@ export const getReservas = async (fecha) => {
     const reservasJson = await reservas.json();
     return Object.values(reservasJson);
 };
+
+export const getClientes = async (nombreCliente) => {
+    //Hacer un fetch al servidor para obtener todos los clientes que empiezen por el contenido de nombre Cliente.
+    return nombreCliente;
+};

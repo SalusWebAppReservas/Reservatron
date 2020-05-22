@@ -1,53 +1,53 @@
 <link rel="stylesheet" href="css/adminCreateReserva.css">
-
-<div class="acr__titulo">
-    <h1>Nueva Reserva</h1>
-    <p id="nombreDia">Selecciona un día</p>
-</div>
-
-<div class="acr__fecha">
-    <i id="acrBtnBack" class="icon-back"></i>
-    <div class="acr__fecha__diaMes">
-        <p id="asrFechaNombreDia"></p>
-        <p id="asrFechaDDMMYYYY"></p>
+<div class="acr">
+    <div class="acr__titulo">
+        <h1>Nueva Reserva</h1>
+        <p id="nombreDia">Selecciona un día</p>
     </div>
-    <i id="acrBtnNext" class="icon-next"></i>
-</div>
 
-<div id="acrCalendar" class="acr__mes__container">
-    {{#each dias}}
-    <div id={{date}} class="acr__day">
-        <p class="acr__day__number">{{day}}</p>
-        <p class="acr__day__name">{{name}}</p>
-    </div>
-    {{/each}}
-</div>
-
-<div class="acr__form">
-    <div class="acr__form__titulo">
-        <h2>Cliente</h2>
-        <input type="text" name="clientName" id="clientName" placeholder="clientName">
-        <i class="icon-new"></i>
-    </div>
-    <h3>Notas</h3>
-    <textarea name="comments" id="formComments" cols="30" rows="10"
-        placeholder="Algo importante que queramos anotar sobre la reserva?"></textarea>
-    <div class="acr__form__colores">
-        <div class="colores">Color1</div>
-        <div class="colores">Color2</div>
-        <div class="colores">Color3</div>
-        <div class="colores">Color4</div>
-    </div>
-    <div class="acr__form__horaContainer">
-        <div class="acr__form__horaContainer__titulo">
-            <p>time</p>
-            <i class="icon-calendar-full"></i>
+    <div class="acr__fecha">
+        <i id="acrBtnBack" class="icon-back"></i>
+        <div class="acr__fecha__diaMes">
+            <p id="asrFechaNombreDia"></p>
+            <p id="asrFechaDDMMYYYY"></p>
         </div>
-        <div class="acr__form__horaContainer__hora">
-            <p>13:00</p>
+        <i id="acrBtnNext" class="icon-next"></i>
+    </div>
+
+    <div id="acrCalendar" class="acr__mes__container">
+        {{#each dias}}
+        <div id={{date}} class="acr__day">
+            <p class="acr__day__number">{{day}}</p>
+            <p class="acr__day__name">{{name}}</p>
         </div>
+        {{/each}}
     </div>
-    <div class="acr__form__button">
-        <p>Crear Reserva</p>
-    </div>
+
+    <form id="acrForm" class="acr__form">
+        <div class="acr__form__titulo">
+            <h2>Cliente</h2>
+            <input type="text" name="clientName" id="clientName" placeholder="clientName * muestra todos">
+        </div>
+        <div class="acr__form__servicio">
+            <h3>Servicio</h3>
+            <input type="text" name="serviceName" id="serviceName" placeholder="serviceName * muestra todos">
+        </div>
+        <h4>Notas</h4>
+        <textarea name="comments" id="formComments" cols="30" rows="10"
+            placeholder="Algo importante que queramos anotar sobre la reserva?"></textarea>
+        <div class="acr__form__selectContainer">
+            <div class="acr__form__horasDisponibles">
+                <i class="icon-clock"></i>
+                <select name="selectedHour" id="horasDisponible">
+                    <option value="0">Horas disponibles</option>
+                    <option value="10:30">10:00</option>
+                    <option value="12:30">12:30</option>
+                    <option value="18:00">18:00</option>
+                </select>
+            </div>
+        </div>
+        <div id="btnCreateReserva" class="acr__form__button">
+            <p>Crear Reserva</p>
+        </div>
+    </form>
 </div>

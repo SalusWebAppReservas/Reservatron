@@ -235,8 +235,6 @@ export const incrementMonth = () => {
     fechaSelected.setMonth(fechaSelected.getMonth() + 1);
     sessionStorage.setItem('RVfechaSelected', fechaSelected);
     showNameMonth(fechaSelected);
-    // document.getElementById('asrFechaDDMMYYYY').textContent = fechaSelected.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    // document.getElementById('asrFechaNombreDia').textContent = fechaSelected.toLocaleDateString('es-ES', { weekday: 'long' });
 };
 
 export const decreaseMonth = () => {
@@ -244,4 +242,12 @@ export const decreaseMonth = () => {
     fechaSelected.setMonth(fechaSelected.getMonth() - 1);
     sessionStorage.setItem('RVfechaSelected', fechaSelected);
     showNameMonth(fechaSelected);
+};
+
+export const showDayAlreadySelected = () => {
+    const daySelected = new Date(sessionStorage.getItem('RVdaySelected')).getTime();
+    const daySelectedInMonth = [...document.querySelectorAll('.acr__day')].filter(
+        (day) => Number(day.id) === daySelected
+    )[0];
+    if (daySelectedInMonth) daySelectedInMonth.classList.add('acrActive');
 };

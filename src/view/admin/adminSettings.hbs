@@ -1,0 +1,22 @@
+{{!-- as abreviatura de adminSettings    --}}
+<link rel="stylesheet" href="css/adminSettings.css">
+<div class="asContainer">
+    <form id="asForm" class="as__form">
+        <h2>Nuevo servicio</h2>
+        <input class="as__form__input" type="text" name="nameService" id="" placeholder="Nombre servicio" required>
+        <input class="as__form__input" type="number" name="durationService" id="" placeholder="Duracion en minutos"
+            required>
+        <p>Elige un color para el servicio</p>
+        <div class="as__form__colores">
+            <input type="radio" name="color" id="color1" value="#ff69b4" hidden checked>
+            <label for="color1">Seleccionado</label>
+            <input type="radio" name="color" id="color2" value="#006680" hidden>
+            <label for="color2">Seleccionado</label>
+            <input type="radio" name="color" id="color3" value="#00a2ff;" hidden>
+            <label for="color3">Seleccionado</label>
+            <input type="radio" name="color" id="color4" value="#f7a878" hidden>
+            <label for="color4">Seleccionado</label>
+        </div>
+        <button id="btnCreateService" class="as__form__button">Crear Servicio</button>
+    </form>
+</div>

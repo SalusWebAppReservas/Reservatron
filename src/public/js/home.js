@@ -179,15 +179,20 @@ const showClientes = async ({ target }) => {
 
 const createReserva = () => {
     const { clientName, serviceName, comments, selectedHour } = document.getElementById('acrForm');
-    console.log(
-        'cliente',
-        clientName.value,
-        'servicio',
-        serviceName.value,
-        'commnents',
-        comments.value,
-        'hora',
-        selectedHour.value
+    const fechaSelected = new Date(sessionStorage.getItem('RVdaySelected')).getTime();
+
+    alert(
+        'Falta enviar reserva a server ' +
+            ' cliente: ' +
+            clientName.value +
+            ' servicio: ' +
+            serviceName.value +
+            ' commnents: ' +
+            comments.value +
+            ' hora: ' +
+            selectedHour.value +
+            ' fecha selected in ms: ' +
+            fechaSelected
     );
 };
 
@@ -215,6 +220,24 @@ const renderCreateReserva = () => {
 
     const btnCreateReserva = document.getElementById('btnCreateReserva');
     btnCreateReserva.addEventListener('click', createReserva);
+};
+
+const createService = (e) => {
+    const form = document.getElementById('asForm');
+    if (form.checkValidity()) {
+        e.preventDefault();
+        const { nameService, durationService, color } = form;
+        console.log(nameService.value, durationService.value, color.value);
+        alert('Falta mandar los datos al server');
+        form.reset();
+        saveService();
+    }
+};
+
+const renderAdminSettings = () => {
+    renderTemplate(UI.adminSettings);
+    const btnCreateService = document.getElementById('btnCreateService');
+    btnCreateService.addEventListener('click', createService);
 };
 const renderAdminReservas = async (_fecha) => {
     const reservas = await getReservas(_fecha);
@@ -246,8 +269,12 @@ const renderAdminReservas = async (_fecha) => {
 
     const addReserva = document.getElementById('footerAdd');
     addReserva.addEventListener('click', renderCreateReserva);
+
     const allReservas = document.getElementById('footerAll');
     allReservas.addEventListener('click', renderHome);
+
+    const settings = document.getElementById('footerSettings');
+    settings.addEventListener('click', renderAdminSettings);
 };
 
 const renderHome = async () => {

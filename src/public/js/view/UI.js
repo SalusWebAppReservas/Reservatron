@@ -7,11 +7,14 @@ import './precompiled/adminReservasDay.precompiled.js';
 import './precompiled/adminReservasMonth.precompiled.js';
 import './precompiled/adminCreateReserva.precompiled.js';
 import './precompiled/adminCreateReservaMonth.precompiled.js';
+import './precompiled/adminSettings.precompiled.js';
 
 export const homeTemplate = () => Handlebars.templates['home.hbs']();
 export const loginTemplate = () => Handlebars.templates['login.hbs']();
 export const userRegistrationTemplate = () => Handlebars.templates['userRegistration.hbs']();
 export const adminCreateReserva = () => Handlebars.templates['adminCreateReserva.hbs']();
+export const adminSettings = () => Handlebars.templates['adminSettings.hbs']();
+
 export const adminShowReservasTemplate = (reserva) =>
     Handlebars.templates['adminShowReservas.hbs']({ reserva });
 export const adminReservasDay = (reserva) =>
@@ -26,6 +29,7 @@ export const adminCreateReservaMonth = ({ month, year }) => {
     const dias = daysOfMonth({ month, year });
     return Handlebars.templates['adminCreateReservaMonth.hbs']({ dias });
 };
+
 export const daysOfMonth = ({ month, year }) => {
     const getDaysOfMonth = (_month, _year) =>
         new Array(31)

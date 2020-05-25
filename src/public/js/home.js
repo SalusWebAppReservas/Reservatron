@@ -131,6 +131,7 @@ const createReservaNextMonth = () => {
     const year = fechaSelected.getFullYear();
     renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
     UI.showNameMonth(fechaSelected);
+    UI.showDayAlreadySelected();
 };
 
 const createReservaBackMonth = () => {
@@ -140,6 +141,7 @@ const createReservaBackMonth = () => {
     const year = fechaSelected.getFullYear();
     renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
     UI.showNameMonth(fechaSelected);
+    UI.showDayAlreadySelected();
 };
 
 const unselectDay = () => {
@@ -147,7 +149,10 @@ const unselectDay = () => {
     days.forEach((days) => days.classList.remove('acrActive'));
 };
 const selectDay = ({ target }) => {
+    if (target.className === 'acrContainer') return;
+
     unselectDay();
+
     let date;
     if (target.tagName === 'P') {
         date = new Date(Number(target.parentNode.id));
@@ -156,6 +161,8 @@ const selectDay = ({ target }) => {
         date = new Date(Number(target.id));
         target.classList.add('acrActive');
     }
+
+    sessionStorage.setItem('RVdaySelected', date);
 
     const nombreDia = document.getElementById('nombreDia');
     nombreDia.textContent = date.toLocaleString('es-ES', {
@@ -168,6 +175,20 @@ const selectDay = ({ target }) => {
 const showClientes = async ({ target }) => {
     const clientes = await getClientes(target.value);
     console.log(clientes);
+};
+
+const createReserva = () => {
+    const { clientName, serviceName, comments, selectedHour } = document.getElementById('acrForm');
+    console.log(
+        'cliente',
+        clientName.value,
+        'servicio',
+        serviceName.value,
+        'commnents',
+        comments.value,
+        'hora',
+        selectedHour.value
+    );
 };
 
 const renderCreateReserva = () => {
@@ -191,6 +212,9 @@ const renderCreateReserva = () => {
 
     const clientName = document.getElementById('clientName');
     clientName.addEventListener('keyup', showClientes);
+
+    const btnCreateReserva = document.getElementById('btnCreateReserva');
+    btnCreateReserva.addEventListener('click', createReserva);
 };
 const renderAdminReservas = async (_fecha) => {
     const reservas = await getReservas(_fecha);

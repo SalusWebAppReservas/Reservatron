@@ -101,9 +101,25 @@ const insertUser = ({
 const modelGetReservas = (fecha) => {
     const ref = db.ref('reservas');
     const reservas = new Promise((resolve, reject) =>
+        ref.on(
+            'value',
+            (snapshot) => {
+                resolve(snapshot.val());
+            },
+            (errorObject) => {
+                reject('The read failed: ' + errorObject.code);
+            }
+        )
+    );
+    return reservas;
+};
+
+const modelGetUser = (userName) => {
+    const ref = db.ref('usuarios');
+    const usuario = new Promise((resolve, reject) =>
         ref
-            //.orderByKey()
-            //  .equalTo(userID)
+            .orderByKey()
+            .equalTo(userName)
             .on(
                 'value',
                 (snapshot) => {
@@ -114,6 +130,23 @@ const modelGetReservas = (fecha) => {
                 }
             )
     );
-    return reservas;
+    console.log(usuario);
+    return usuario;
 };
-module.exports = { insertUser, getUser, getUserID, modelGetReservas };
+
+/*
+    const user = new Promise((resolve, reject) =>
+        ref.on(
+            'child_changed',
+            function (snapshot, prevChildKey) {
+                var nombreUsuario = snapshot.val();
+            },
+            (errorObject) => {
+                reject('The read failed: ' + errorObject.code);
+            }
+        )
+    );
+    console.log(nombreUsuario);
+    return userName;*/
+
+module.exports = { insertUser, getUser, getUserID, modelGetReservas, modelGetUser };

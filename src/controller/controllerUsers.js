@@ -1,4 +1,4 @@
-const { getUserID, getUser, insertUser } = require('../model/modelUsers.js');
+const { getUserID, getUser, insertUser, modelGetUser } = require('../model/modelUsers.js');
 
 const loginUser = async (req, res) => {
     const { user, password } = JSON.parse(req.params.user);
@@ -15,9 +15,15 @@ const addUser = (req, res) => {
 };
 const modifyUser = (req, res) => {};
 
+const getUserByName = async (req, res) => {
+    const { nombreUsuario } = req.params;
+    res.json(await modelGetUser(userName));
+};
+
 module.exports = {
     loginUser,
     getUserData,
     addUser,
     modifyUser,
+    getUserByName,
 };

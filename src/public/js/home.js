@@ -131,6 +131,7 @@ const createReservaNextMonth = () => {
     const year = fechaSelected.getFullYear();
     renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
     UI.showNameMonth(fechaSelected);
+    UI.showDayAlreadySelected();
 };
 
 const createReservaBackMonth = () => {
@@ -140,6 +141,7 @@ const createReservaBackMonth = () => {
     const year = fechaSelected.getFullYear();
     renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
     UI.showNameMonth(fechaSelected);
+    UI.showDayAlreadySelected();
 };
 
 const unselectDay = () => {
@@ -147,7 +149,10 @@ const unselectDay = () => {
     days.forEach((days) => days.classList.remove('acrActive'));
 };
 const selectDay = ({ target }) => {
+    if (target.className === 'acrContainer') return;
+
     unselectDay();
+
     let date;
     if (target.tagName === 'P') {
         date = new Date(Number(target.parentNode.id));
@@ -156,6 +161,8 @@ const selectDay = ({ target }) => {
         date = new Date(Number(target.id));
         target.classList.add('acrActive');
     }
+
+    sessionStorage.setItem('RVdaySelected', date);
 
     const nombreDia = document.getElementById('nombreDia');
     nombreDia.textContent = date.toLocaleString('es-ES', {
@@ -168,6 +175,25 @@ const selectDay = ({ target }) => {
 const showClientes = async ({ target }) => {
     const clientes = await getClientes(target.value);
     console.log(clientes);
+};
+
+const createReserva = () => {
+    const { clientName, serviceName, comments, selectedHour } = document.getElementById('acrForm');
+    const fechaSelected = new Date(sessionStorage.getItem('RVdaySelected')).getTime();
+
+    alert(
+        'Falta enviar reserva a server ' +
+            ' cliente: ' +
+            clientName.value +
+            ' servicio: ' +
+            serviceName.value +
+            ' commnents: ' +
+            comments.value +
+            ' hora: ' +
+            selectedHour.value +
+            ' fecha selected in ms: ' +
+            fechaSelected
+    );
 };
 
 const renderCreateReserva = () => {
@@ -191,6 +217,27 @@ const renderCreateReserva = () => {
 
     const clientName = document.getElementById('clientName');
     clientName.addEventListener('keyup', showClientes);
+
+    const btnCreateReserva = document.getElementById('btnCreateReserva');
+    btnCreateReserva.addEventListener('click', createReserva);
+};
+
+const createService = (e) => {
+    const form = document.getElementById('asForm');
+    if (form.checkValidity()) {
+        e.preventDefault();
+        const { nameService, durationService, color } = form;
+        console.log(nameService.value, durationService.value, color.value);
+        alert('Falta mandar los datos al server');
+        form.reset();
+        saveService();
+    }
+};
+
+const renderAdminSettings = () => {
+    renderTemplate(UI.adminSettings);
+    const btnCreateService = document.getElementById('btnCreateService');
+    btnCreateService.addEventListener('click', createService);
 };
 const renderAdminReservas = async (_fecha) => {
     const reservas = await getReservas(_fecha);
@@ -222,8 +269,12 @@ const renderAdminReservas = async (_fecha) => {
 
     const addReserva = document.getElementById('footerAdd');
     addReserva.addEventListener('click', renderCreateReserva);
+
     const allReservas = document.getElementById('footerAll');
     allReservas.addEventListener('click', renderHome);
+
+    const settings = document.getElementById('footerSettings');
+    settings.addEventListener('click', renderAdminSettings);
 };
 
 const renderHome = async () => {

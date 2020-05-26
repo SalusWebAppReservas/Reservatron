@@ -7,11 +7,14 @@ import './precompiled/adminReservasDay.precompiled.js';
 import './precompiled/adminReservasMonth.precompiled.js';
 import './precompiled/adminCreateReserva.precompiled.js';
 import './precompiled/adminCreateReservaMonth.precompiled.js';
+import './precompiled/adminSettings.precompiled.js';
 
 export const homeTemplate = () => Handlebars.templates['home.hbs']();
 export const loginTemplate = () => Handlebars.templates['login.hbs']();
 export const userRegistrationTemplate = () => Handlebars.templates['userRegistration.hbs']();
 export const adminCreateReserva = () => Handlebars.templates['adminCreateReserva.hbs']();
+export const adminSettings = () => Handlebars.templates['adminSettings.hbs']();
+
 export const adminShowReservasTemplate = (reserva) =>
     Handlebars.templates['adminShowReservas.hbs']({ reserva });
 export const adminReservasDay = (reserva) =>
@@ -26,6 +29,7 @@ export const adminCreateReservaMonth = ({ month, year }) => {
     const dias = daysOfMonth({ month, year });
     return Handlebars.templates['adminCreateReservaMonth.hbs']({ dias });
 };
+
 export const daysOfMonth = ({ month, year }) => {
     const getDaysOfMonth = (_month, _year) =>
         new Array(31)
@@ -235,8 +239,6 @@ export const incrementMonth = () => {
     fechaSelected.setMonth(fechaSelected.getMonth() + 1);
     sessionStorage.setItem('RVfechaSelected', fechaSelected);
     showNameMonth(fechaSelected);
-    // document.getElementById('asrFechaDDMMYYYY').textContent = fechaSelected.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-    // document.getElementById('asrFechaNombreDia').textContent = fechaSelected.toLocaleDateString('es-ES', { weekday: 'long' });
 };
 
 export const decreaseMonth = () => {
@@ -244,4 +246,12 @@ export const decreaseMonth = () => {
     fechaSelected.setMonth(fechaSelected.getMonth() - 1);
     sessionStorage.setItem('RVfechaSelected', fechaSelected);
     showNameMonth(fechaSelected);
+};
+
+export const showDayAlreadySelected = () => {
+    const daySelected = new Date(sessionStorage.getItem('RVdaySelected')).getTime();
+    const daySelectedInMonth = [...document.querySelectorAll('.acr__day')].filter(
+        (day) => Number(day.id) === daySelected
+    )[0];
+    if (daySelectedInMonth) daySelectedInMonth.classList.add('acrActive');
 };

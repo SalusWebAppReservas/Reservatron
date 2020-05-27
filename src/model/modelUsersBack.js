@@ -19,6 +19,24 @@ admin.initializeApp({
 });
 
 const db = admin.database();
+const firestoreDB = admin.firestore();
+
+const getFire = async () => {
+    // const ref = await firestoreDB
+    //     .collection('usuarios')
+    //     .where('user', '>', 'p')
+    //     .where('user', '<', 's')
+    //     .get();
+    // return ref.docs.map((doc) => doc.data());
+
+    const ref2 = firestoreDB.collection('usuarios').doc().set(
+        {
+            user: 'jordiTest',
+            password: 'jordiPassword',
+        },
+        { merge: true }
+    );
+};
 
 const getUserID = async (user, password) => {
     const ref = db.ref('usuarios');

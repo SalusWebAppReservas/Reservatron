@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const hbs = require('express-handlebars');
-const router = require('./router/router.js');
+const router = require('./router/router');
 const { join } = require('path');
 
 const port = process.env.PORT || 3000;

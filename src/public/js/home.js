@@ -3,7 +3,7 @@
 import { connectFirebase } from './model/fireBase.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
-import { getReservas, getClientes } from './model/db.js';
+import * as DB from './model/db.js';
 import * as UI from './view/UI.js';
 
 const login = document.getElementById('mainLogin');
@@ -172,10 +172,8 @@ const selectDay = ({ target }) => {
     });
 };
 
-const showClientes = async ({ target }) => {
-    const clientes = await getClientes(target.value);
-    console.log(clientes);
-};
+const getAllClients = async () => await DB.getAllClients();
+const getAllServices = async () => await DB.getAllServices();
 
 const createReserva = () => {
     const { clientName, serviceName, comments, selectedHour } = document.getElementById('acrForm');
@@ -196,7 +194,13 @@ const createReserva = () => {
     );
 };
 
-const renderCreateReserva = () => {
+const showClients = (input, clients) => {
+    console.log(input, clients);
+};
+
+const renderCreateReserva = async () => {
+    const clients = await getAllClients();
+    const services = await getAllServices();
     let fechaSelected = sessionStorage.getItem('RVfechaSelected');
     if (fechaSelected) fechaSelected = new Date(fechaSelected);
     else {
@@ -216,21 +220,19 @@ const renderCreateReserva = () => {
     btnDia.addEventListener('click', selectDay);
 
     const clientName = document.getElementById('clientName');
-    clientName.addEventListener('keyup', showClientes);
+    clientName.addEventListener('keyup', ({ target }) => showClients(target.value, clients));
 
     const btnCreateReserva = document.getElementById('btnCreateReserva');
     btnCreateReserva.addEventListener('click', createReserva);
 };
 
-const createService = (e) => {
+const createService = async (e) => {
     const form = document.getElementById('asForm');
     if (form.checkValidity()) {
         e.preventDefault();
         const { nameService, durationService, color } = form;
-        console.log(nameService.value, durationService.value, color.value);
-        alert('Falta mandar los datos al server');
+        await saveNewService(nameService.value, durationService.value, color.value);
         form.reset();
-        saveService();
     }
 };
 
@@ -240,7 +242,7 @@ const renderAdminSettings = () => {
     btnCreateService.addEventListener('click', createService);
 };
 const renderAdminReservas = async (_fecha) => {
-    const reservas = await getReservas(_fecha);
+    // const reservas = await getReservas(_fecha);
     let fechaSelected = sessionStorage.getItem('RVfechaSelected');
     if (fechaSelected) fechaSelected = new Date(fechaSelected);
     else {
@@ -248,7 +250,8 @@ const renderAdminReservas = async (_fecha) => {
         sessionStorage.setItem('RVfechaSelected', fechaSelected);
     }
 
-    renderTemplate(UI.adminShowReservasTemplate, reservas);
+    // renderTemplate(UI.adminShowReservasTemplate, reservas);
+    renderTemplate(UI.adminShowReservasTemplate);
 
     const btnNext = document.getElementById('asrBtnNext');
     const btnBack = document.getElementById('asrBtnBack');
@@ -302,8 +305,8 @@ const renderClientReservas = async () => {
     const btnDia = document.getElementById('acrCalendar');
     btnDia.addEventListener('click', selectDay);
 
-    const reservas = await getReservas();
-    renderTemplate(UI.clientReservasDay, reservas, 'asCitas');
+    // const reservas = await getReservas();
+    // renderTemplate(UI.clientReservasDay, reservas, 'asCitas');
 
     const allReservas = document.getElementById('footerAll');
     allReservas.addEventListener('click', renderHome);

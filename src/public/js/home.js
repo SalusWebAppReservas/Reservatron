@@ -277,8 +277,46 @@ const renderAdminReservas = async (_fecha) => {
     settings.addEventListener('click', renderAdminSettings);
 };
 
+const renderClientCreateReserva = () => {
+    console.log('create reserva');
+
+    renderTemplate(UI.clientCreateReserva);
+};
+
+const renderClientReservas = async () => {
+    let fechaSelected = sessionStorage.getItem('RVfechaSelected');
+    if (fechaSelected) fechaSelected = new Date(fechaSelected);
+    else {
+        fechaSelected = new Date();
+        sessionStorage.setItem('RVfechaSelected', fechaSelected);
+    }
+    const month = fechaSelected.getMonth();
+    const year = fechaSelected.getFullYear();
+    renderTemplate(UI.clientReservas);
+    renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
+    UI.showNameMonth(fechaSelected);
+    const btnNext = document.getElementById('acrBtnNext');
+    const btnBack = document.getElementById('acrBtnBack');
+    btnNext.addEventListener('click', createReservaNextMonth);
+    btnBack.addEventListener('click', createReservaBackMonth);
+    const btnDia = document.getElementById('acrCalendar');
+    btnDia.addEventListener('click', selectDay);
+
+    const reservas = await getReservas();
+    renderTemplate(UI.clientReservasDay, reservas, 'asCitas');
+
+    const allReservas = document.getElementById('footerAll');
+    allReservas.addEventListener('click', renderHome);
+
+    const settings = document.getElementById('footerAdd');
+    settings.addEventListener('click', renderClientCreateReserva);
+};
+
 const renderHome = async () => {
-    if (await isUserLogued()) renderAdminReservas();
+    // Falta chequear si el usuario es admin
+    if (await isUserLogued())
+        if (sessionStorage.getItem('RVadmin') === 'true') renderAdminReservas();
+        else renderClientReservas();
     else {
         renderTemplate(UI.homeTemplate);
         const register = document.getElementById('btnRegister');

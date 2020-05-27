@@ -8,10 +8,15 @@ import './precompiled/adminReservasMonth.precompiled.js';
 import './precompiled/adminCreateReserva.precompiled.js';
 import './precompiled/adminCreateReservaMonth.precompiled.js';
 import './precompiled/adminSettings.precompiled.js';
+import './precompiled/clientReservasDay.precompiled.js';
+
+import './precompiled/clientReservas.precompiled.js';
+import './precompiled/clientCreateReserva.precompiled.js';
 
 export const homeTemplate = () => Handlebars.templates['home.hbs']();
 export const loginTemplate = () => Handlebars.templates['login.hbs']();
 export const userRegistrationTemplate = () => Handlebars.templates['userRegistration.hbs']();
+
 export const adminCreateReserva = () => Handlebars.templates['adminCreateReserva.hbs']();
 export const adminSettings = () => Handlebars.templates['adminSettings.hbs']();
 
@@ -22,6 +27,7 @@ export const adminReservasDay = (reserva) =>
 
 export const adminReservasMonth = ({ month, year }) => {
     const dias = daysOfMonth({ month, year });
+
     return Handlebars.templates['adminReservasMonth.hbs']({ dias });
 };
 
@@ -29,6 +35,13 @@ export const adminCreateReservaMonth = ({ month, year }) => {
     const dias = daysOfMonth({ month, year });
     return Handlebars.templates['adminCreateReservaMonth.hbs']({ dias });
 };
+
+export const clientReservas = () => Handlebars.templates['clientReservas.hbs']();
+
+export const clientReservasDay = (reserva) =>
+    Handlebars.templates['clientReservasDay.hbs']({ reserva });
+
+export const clientCreateReserva = () => Handlebars.templates['clientCreateReserva.hbs']();
 
 export const daysOfMonth = ({ month, year }) => {
     const getDaysOfMonth = (_month, _year) =>

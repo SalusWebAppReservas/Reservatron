@@ -24,6 +24,7 @@ export const sendLoginUser = async (event) => {
             user,
             password,
         };
+        sessionStorage.setItem('RVadmin', user === 'admin' ? true : false);
 
         const isLoginOk = await fetch(`${url}loginUser/${JSON.stringify(login)}`);
         showLoginResult(isLoginOk);

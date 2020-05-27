@@ -101,3 +101,9 @@
 .icon-logout:before {
   content: "\75";
 }
+.icon-calendar-delete:before {
+  content: "\76";
+}
+.icon-modify:before {
+  content: "\77";
+}

@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="css/clientReservasDay.css">
 {{#each reserva}}
 <div class="asr__citas__itemContainer" data-serviceID={{serviceID}} data-userID={{userID}}>
     <div class="asr__citas__item">
@@ -5,7 +6,7 @@
             <p>{{serviceName}}</p>
         </div>
         <div class="asr__citas__item__texto">
-            <p class="asr__citas__item__texto__nombre">{{userName}} {{userSurnames}}</p>
+            <p class="asr__citas__item__texto__nombre">Especialista <br> <span>{{userName}} {{userSurnames}}</span></p>
             <div class="asr__citas__item__texto__diaIconosContainer">
                 <div class="asr__citas__item__texto__diaIconosContainer-left">
                     <div class="asr__citas__item__texto__diaContainer first">
@@ -17,8 +18,10 @@
                         <p class="asr__citas__item__texto__dia">{{time}}</p>
                     </div>
                 </div>
+
                 <div class="asr__citas__item__texto__diaIconosContainer-right">
-                    <i class="icon-new"></i>
+                    <i class="icon-modify"></i>
+                    <i class="icon-calendar-delete"></i>
                 </div>
             </div>
         </div>

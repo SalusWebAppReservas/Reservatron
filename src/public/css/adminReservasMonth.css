@@ -7,6 +7,7 @@
     padding: 1em;
     min-height: 20em;
     margin-top: 1em;
+    width: 140%;
 }
 
 .arm__day {
@@ -20,27 +21,27 @@
     box-shadow: 0px 0px 5px black;
 }
 
-.arm__day:nth-of-type(2n) {
-    background-color: lightgoldenrodyellow;
-}
-.arm__day:nth-of-type(3n) {
-    background-color: lightgreen;
-}
-.arm__day:nth-of-type(4n) {
-    background-color: lightcoral;
-}
-.arm__day:nth-of-type(4n) {
+.arm__day:nth-of-type(1n) {
     background-color: transparent;
+}
+.arm__day:nth-of-type(5n) {
+    background-color: rgb(255, 228, 194);
+}
+
+.arm__day:nth-of-type(11n) {
+    background-color: rgb(255, 204, 204);
 }
 
 .arm__day:nth-of-type(7n) {
     background-color: rgb(192, 119, 119);
     color: rgb(39, 39, 39);
+    visibility: hidden;
 }
 
 .arm__day:nth-of-type(7n-1) {
     background-color: rgb(162, 190, 199);
-    color: rgb(22, 75, 75)
+    color: rgb(22, 75, 75);
+    visibility: hidden;
 }
 
 .arm__day__number {

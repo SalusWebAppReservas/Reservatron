@@ -1,14 +1,11 @@
-// Ojo, modificada linea 36 en handlebars.js porque usando imports se usa strict mode
-// added (|| window) to 'this' porque en strict mode 'this' no puede acceder a 'window'.
+/* global firebase */
 import { connectFirebase } from './model/fireBase.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
-import { getReservas } from './model/db.js';
+import * as DB from './model/db.js';
 import * as UI from './view/UI.js';
 
 const login = document.getElementById('mainLogin');
-const register = document.getElementById('btnRegister');
-const contenedor = document.getElementById('contenedor');
 const logoHome = document.getElementById('logoHome');
 
 const logout = async () => {
@@ -29,7 +26,7 @@ const isUserLogued = async () => {
         login.addEventListener('click', logout);
         return true;
     }
-    const promesa = new Promise(async (resolve, reject) => {
+    const promesa = new Promise((resolve) => {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 renderAdminReservas();
@@ -56,7 +53,7 @@ const renderTemplate = (template, datos, container = 'contenedor') => {
     contenedor.innerHTML = template(datos);
     setTimeout(() => {
         contenedor.style.visibility = 'visible';
-    }, 100);
+    }, 200);
 };
 
 const addMonth = () => {
@@ -126,18 +123,134 @@ const selectDayOrMonth = async ({ target }) => {
     }
 };
 
-const renderAdminReservas = async (_fecha) => {
-    const reservas = await getReservas(_fecha);
+const createReservaNextMonth = () => {
+    UI.incrementMonth();
+    const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
+    const month = fechaSelected.getMonth();
+    const year = fechaSelected.getFullYear();
+    renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
+    UI.showNameMonth(fechaSelected);
+    UI.showDayAlreadySelected();
+};
+
+const createReservaBackMonth = () => {
+    UI.decreaseMonth();
+    const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
+    const month = fechaSelected.getMonth();
+    const year = fechaSelected.getFullYear();
+    renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
+    UI.showNameMonth(fechaSelected);
+    UI.showDayAlreadySelected();
+};
+
+const unselectDay = () => {
+    const days = document.querySelectorAll('.acr__day');
+    days.forEach((days) => days.classList.remove('acrActive'));
+};
+const selectDay = ({ target }) => {
+    if (target.className === 'acrContainer') return;
+
+    unselectDay();
+
+    let date;
+    if (target.tagName === 'P') {
+        date = new Date(Number(target.parentNode.id));
+        target.parentNode.classList.add('acrActive');
+    } else {
+        date = new Date(Number(target.id));
+        target.classList.add('acrActive');
+    }
+
+    sessionStorage.setItem('RVdaySelected', date);
+
+    const nombreDia = document.getElementById('nombreDia');
+    nombreDia.textContent = date.toLocaleString('es-ES', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+    });
+};
+
+const getAllClients = async () => await DB.getAllClients();
+const getAllServices = async () => await DB.getAllServices();
+
+const createReserva = () => {
+    const { clientName, serviceName, comments, selectedHour } = document.getElementById('acrForm');
+    const fechaSelected = new Date(sessionStorage.getItem('RVdaySelected')).getTime();
+
+    alert(
+        'Falta enviar reserva a server ' +
+            ' cliente: ' +
+            clientName.value +
+            ' servicio: ' +
+            serviceName.value +
+            ' commnents: ' +
+            comments.value +
+            ' hora: ' +
+            selectedHour.value +
+            ' fecha selected in ms: ' +
+            fechaSelected
+    );
+};
+
+const showClients = (input, clients) => {
+    console.log(input, clients);
+};
+
+const renderCreateReserva = async () => {
+    const clients = await getAllClients();
+    const services = await getAllServices();
     let fechaSelected = sessionStorage.getItem('RVfechaSelected');
-    if (fechaSelected === null) {
+    if (fechaSelected) fechaSelected = new Date(fechaSelected);
+    else {
         fechaSelected = new Date();
         sessionStorage.setItem('RVfechaSelected', fechaSelected);
-    } else fechaSelected = new Date(fechaSelected);
+    }
+    const month = fechaSelected.getMonth();
+    const year = fechaSelected.getFullYear();
+    renderTemplate(UI.adminCreateReserva);
+    renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
+    UI.showNameMonth(fechaSelected);
+    const btnNext = document.getElementById('acrBtnNext');
+    const btnBack = document.getElementById('acrBtnBack');
+    btnNext.addEventListener('click', createReservaNextMonth);
+    btnBack.addEventListener('click', createReservaBackMonth);
+    const btnDia = document.getElementById('acrCalendar');
+    btnDia.addEventListener('click', selectDay);
 
-    renderTemplate(UI.adminShowReservasTemplate, reservas);
+    const clientName = document.getElementById('clientName');
+    clientName.addEventListener('keyup', ({ target }) => showClients(target.value, clients));
 
-    const isBtnDaySelected = document.getElementById('asrBtnDay').dataset.selected;
-    const isBtnMonthSelected = document.getElementById('asrBtnMonth').dataset.selected;
+    const btnCreateReserva = document.getElementById('btnCreateReserva');
+    btnCreateReserva.addEventListener('click', createReserva);
+};
+
+const createService = async (e) => {
+    const form = document.getElementById('asForm');
+    if (form.checkValidity()) {
+        e.preventDefault();
+        const { nameService, durationService, color } = form;
+        await saveNewService(nameService.value, durationService.value, color.value);
+        form.reset();
+    }
+};
+
+const renderAdminSettings = () => {
+    renderTemplate(UI.adminSettings);
+    const btnCreateService = document.getElementById('btnCreateService');
+    btnCreateService.addEventListener('click', createService);
+};
+const renderAdminReservas = async (_fecha) => {
+    // const reservas = await getReservas(_fecha);
+    let fechaSelected = sessionStorage.getItem('RVfechaSelected');
+    if (fechaSelected) fechaSelected = new Date(fechaSelected);
+    else {
+        fechaSelected = new Date();
+        sessionStorage.setItem('RVfechaSelected', fechaSelected);
+    }
+
+    // renderTemplate(UI.adminShowReservasTemplate, reservas);
+    renderTemplate(UI.adminShowReservasTemplate);
 
     const btnNext = document.getElementById('asrBtnNext');
     const btnBack = document.getElementById('asrBtnBack');
@@ -155,10 +268,57 @@ const renderAdminReservas = async (_fecha) => {
 
     const btnSelectDayMonth = document.getElementById('asr_btnSelectDayMonth');
     btnSelectDayMonth.addEventListener('click', selectDayOrMonth);
+
+    const addReserva = document.getElementById('footerAdd');
+    addReserva.addEventListener('click', renderCreateReserva);
+
+    const allReservas = document.getElementById('footerAll');
+    allReservas.addEventListener('click', renderHome);
+
+    const settings = document.getElementById('footerSettings');
+    settings.addEventListener('click', renderAdminSettings);
+};
+
+const renderClientCreateReserva = () => {
+    console.log('create reserva');
+
+    renderTemplate(UI.clientCreateReserva);
+};
+
+const renderClientReservas = async () => {
+    let fechaSelected = sessionStorage.getItem('RVfechaSelected');
+    if (fechaSelected) fechaSelected = new Date(fechaSelected);
+    else {
+        fechaSelected = new Date();
+        sessionStorage.setItem('RVfechaSelected', fechaSelected);
+    }
+    const month = fechaSelected.getMonth();
+    const year = fechaSelected.getFullYear();
+    renderTemplate(UI.clientReservas);
+    renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
+    UI.showNameMonth(fechaSelected);
+    const btnNext = document.getElementById('acrBtnNext');
+    const btnBack = document.getElementById('acrBtnBack');
+    btnNext.addEventListener('click', createReservaNextMonth);
+    btnBack.addEventListener('click', createReservaBackMonth);
+    const btnDia = document.getElementById('acrCalendar');
+    btnDia.addEventListener('click', selectDay);
+
+    // const reservas = await getReservas();
+    // renderTemplate(UI.clientReservasDay, reservas, 'asCitas');
+
+    const allReservas = document.getElementById('footerAll');
+    allReservas.addEventListener('click', renderHome);
+
+    const settings = document.getElementById('footerAdd');
+    settings.addEventListener('click', renderClientCreateReserva);
 };
 
 const renderHome = async () => {
-    if (await isUserLogued()) renderAdminReservas();
+    // Falta chequear si el usuario es admin
+    if (await isUserLogued())
+        if (sessionStorage.getItem('RVadmin') === 'true') renderAdminReservas();
+        else renderClientReservas();
     else {
         renderTemplate(UI.homeTemplate);
         const register = document.getElementById('btnRegister');

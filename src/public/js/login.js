@@ -1,18 +1,16 @@
 import { connectFirebase } from './model/fireBase.js';
 
 const url = window.location.href;
-const btnLogin = document.getElementById('btnLogin');
 
 const showLoginResult = async (isLoginOk) => {
-    const { user, userID } = await isLoginOk.json();
+    const userID = await isLoginOk.json();
 
     if (userID) {
         sessionStorage.setItem('RVuserID', userID);
         window.location.href = url;
         return true;
-    }
-    if (user) alert('Password incorrecto');
-    else alert('Usuario no existe');
+    } else alert('Datos de login incorrectos');
+    return false;
 };
 export const sendLoginUser = async (event) => {
     const user = document.getElementById('user').value;
@@ -24,6 +22,7 @@ export const sendLoginUser = async (event) => {
             user,
             password,
         };
+        sessionStorage.setItem('RVadmin', user === 'admin' ? true : false);
 
         const isLoginOk = await fetch(`${url}loginUser/${JSON.stringify(login)}`);
         showLoginResult(isLoginOk);

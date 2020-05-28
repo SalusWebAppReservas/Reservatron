@@ -8,6 +8,10 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+body {
+    background-color: #f7fbfe;
+}
+
 nav {
     display: flex;
     align-items: center;

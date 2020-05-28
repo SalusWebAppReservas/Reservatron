@@ -1,4 +1,7 @@
+// Ojo, modificada linea 36 en handlebars.js porque usando imports se usa strict mode
+// added (|| window) to 'this' porque en strict mode 'this' no puede acceder a 'window'.
 import './plugins/handlebars.runtime-v4.7.6.js';
+/* global Handlebars */
 import './precompiled/home.precompiled.js';
 import './precompiled/login.precompiled.js';
 import './precompiled/userRegistration.precompiled.js';
@@ -98,7 +101,7 @@ export const daysOfMonth = ({ month, year }) => {
         };
     });
 
-    const middleWeeks = getDaysOfMonth(month, year).map((v, i) => {
+    const middleWeeks = getDaysOfMonth(month, year).map((v) => {
         return {
             day: v.getDate(),
             name: v.toLocaleString('es-ES', { weekday: 'short' }).slice(0, -1),

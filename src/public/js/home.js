@@ -1,5 +1,4 @@
-// Ojo, modificada linea 36 en handlebars.js porque usando imports se usa strict mode
-// added (|| window) to 'this' porque en strict mode 'this' no puede acceder a 'window'.
+/* global firebase */
 import { connectFirebase } from './model/fireBase.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
@@ -27,7 +26,7 @@ const isUserLogued = async () => {
         login.addEventListener('click', logout);
         return true;
     }
-    const promesa = new Promise(async (resolve, reject) => {
+    const promesa = new Promise((resolve) => {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 renderAdminReservas();

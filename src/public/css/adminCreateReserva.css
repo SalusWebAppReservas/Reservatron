@@ -135,9 +135,11 @@
     margin-right: auto;
 }
 
-.acr__form input {
+.acr__form input,
+ul {
     padding: 0.5em;
     width: 100%;
+    background-color: white;
 }
 
 .acr__form textarea {

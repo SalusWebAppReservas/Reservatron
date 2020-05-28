@@ -1,0 +1,16 @@
+body {
+    font-family: sans-serif;
+  }
+  canvas {
+    position: absolute;
+  }
+  #dia,
+  #semana {
+    opacity: 0;
+  }
+  div {
+    position: relative;
+    top: 450px;
+    left: 100px;
+  }
+  

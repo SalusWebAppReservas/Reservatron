@@ -70,7 +70,7 @@
     cursor: pointer;
 }
 
-.acrActive {
+.acr__day-active {
     background-color: blueviolet;
     color: whitesmoke;
 }
@@ -98,13 +98,6 @@
 }
 
 .acr__form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    text-align: center;
-    /* max-width: 40em; */
     margin: 0em auto 4em;
     padding: 1em 2em 0em 2em;
     border-radius: 25px 0px 25px 0px;
@@ -114,35 +107,77 @@
 }
 
 .acr__form__titulo,
-.acr__form__servicio {
-    margin-bottom: 1em;
+.acr__form__service,
+.acr__form__notes {
     width: 100%;
 }
 
-.acr__form__titulo h2 {
+.acr__form h2 {
     margin-bottom: 0.25em;
 
     text-align: left;
 }
 
-.acr__form__servicio h3 {
-    margin-bottom: 0.25em;
-    text-align: left;
+.acr__form__clients,
+.acr__form__services {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: visible;
+    margin-bottom: 1em;
 }
-.acr__form h4 {
-    margin-bottom: 0.25em;
 
-    margin-right: auto;
-}
-
-.acr__form input,
-ul {
+.acr__form__clients__inputClient,
+.acr__form__services__inputService {
     padding: 0.5em;
     width: 100%;
     background-color: white;
 }
 
-.acr__form textarea {
+.acr__form__clients__select,
+.acr__form__services__select {
+    top: 2.1em;
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
+    outline: none;
+    z-index: 100;
+    background-color: white;
+}
+
+.acr__form__clients__select option,
+.acr__form__services__select option {
+    padding: 0.5em;
+}
+
+.acr ul {
+    background-color: rgb(175, 88, 156);
+    color: white;
+}
+
+.acr li {
+    cursor: pointer;
+    padding: 0.5em;
+}
+
+.acr li:not(.acr__li__active):hover {
+    background-color: rgb(117, 20, 80);
+    font-weight: 500;
+}
+
+.acr__li__active {
+    background-color: #57a5ff;
+    color: white;
+    font-weight: 700;
+}
+
+.acr__form__notes {
+    width: 100%;
+}
+
+.acr__form__notes textarea {
     width: 100%;
     padding: 0.5em;
 }
@@ -176,11 +211,28 @@ ul {
 .acr__form__button {
     background-color: #505d8b;
     color: white;
-    width: 200%;
+    width: calc(100% + 4em);
+    margin-left: -2em;
     height: 3em;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: 600;
     cursor: pointer;
+    position: relative;
+}
+
+.acr__form__button:not([data-valid='false']):hover {
+    background-color: #2d4ab3;
+}
+
+.acr__form__button:not([data-valid='true']) {
+    background-color: red;
+}
+
+.acr__form__error {
+    color: red;
+    font-weight: 500;
+    text-align: center;
+    transition: all 1s ease-in-out;
 }

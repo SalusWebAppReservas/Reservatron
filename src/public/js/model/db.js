@@ -12,11 +12,11 @@ export const getReservas = async (fecha) => {
 };
 
 export const getAllClients = async () => {
-    console.log('get');
     const url = window.location.href;
 
     try {
-        return await (await fetch(`${url}getAllUsers`)).json();
+        const allClients = await fetch(`${url}getAllUsers`);
+        return await allClients.json();
     } catch {
         (err) => console.log('error', err);
     }
@@ -41,7 +41,8 @@ export const saveNewService = async (nameService, durationService, color) => {
 export const getAllServices = async () => {
     const url = window.location.href;
     try {
-        await fetch(`${url}getAllServices`);
+        const allServices = await fetch(`${url}getAllServices`);
+        return await allServices.json();
     } catch {
         (err) => console.log(err);
     }

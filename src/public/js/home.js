@@ -4,6 +4,7 @@ import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
 import * as DB from './model/db.js';
 import * as UI from './view/UI.js';
+import * as UIAdmin from './view/UIAdmin.js';
 
 const login = document.getElementById('mainLogin');
 const logoHome = document.getElementById('logoHome');
@@ -79,10 +80,13 @@ const subtractMonth = () => {
 const selectDayOrMonth = async ({ target }) => {
     const btnNext = document.getElementById('asrBtnNext');
     const btnBack = document.getElementById('asrBtnBack');
-    let isBtnDaySelected = document.getElementById('asrBtnDay').dataset.selected;
-    let isBtnMonthSelected = document.getElementById('asrBtnMonth').dataset.selected;
+    const isBtnDaySelected = document.getElementById('asrBtnDay').dataset;
+    const isBtnMonthSelected = document.getElementById('asrBtnMonth').dataset;
 
-    if (target.id === 'asrBtnMonth' || target.id === 'asrIconMonth') {
+    if (
+        isBtnDaySelected.selected === 'true' &&
+        (target.id === 'asrBtnMonth' || target.id === 'asrIconMonth')
+    ) {
         UI.changeIconDayMonth();
 
         btnNext.removeEventListener('click', UI.incrementDay);
@@ -90,15 +94,18 @@ const selectDayOrMonth = async ({ target }) => {
         btnBack.removeEventListener('click', UI.decreaseDay);
         btnBack.addEventListener('click', subtractMonth);
 
-        isBtnDaySelected = false;
-        isBtnMonthSelected = true;
+        isBtnDaySelected.selected = false;
+        isBtnMonthSelected.selected = true;
 
         const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
         const month = fechaSelected.getMonth();
         const year = fechaSelected.getFullYear();
         renderTemplate(UI.adminReservasMonth, { month, year }, 'asrCitasContainer');
         UI.showNameMonth(fechaSelected);
-    } else if (target.id === 'asrBtnDay' || target.id === 'asrIconDay') {
+    } else if (
+        isBtnMonthSelected.selected === 'true' &&
+        (target.id === 'asrBtnDay' || target.id === 'asrIconDay')
+    ) {
         UI.changeIconMonthToDay();
 
         btnNext.removeEventListener('click', addMonth);
@@ -106,9 +113,9 @@ const selectDayOrMonth = async ({ target }) => {
         btnBack.removeEventListener('click', subtractMonth);
         btnBack.addEventListener('click', UI.decreaseDay);
 
-        isBtnDaySelected = true;
-        isBtnMonthSelected = false;
-        const reservas = await getReservas();
+        isBtnDaySelected.selected = true;
+        isBtnMonthSelected.selected = false;
+        const reservas = await DB.getReservas();
         renderTemplate(UI.adminReservasDay, reservas, 'asrCitasContainer');
         const asrFecha = document.getElementById('asrFechaDDMMYYYY');
         const asrNombreDia = document.getElementById('asrFechaNombreDia');
@@ -145,7 +152,7 @@ const createReservaBackMonth = () => {
 
 const unselectDay = () => {
     const days = document.querySelectorAll('.acr__day');
-    days.forEach((days) => days.classList.remove('acrActive'));
+    days.forEach((days) => days.classList.remove('acr__day-active'));
 };
 const selectDay = ({ target }) => {
     if (target.className === 'acrContainer') return;
@@ -155,10 +162,10 @@ const selectDay = ({ target }) => {
     let date;
     if (target.tagName === 'P') {
         date = new Date(Number(target.parentNode.id));
-        target.parentNode.classList.add('acrActive');
+        target.parentNode.classList.add('acr__day-active');
     } else {
         date = new Date(Number(target.id));
-        target.classList.add('acrActive');
+        target.classList.add('acr__day-active');
     }
 
     sessionStorage.setItem('RVdaySelected', date);
@@ -177,6 +184,11 @@ const getAllServices = async () => await DB.getAllServices();
 const createReserva = () => {
     const { clientName, serviceName, comments, selectedHour } = document.getElementById('acrForm');
     const fechaSelected = new Date(sessionStorage.getItem('RVdaySelected')).getTime();
+    const isReservaOK = document.getElementById('btnCreateReserva').dataset;
+    const errores = document.querySelectorAll('.acr__errors');
+
+    if (clientName && serviceName && selectedHour && fechaSelected) isReservaOK.valid = 'true';
+    isReservaOK.valid = 'true';
 
     alert(
         'Falta enviar reserva a server ' +
@@ -193,13 +205,10 @@ const createReserva = () => {
     );
 };
 
-const showClients = (input, clients) => {
-    console.log(input, clients);
-};
-
 const renderCreateReserva = async () => {
     const clients = await getAllClients();
     const services = await getAllServices();
+
     let fechaSelected = sessionStorage.getItem('RVfechaSelected');
     if (fechaSelected) fechaSelected = new Date(fechaSelected);
     else {
@@ -218,8 +227,15 @@ const renderCreateReserva = async () => {
     const btnDia = document.getElementById('acrCalendar');
     btnDia.addEventListener('click', selectDay);
 
-    const clientName = document.getElementById('clientName');
-    clientName.addEventListener('keyup', ({ target }) => showClients(target.value, clients));
+    const inputClientName = document.getElementById('inputClientName');
+    inputClientName.addEventListener('keyup', ({ target }) =>
+        UIAdmin.selectOption(target.value, clients, 'selectClients', 'inputClientName')
+    );
+
+    const inputServiceName = document.getElementById('inputServiceName');
+    inputServiceName.addEventListener('keyup', ({ target }) =>
+        UIAdmin.selectOption(target.value, services, 'selectServices', 'inputServiceName')
+    );
 
     const btnCreateReserva = document.getElementById('btnCreateReserva');
     btnCreateReserva.addEventListener('click', createReserva);

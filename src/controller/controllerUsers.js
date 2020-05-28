@@ -9,9 +9,17 @@ const getUserData = async (req, res) => {
     const { userID } = req.params;
     res.json(await dbUsers.getUser(userID));
 };
-const addUser = (req, res) => {
+const addUser = async (req, res) => {
     const user = req.body;
-    insertUser(user);
+    try {
+        await dbUsers.insertUser(user);
+        res.status(200);
+    } catch {
+        (err) => {
+            console.log(err);
+            res.status(400);
+        };
+    }
 };
 
 const getAllUsers = async (req, res) => res.json(await dbUsers.getAllUsers());

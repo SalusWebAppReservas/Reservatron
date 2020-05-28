@@ -9,16 +9,23 @@ exports.saveNewService = async (service) => {
     try {
         await db.doc().set(service, { merge: true });
         return { success: true };
-    } catch {
-        (err) => console.log(error);
+    } catch (error) {
+        console.log(error);
         return { error: false };
     }
 };
 
-exports.getAllServices = () => {
+exports.getAllServices = async () => {
     try {
-        await(db.get()).docs.map((doc) => doc.data());
-    } catch {
-        (err) => console.log(err);
+        const servicesData = await db.get();
+        const services = servicesData.docs.map((doc) => {
+            return {
+                ID: doc.id,
+                fullName: doc.data().nameService,
+            };
+        });
+        return services;
+    } catch (error) {
+        console.log(error);
     }
 };

@@ -269,5 +269,5 @@ export const showDayAlreadySelected = () => {
     const daySelectedInMonth = [...document.querySelectorAll('.acr__day')].filter(
         (day) => Number(day.id) === daySelected
     )[0];
-    if (daySelectedInMonth) daySelectedInMonth.classList.add('acrActive');
+    if (daySelectedInMonth) daySelectedInMonth.classList.add('acr__day-active');
 };

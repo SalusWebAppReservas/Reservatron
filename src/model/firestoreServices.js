@@ -29,3 +29,11 @@ exports.getAllServices = async () => {
         console.log(error);
     }
 };
+
+exports.getServiceData = async (serviceID) => {
+    try {
+        return (await db.doc(serviceID).get()).data();
+    } catch (error) {
+        console.log(error);
+    }
+};

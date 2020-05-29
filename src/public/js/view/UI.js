@@ -1,18 +1,21 @@
 // Ojo, modificada linea 36 en handlebars.js porque usando imports se usa strict mode
 // added (|| window) to 'this' porque en strict mode 'this' no puede acceder a 'window'.
-import './plugins/handlebars.runtime-v4.7.6.js';
 /* global Handlebars */
+
+import './plugins/handlebars.runtime-v4.7.6.js';
+
 import './precompiled/home.precompiled.js';
 import './precompiled/login.precompiled.js';
 import './precompiled/userRegistration.precompiled.js';
+
 import './precompiled/adminShowReservas.precompiled.js';
 import './precompiled/adminReservasDay.precompiled.js';
 import './precompiled/adminReservasMonth.precompiled.js';
 import './precompiled/adminCreateReserva.precompiled.js';
 import './precompiled/adminCreateReservaMonth.precompiled.js';
 import './precompiled/adminSettings.precompiled.js';
-import './precompiled/clientReservasDay.precompiled.js';
 
+import './precompiled/clientReservasDay.precompiled.js';
 import './precompiled/clientReservas.precompiled.js';
 import './precompiled/clientCreateReserva.precompiled.js';
 
@@ -25,6 +28,7 @@ export const adminSettings = () => Handlebars.templates['adminSettings.hbs']();
 
 export const adminShowReservasTemplate = (reserva) =>
     Handlebars.templates['adminShowReservas.hbs']({ reserva });
+
 export const adminReservasDay = (reserva) =>
     Handlebars.templates['adminReservasDay.hbs']({ reserva });
 

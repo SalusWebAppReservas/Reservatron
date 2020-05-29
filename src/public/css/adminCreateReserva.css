@@ -6,6 +6,10 @@
     margin: auto;
 }
 
+.acr * {
+    border-width: 1px;
+}
+
 .acr__titulo {
     display: flex;
     flex-direction: column;
@@ -64,7 +68,6 @@
     justify-content: center;
     align-items: center;
     min-height: 1.8em;
-    /* background-color: lightpink; */
     border-radius: 15px 0px 15px 0px;
     box-shadow: 0px 0px 5px black;
     cursor: pointer;
@@ -106,6 +109,10 @@
     width: 90%;
 }
 
+.acr__form-hidden {
+    visibility: hidden;
+}
+
 .acr__form__titulo,
 .acr__form__service,
 .acr__form__notes {
@@ -138,7 +145,7 @@
 
 .acr__form__clients__select,
 .acr__form__services__select {
-    top: 2.1em;
+    top: 1.95em;
     width: 100%;
     position: absolute;
     overflow: hidden;
@@ -160,6 +167,10 @@
 .acr li {
     cursor: pointer;
     padding: 0.5em;
+}
+
+.acr option {
+    color: white;
 }
 
 .acr li:not(.acr__li__active):hover {
@@ -201,6 +212,10 @@
     cursor: pointer;
 }
 
+.acr__form__horasDisponibles option {
+    color: black;
+}
+
 .acr__form__selectContainer i {
     display: flex;
     font-size: 2rem;
@@ -224,15 +239,4 @@
 
 .acr__form__button:not([data-valid='false']):hover {
     background-color: #2d4ab3;
-}
-
-.acr__form__button:not([data-valid='true']) {
-    background-color: red;
-}
-
-.acr__form__error {
-    color: red;
-    font-weight: 500;
-    text-align: center;
-    transition: all 1s ease-in-out;
 }

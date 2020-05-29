@@ -14,11 +14,9 @@ const addUser = async (req, res) => {
     try {
         await dbUsers.insertUser(user);
         res.status(200);
-    } catch {
-        (err) => {
-            console.log(err);
-            res.status(400);
-        };
+    } catch (err) {
+        console.log(err);
+        res.status(400);
     }
 };
 

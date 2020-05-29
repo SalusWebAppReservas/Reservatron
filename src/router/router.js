@@ -1,15 +1,16 @@
 const express = require('express');
-const { renderAPP } = require('../controller/controllerMain.js');
-const { getFirebaseConfig } = require('../controller/controllerFirebase.js');
-const {
-    loginUser,
-    getUserData,
-    addUser,
-    getAllUsers,
-} = require('../controller/controllerUsers.js');
-const { addService, getAllServices } = require('../controller/controllerServices');
+const { renderAPP } = require('../controller/controllerMain');
+const { getFirebaseConfig } = require('../controller/controllerFirebase');
+const { loginUser, getUserData, addUser, getAllUsers } = require('../controller/controllerUsers');
+const { addService, getAllServices, getServiceData } = require('../controller/controllerServices');
 
-const { registro } = require('../controller/controllerRegistro.js');
+const {
+    addReservation,
+    getHoursReservedDay,
+    getReservationsDay,
+} = require('../controller/controllerReservations');
+
+const { registro } = require('../controller/controllerRegistro');
 const router = express.Router();
 
 router.get('/', renderAPP);
@@ -21,5 +22,9 @@ router.post('/addUser', addUser);
 router.post('/addService', addService);
 router.get('/getAllUsers', getAllUsers);
 router.get('/getAllServices', getAllServices);
+router.post('/addReservation', addReservation);
+router.get('/getHoursReservedDay/:day', getHoursReservedDay);
+router.get('/getReservationsDay/:day', getReservationsDay);
+router.get('/getServiceData/:serviceID', getServiceData);
 
 module.exports = router;

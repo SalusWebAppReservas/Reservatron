@@ -27,7 +27,7 @@ exports.getUserID = async (user, password) => {
 
 exports.getUser = async (userID) => {
     try {
-        return await db.doc(userID).get().data();
+        return (await db.doc(userID).get()).data();
     } catch (error) {
         console.log(error);
     }

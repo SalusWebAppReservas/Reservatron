@@ -15,21 +15,16 @@
     </div>
 
     <div id="acrCalendar" class="acr__mes__container">
-        {{#each dias}}
-        <div id={{date}} class="acr__day">
-            <p class="acr__day__number">{{day}}</p>
-            <p class="acr__day__name">{{name}}</p>
-        </div>
-        {{/each}}
+
     </div>
 
-    <form id="acrForm" class="acr__form">
+    <form id="acrForm" class="acr__form acr__form-hidden">
         <div class="acr__form__titulo">
             <h2>Cliente</h2>
         </div>
         <div class="acr__form__clients">
             <input class="acr__form__clients__inputClient" type="text" name="clientName" id="inputClientName"
-                placeholder="nombre cliente ( * muestra todos )">
+                placeholder="nombre cliente ( * muestra todos )" required>
             <ul id="selectClients" class="acr__form__clients__select" name="clients" id="" hidden>
             </ul>
         </div>
@@ -41,7 +36,7 @@
         </div>
         <div class="acr__form__services">
             <input class="acr__form__services__inputService" type="text" name="serviceName" id="inputServiceName"
-                placeholder="nombre servicio ( * muestra todos )">
+                placeholder="nombre servicio ( * muestra todos )" required>
             <ul id="selectServices" class="acr__form__services__select" name="services" id="" hidden>
             </ul>
         </div>
@@ -55,25 +50,12 @@
         <div class="acr__form__selectContainer">
             <div class="acr__form__horasDisponibles">
                 <i class="icon-clock"></i>
-                <select name="selectedHour" id="horasDisponible">
-                    <option value="0">Horas disponibles</option>
-                    <option value="10:30">10:00</option>
-                    <option value="12:30">12:30</option>
-                    <option value="18:00">18:00</option>
+                <select name="selectedHour" id="horasDisponible" required>
                 </select>
             </div>
         </div>
-        <div class="acr__form__errors">
-
-            <p>Falta seleccionar estos datos</p>
-            <p class="acr__errors" id="errorFecha">Fecha</p>
-            <p class="acr__errors" id="errorCliente">Cliente</p>
-            <p class="acr__errors" id="errorServicio">Servicio</p>
-            <p class="acr__errors" id="errorHora">Hora</p>
-
-        </div>
-        <div id="btnCreateReserva" class="acr__form__button" data-valid="false">
-            <p>Crear Reserva</p>
-        </div>
+        <button id="btnCreateReserva" class="acr__form__button">
+            Crear Reserva
+        </button>
     </form>
 </div>

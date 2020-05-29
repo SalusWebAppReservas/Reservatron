@@ -1,21 +1,15 @@
 export const getReservas = async (fecha) => {
-    const url = window.location.href;
-    const reservas = await fetch(`${url}getReservas`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'applicatison/json',
-        },
-        body: JSON.stringify(fecha),
-    });
-    const reservasJson = await reservas.json();
-    return Object.values(reservasJson);
+    try {
+        const reservas = await fetch(`/getReservationsDay/${fecha}`);
+        return await reservas.json();
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 export const getAllClients = async () => {
-    const url = window.location.href;
-
     try {
-        const allClients = await fetch(`${url}getAllUsers`);
+        const allClients = await fetch('/getAllUsers');
         return await allClients.json();
     } catch {
         (err) => console.log('error', err);
@@ -23,9 +17,8 @@ export const getAllClients = async () => {
 };
 
 export const saveNewService = async (nameService, durationService, color) => {
-    const url = window.location.href;
     try {
-        return await fetch(`${url}addService`, {
+        return await fetch('/addService', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,11 +32,47 @@ export const saveNewService = async (nameService, durationService, color) => {
 };
 
 export const getAllServices = async () => {
-    const url = window.location.href;
     try {
-        const allServices = await fetch(`${url}getAllServices`);
+        const allServices = await fetch('/getAllServices');
         return await allServices.json();
     } catch {
         (err) => console.log(err);
+    }
+};
+
+const getHoursReservedDay = async (day) => {
+    console.log(day);
+    try {
+        return await (await fetch(`/getHoursReservedDay/${day}`)).json();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getAvailableHours = async (day) => {
+    const hours = [10, 11, 12, 13, 17, 18, 19, 20];
+    const hoursReserved = await getHoursReservedDay(day);
+    const date = new Date(day);
+    const availableHours = hours.map((hour) => {
+        date.setHours(hour);
+        return date.getTime();
+    });
+
+    return availableHours.filter((hour) => !hoursReserved.includes(hour));
+};
+
+export const saveNewReserva = async (reservation) => {
+    try {
+        await fetch('/addReservation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(reservation),
+        });
+        return { success: true };
+    } catch (error) {
+        console.log(error);
+        return { success: false };
     }
 };

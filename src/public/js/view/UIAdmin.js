@@ -1,15 +1,16 @@
-export const selectOption = (input, dbData, selectID, inputID) => {
+export const selectOption = (name, dbData, selectID, inputID) => {
     const select = document.getElementById(selectID);
+    const input = document.getElementById(inputID);
 
-    if (!input || !dbData) {
+    if (!name || !dbData) {
         select.innerHTML = '';
         select.size = 0;
         select.setAttribute('hidden', 'hidden');
         return;
     }
 
-    const matchedUsers = dbData.filter((item) =>
-        input === '*' ? item.fullName : item.fullName.toUpperCase().includes(input.toUpperCase())
+    const matchedUsers = dbData.filter(
+        (item) => name === '*' || item.fullName.toUpperCase().includes(name.toUpperCase())
     );
 
     let options = matchedUsers.reduce(
@@ -29,12 +30,23 @@ export const selectOption = (input, dbData, selectID, inputID) => {
     select.addEventListener('click', ({ target }) => {
         target.classList.add('acr__li__active');
         setTimeout(() => {
-            const inputClientName = document.getElementById(inputID);
-            inputClientName.value = target.textContent;
-            inputClientName.dataset['user_id'] = target.value;
+            input.value = target.textContent;
+            input.dataset['id'] = target.getAttribute('value');
             select.innerHTML = '';
             select.size = 0;
             select.setAttribute('hidden', 'hidden');
         }, 500);
     });
+};
+
+export const renderHours = (hours) => {
+    const select = document.getElementById('horasDisponible');
+    console.log(hours);
+
+    const options = hours.map(
+        (hour) => `<option value="${hour}">${new Date(hour).getHours()}:00</option>`
+    );
+
+    options.unshift('<option value="0" selected disabled>Horas disponibles</option>');
+    select.innerHTML = options;
 };

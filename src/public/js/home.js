@@ -3,6 +3,8 @@ import { connectFirebase } from './model/fireBase.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
 import * as DB from './model/db.js';
+import * as DBUsers from './model/DBUsers.js';
+import * as DBServices from './model/DBServices.js';
 import * as UI from './view/UI.js';
 import * as UIAdmin from './view/UIAdmin.js';
 
@@ -115,11 +117,11 @@ const selectDayOrMonth = async ({ target }) => {
 
         isBtnDaySelected.selected = true;
         isBtnMonthSelected.selected = false;
-        const reservas = await DB.getReservas();
+        const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
+        const reservas = await cumplimentReserva(fechaSelected.getTime());
         renderTemplate(UI.adminReservasDay, reservas, 'asrCitasContainer');
         const asrFecha = document.getElementById('asrFechaDDMMYYYY');
         const asrNombreDia = document.getElementById('asrFechaNombreDia');
-        const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
 
         asrFecha.textContent = fechaSelected.toLocaleDateString('es-ES', {
             day: '2-digit',
@@ -154,8 +156,10 @@ const unselectDay = () => {
     const days = document.querySelectorAll('.acr__day');
     days.forEach((days) => days.classList.remove('acr__day-active'));
 };
-const selectDay = ({ target }) => {
+const selectDay = async ({ target }) => {
     if (target.className === 'acrContainer') return;
+
+    document.getElementById('acrForm').classList.remove('acr__form-hidden');
 
     unselectDay();
 
@@ -176,33 +180,36 @@ const selectDay = ({ target }) => {
         day: '2-digit',
         month: 'long',
     });
+
+    const availableHours = await DB.getAvailableHours(date.getTime());
+    UIAdmin.renderHours(availableHours);
 };
 
 const getAllClients = async () => await DB.getAllClients();
 const getAllServices = async () => await DB.getAllServices();
 
-const createReserva = () => {
-    const { clientName, serviceName, comments, selectedHour } = document.getElementById('acrForm');
-    const fechaSelected = new Date(sessionStorage.getItem('RVdaySelected')).getTime();
-    const isReservaOK = document.getElementById('btnCreateReserva').dataset;
-    const errores = document.querySelectorAll('.acr__errors');
+const createReserva = async (e) => {
+    const form = document.getElementById('acrForm');
 
-    if (clientName && serviceName && selectedHour && fechaSelected) isReservaOK.valid = 'true';
-    isReservaOK.valid = 'true';
+    if (form.selectedHour.value === '0')
+        form.selectedHour.setCustomValidity('Tienes que seleccionar una hora');
+    else form.selectedHour.setCustomValidity('');
+    e.preventDefault();
 
-    alert(
-        'Falta enviar reserva a server ' +
-            ' cliente: ' +
-            clientName.value +
-            ' servicio: ' +
-            serviceName.value +
-            ' commnents: ' +
-            comments.value +
-            ' hora: ' +
-            selectedHour.value +
-            ' fecha selected in ms: ' +
-            fechaSelected
-    );
+    const reservation = {
+        clientID: form.clientName.dataset.id,
+        serviceID: form.serviceName.dataset.id,
+        comments: form.comments.value,
+        date: Number(form.selectedHour.value),
+    };
+
+    const save = await DB.saveNewReserva(reservation);
+    if (save.success) {
+        document.getElementById('btnCreateReserva').textContent = 'Reserva salvada con éxito!!!';
+        setTimeout(() => {
+            renderAdminReservas();
+        }, 3000);
+    }
 };
 
 const renderCreateReserva = async () => {
@@ -217,13 +224,16 @@ const renderCreateReserva = async () => {
     }
     const month = fechaSelected.getMonth();
     const year = fechaSelected.getFullYear();
+
     renderTemplate(UI.adminCreateReserva);
     renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
     UI.showNameMonth(fechaSelected);
+
     const btnNext = document.getElementById('acrBtnNext');
     const btnBack = document.getElementById('acrBtnBack');
     btnNext.addEventListener('click', createReservaNextMonth);
     btnBack.addEventListener('click', createReservaBackMonth);
+
     const btnDia = document.getElementById('acrCalendar');
     btnDia.addEventListener('click', selectDay);
 
@@ -231,11 +241,37 @@ const renderCreateReserva = async () => {
     inputClientName.addEventListener('keyup', ({ target }) =>
         UIAdmin.selectOption(target.value, clients, 'selectClients', 'inputClientName')
     );
+    inputClientName.addEventListener('focus', () => {
+        inputClientName.value = '';
+        delete inputClientName.dataset['id'];
+    });
+    inputClientName.addEventListener('blur', () => {
+        const ul = document.getElementById('selectClients');
+        setTimeout(() => {
+            if (ul.childElementCount !== 0 && !inputClientName.dataset.id) {
+                ul.innerHTML = '';
+                inputClientName.value = '';
+            }
+        }, 700);
+    });
 
     const inputServiceName = document.getElementById('inputServiceName');
     inputServiceName.addEventListener('keyup', ({ target }) =>
         UIAdmin.selectOption(target.value, services, 'selectServices', 'inputServiceName')
     );
+    inputServiceName.addEventListener('focus', () => {
+        inputServiceName.value = '';
+        delete inputServiceName.dataset['id'];
+    });
+    inputServiceName.addEventListener('blur', () => {
+        const ul = document.getElementById('selectServices');
+        setTimeout(() => {
+            if (ul.childElementCount !== 0 && !inputServiceName.dataset.id) {
+                ul.innerHTML = '';
+                inputServiceName.value = '';
+            }
+        }, 700);
+    });
 
     const btnCreateReserva = document.getElementById('btnCreateReserva');
     btnCreateReserva.addEventListener('click', createReserva);
@@ -246,7 +282,7 @@ const createService = async (e) => {
     if (form.checkValidity()) {
         e.preventDefault();
         const { nameService, durationService, color } = form;
-        await saveNewService(nameService.value, durationService.value, color.value);
+        await DB.saveNewService(nameService.value, durationService.value, color.value);
         form.reset();
     }
 };
@@ -256,17 +292,44 @@ const renderAdminSettings = () => {
     const btnCreateService = document.getElementById('btnCreateService');
     btnCreateService.addEventListener('click', createService);
 };
-const renderAdminReservas = async (_fecha) => {
-    // const reservas = await getReservas(_fecha);
+
+const cumplimentReserva = async (fecha) => {
+    const fechaSelected = new Date(fecha);
+    const reservas = await DB.getReservas(fechaSelected.getTime());
+
+    return Promise.all(
+        reservas.map(async (reserva) => {
+            const userData = await DBUsers.getUserData(reserva.clientID);
+            const serviceData = await DBServices.getServiceData(reserva.serviceID);
+            return {
+                serviceID: reserva.serviceID,
+                userID: reserva.clientID,
+                serviceName: serviceData.nameService,
+                userName: userData.userName,
+                userSurnames: userData.userSurnames,
+                day: new Date(reserva.date).toLocaleDateString('es-ES', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                }),
+                time: `${new Date(reserva.date).getHours()}:00`,
+            };
+        })
+    );
+};
+
+const renderAdminReservas = async () => {
     let fechaSelected = sessionStorage.getItem('RVfechaSelected');
     if (fechaSelected) fechaSelected = new Date(fechaSelected);
     else {
         fechaSelected = new Date();
+        fechaSelected.setHours(0, 0, 0, 0);
         sessionStorage.setItem('RVfechaSelected', fechaSelected);
     }
 
-    // renderTemplate(UI.adminShowReservasTemplate, reservas);
-    renderTemplate(UI.adminShowReservasTemplate);
+    const reservas = await cumplimentReserva(fechaSelected);
+
+    renderTemplate(UI.adminShowReservasTemplate, reservas);
 
     const btnNext = document.getElementById('asrBtnNext');
     const btnBack = document.getElementById('asrBtnBack');
@@ -296,8 +359,6 @@ const renderAdminReservas = async (_fecha) => {
 };
 
 const renderClientCreateReserva = () => {
-    console.log('create reserva');
-
     renderTemplate(UI.clientCreateReserva);
 };
 

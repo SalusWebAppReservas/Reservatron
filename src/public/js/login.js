@@ -1,3 +1,6 @@
+/* global firebase */
+/* global firebaseui */
+
 import { connectFirebase } from './model/fireBase.js';
 
 const url = window.location.href;
@@ -36,7 +39,7 @@ export const verifyLoginUser = async () => {
     let ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
     var uiConfig = {
         callbacks: {
-            signInSuccessWithAuthResult: (authResult) => {
+            signInSuccessWithAuthResult: () => {
                 // const userDataWithPhone = { ...userData, userPhone: authResult.user.phoneNumber };
                 // fetch(`${url}addUser`, {
                 //     method: 'POST',

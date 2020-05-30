@@ -1,3 +1,4 @@
+/* global firebase */
 const url = window.location.href;
 
 /* Si de da a volver en medio de una autenticación firebase añade ?mode=select en la url
@@ -10,6 +11,7 @@ regex lockhead no es soportado por firefox ni ios
  así que uso alternativa de dividirla url en 4 partes
 */
 
+// eslint-disable-next-line no-unused-vars
 let [part1, part2, part3, part4] = url.split('/');
 
 if (part4) {

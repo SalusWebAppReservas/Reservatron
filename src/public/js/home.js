@@ -5,6 +5,7 @@ import { verifyLoginUser, sendLoginUser } from './login.js';
 import * as DB from './model/db.js';
 import * as DBUsers from './model/DBUsers.js';
 import * as DBServices from './model/DBServices.js';
+import * as DBReservations from './model/DBReservations.js';
 import * as UI from './view/UI.js';
 import * as UIAdmin from './view/UIAdmin.js';
 
@@ -65,7 +66,10 @@ const addMonth = () => {
     const month = fechaSelected.getMonth();
     const year = fechaSelected.getFullYear();
     renderTemplate(UI.adminReservasMonth, { month, year }, 'asrCitasContainer');
+    colorizeMonth();
     UI.showNameMonth(fechaSelected);
+    const monthWidget = document.querySelector('.armContainer');
+    monthWidget.addEventListener('click', backToDay);
 };
 
 const subtractMonth = () => {
@@ -76,7 +80,45 @@ const subtractMonth = () => {
     const year = fechaSelected.getFullYear();
 
     renderTemplate(UI.adminReservasMonth, { month, year }, 'asrCitasContainer');
+    colorizeMonth();
     UI.showNameMonth(fechaSelected);
+    const monthWidget = document.querySelector('.armContainer');
+    monthWidget.addEventListener('click', backToDay);
+};
+
+const colorizeMonth = async () => {
+    const monthWidget = document.getElementById('monthWidget');
+    const firstDay = monthWidget.firstElementChild.id;
+    const lastDay = monthWidget.lastElementChild.id;
+
+    const reservasMonth = await DBReservations.getReservasMonth(firstDay, lastDay);
+
+    let daysToColorize = {};
+
+    reservasMonth.forEach((reserva) => {
+        const date = new Date(reserva.date);
+        date.setHours(0, 0, 0, 0);
+        const day = date.getTime();
+        if (daysToColorize[day]) daysToColorize[day] += 1;
+        else daysToColorize[day] = 1;
+    });
+
+    Object.entries(daysToColorize).forEach((day) => {
+        const id = day[0];
+        const contador = day[1];
+        document.getElementById(id).classList.add(contador < 8 ? 'orange' : 'red');
+    });
+};
+
+const backToDay = ({ target }) => {
+    if (target.className === 'armContainer') return;
+    sessionStorage.setItem(
+        'RVfechaSelected',
+        target.tagName === 'P'
+            ? new Date(Number(target.parentNode.id))
+            : new Date(Number(target.id))
+    );
+    renderAdminReservas();
 };
 
 const selectDayOrMonth = async ({ target }) => {
@@ -91,9 +133,9 @@ const selectDayOrMonth = async ({ target }) => {
     ) {
         UI.changeIconDayMonth();
 
-        btnNext.removeEventListener('click', UI.incrementDay);
+        btnNext.removeEventListener('click', incrementDay);
         btnNext.addEventListener('click', addMonth);
-        btnBack.removeEventListener('click', UI.decreaseDay);
+        btnBack.removeEventListener('click', decreaseDay);
         btnBack.addEventListener('click', subtractMonth);
 
         isBtnDaySelected.selected = false;
@@ -102,8 +144,13 @@ const selectDayOrMonth = async ({ target }) => {
         const fechaSelected = new Date(sessionStorage.getItem('RVfechaSelected'));
         const month = fechaSelected.getMonth();
         const year = fechaSelected.getFullYear();
+
         renderTemplate(UI.adminReservasMonth, { month, year }, 'asrCitasContainer');
+        colorizeMonth();
         UI.showNameMonth(fechaSelected);
+
+        const monthWidget = document.querySelector('.armContainer');
+        monthWidget.addEventListener('click', backToDay);
     } else if (
         isBtnMonthSelected.selected === 'true' &&
         (target.id === 'asrBtnDay' || target.id === 'asrIconDay')
@@ -111,9 +158,9 @@ const selectDayOrMonth = async ({ target }) => {
         UI.changeIconMonthToDay();
 
         btnNext.removeEventListener('click', addMonth);
-        btnNext.addEventListener('click', UI.incrementDay);
+        btnNext.addEventListener('click', incrementDay);
         btnBack.removeEventListener('click', subtractMonth);
-        btnBack.addEventListener('click', UI.decreaseDay);
+        btnBack.addEventListener('click', decreaseDay);
 
         isBtnDaySelected.selected = true;
         isBtnMonthSelected.selected = false;
@@ -229,6 +276,8 @@ const renderCreateReserva = async () => {
     renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
     UI.showNameMonth(fechaSelected);
 
+    colorizeMonth();
+
     const btnNext = document.getElementById('acrBtnNext');
     const btnBack = document.getElementById('acrBtnBack');
     btnNext.addEventListener('click', createReservaNextMonth);
@@ -293,6 +342,22 @@ const renderAdminSettings = () => {
     btnCreateService.addEventListener('click', createService);
 };
 
+const renderReservationsByDay = async () => {
+    const reservas = await cumplimentReserva(sessionStorage.getItem('RVfechaSelected'));
+
+    renderTemplate(UI.adminReservasDay, reservas, 'asrCitasContainer');
+};
+
+const incrementDay = async () => {
+    UI.incrementDay();
+    renderReservationsByDay();
+};
+
+const decreaseDay = () => {
+    UI.decreaseDay();
+    renderReservationsByDay();
+};
+
 const cumplimentReserva = async (fecha) => {
     const fechaSelected = new Date(fecha);
     const reservas = await DB.getReservas(fechaSelected.getTime());
@@ -333,8 +398,8 @@ const renderAdminReservas = async () => {
 
     const btnNext = document.getElementById('asrBtnNext');
     const btnBack = document.getElementById('asrBtnBack');
-    btnNext.addEventListener('click', UI.incrementDay);
-    btnBack.addEventListener('click', UI.decreaseDay);
+    btnNext.addEventListener('click', incrementDay);
+    btnBack.addEventListener('click', decreaseDay);
 
     const asrFecha = document.getElementById('asrFechaDDMMYYYY');
     const asrNombreDia = document.getElementById('asrFechaNombreDia');

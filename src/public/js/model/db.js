@@ -41,7 +41,6 @@ export const getAllServices = async () => {
 };
 
 const getHoursReservedDay = async (day) => {
-    console.log(day);
     try {
         return await (await fetch(`/getHoursReservedDay/${day}`)).json();
     } catch (error) {

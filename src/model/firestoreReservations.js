@@ -44,3 +44,16 @@ exports.getReservationsDay = async (day) => {
         return { success: false };
     }
 };
+
+exports.getReservasMonth = async ({ firstDay, lastDay }) => {
+    try {
+        const reservations = await db
+            .where('date', '>=', Number(firstDay))
+            .where('date', '<=', Number(lastDay))
+            .get();
+        return reservations.docs.map((hour) => hour.data());
+    } catch (error) {
+        console.log(error);
+        return { success: false };
+    }
+};

@@ -41,7 +41,6 @@ export const selectOption = (name, dbData, selectID, inputID) => {
 
 export const renderHours = (hours) => {
     const select = document.getElementById('horasDisponible');
-    console.log(hours);
 
     const options = hours.map(
         (hour) => `<option value="${hour}">${new Date(hour).getHours()}:00</option>`

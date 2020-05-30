@@ -23,7 +23,7 @@ templates['adminCreateReservaMonth.hbs'] = template({"1":function(container,dept
         return undefined
     };
 
-  return "<link rel=\"stylesheet\" href=\"css/adminCreateReserva.css\">\r\n<div class=\"acrContainer\">\r\n"
+  return "<link rel=\"stylesheet\" href=\"css/adminCreateReserva.css\">\r\n<div id=\"monthWidget\" class=\"acrContainer\">\r\n"
     + ((stack1 = lookupProperty(helpers,"each").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"dias") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":3,"column":4},"end":{"line":8,"column":13}}})) != null ? stack1 : "")
     + "</div>";
 },"useData":true});

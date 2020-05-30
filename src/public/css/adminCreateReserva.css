@@ -73,6 +73,21 @@
     cursor: pointer;
 }
 
+.acr__day.orange {
+    background-color: rgb(255, 115, 0);
+    color: whitesmoke;
+}
+
+.acr__day.red {
+    background-color: rgb(255, 0, 0);
+    color: whitesmoke;
+}
+
+.acr__day.red.acr__day-active,
+.acr__day.orange.acr__day-active {
+    box-shadow: 0px 0px 3px 3px blueviolet;
+}
+
 .acr__day-active {
     background-color: blueviolet;
     color: whitesmoke;

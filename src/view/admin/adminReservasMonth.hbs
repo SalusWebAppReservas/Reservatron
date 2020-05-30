@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="css/adminReservasMonth.css">
-<div class="armContainer">
+<div id="monthWidget" class="armContainer">
     {{#each dias}}
-    <div class="arm__day">
+    <div class="arm__day" id="{{date}}">
         <p class="arm__day__number">{{day}}</p>
         <p class="arm__day__name">{{name}}</p>
     </div>

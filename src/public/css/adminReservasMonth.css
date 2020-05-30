@@ -16,12 +16,23 @@
     justify-content: center;
     align-items: center;
     min-height: 2em;
-    background-color: lightpink;
+    background-color: white;
     border-radius: 15px 0px 15px 0px;
     box-shadow: 0px 0px 5px black;
+    cursor: pointer;
 }
 
-.arm__day:nth-of-type(1n) {
+.arm__day.orange {
+    background-color: rgb(255, 115, 0);
+    color: whitesmoke;
+}
+
+.arm__day.red {
+    background-color: rgb(255, 0, 0);
+    color: whitesmoke;
+}
+
+/* .arm__day:nth-of-type(1n) {
     background-color: transparent;
 }
 .arm__day:nth-of-type(5n) {
@@ -30,7 +41,7 @@
 
 .arm__day:nth-of-type(11n) {
     background-color: rgb(255, 204, 204);
-}
+} */
 
 .arm__day:nth-of-type(7n) {
     background-color: rgb(192, 119, 119);

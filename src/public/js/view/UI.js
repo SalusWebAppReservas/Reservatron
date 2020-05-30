@@ -40,6 +40,7 @@ export const adminReservasMonth = ({ month, year }) => {
 
 export const adminCreateReservaMonth = ({ month, year }) => {
     const dias = daysOfMonth({ month, year });
+
     return Handlebars.templates['adminCreateReservaMonth.hbs']({ dias });
 };
 

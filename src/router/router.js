@@ -8,6 +8,7 @@ const {
     addReservation,
     getHoursReservedDay,
     getReservationsDay,
+    getReservasMonth,
 } = require('../controller/controllerReservations');
 
 const { registro } = require('../controller/controllerRegistro');
@@ -26,5 +27,6 @@ router.post('/addReservation', addReservation);
 router.get('/getHoursReservedDay/:day', getHoursReservedDay);
 router.get('/getReservationsDay/:day', getReservationsDay);
 router.get('/getServiceData/:serviceID', getServiceData);
+router.post('/getReservasMonth', getReservasMonth);
 
 module.exports = router;

@@ -1,8 +1,15 @@
 const express = require('express');
 const { renderAPP } = require('../controller/controllerMain');
 const { getFirebaseConfig } = require('../controller/controllerFirebase');
-const { loginUser, getUserData, addUser, getAllUsers } = require('../controller/controllerUsers');
+const {
+    loginUser,
+    getUserData,
+    addUser,
+    getAllUsers,
+    updateTokensUsers,
+} = require('../controller/controllerUsers');
 const { addService, getAllServices, getServiceData } = require('../controller/controllerServices');
+const { sendPushNotification } = require('../controller/controllerMessages');
 
 const {
     addReservation,
@@ -28,5 +35,7 @@ router.get('/getHoursReservedDay/:day', getHoursReservedDay);
 router.get('/getReservationsDay/:day', getReservationsDay);
 router.get('/getServiceData/:serviceID', getServiceData);
 router.post('/getReservasMonth', getReservasMonth);
+router.post('/sendPushNotification', sendPushNotification);
+router.post('/updateUser', updateTokensUsers);
 
 module.exports = router;

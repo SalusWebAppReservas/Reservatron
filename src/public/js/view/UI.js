@@ -8,6 +8,8 @@ import './precompiled/home.precompiled.js';
 import './precompiled/login.precompiled.js';
 import './precompiled/userRegistration.precompiled.js';
 
+import './precompiled/modal.precompiled.js';
+
 import './precompiled/adminShowReservas.precompiled.js';
 import './precompiled/adminReservasDay.precompiled.js';
 import './precompiled/adminReservasMonth.precompiled.js';
@@ -22,6 +24,15 @@ import './precompiled/clientCreateReserva.precompiled.js';
 export const homeTemplate = () => Handlebars.templates['home.hbs']();
 export const loginTemplate = () => Handlebars.templates['login.hbs']();
 export const userRegistrationTemplate = () => Handlebars.templates['userRegistration.hbs']();
+
+export const renderModal = (message) => Handlebars.templates['modal.hbs']({ message });
+export const handleModal = (cb) => {
+    const btnOK = document.getElementById('btnModalOk');
+    btnOK.addEventListener('click', () => {
+        document.getElementById('modal').innerHTML = '';
+        if (cb) cb();
+    });
+};
 
 export const adminCreateReserva = () => Handlebars.templates['adminCreateReserva.hbs']();
 export const adminSettings = () => Handlebars.templates['adminSettings.hbs']();

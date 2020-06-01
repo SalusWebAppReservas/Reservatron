@@ -2,6 +2,7 @@
 import { connectFirebase } from './model/fireBase.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
+import { sendPushNotification } from './model/notifications.js';
 import * as DB from './model/db.js';
 import * as DBUsers from './model/DBUsers.js';
 import * as DBServices from './model/DBServices.js';
@@ -185,6 +186,7 @@ const createReservaNextMonth = () => {
     const month = fechaSelected.getMonth();
     const year = fechaSelected.getFullYear();
     renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
+    colorizeMonth();
     UI.showNameMonth(fechaSelected);
     UI.showDayAlreadySelected();
 };
@@ -195,6 +197,7 @@ const createReservaBackMonth = () => {
     const month = fechaSelected.getMonth();
     const year = fechaSelected.getFullYear();
     renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
+    colorizeMonth();
     UI.showNameMonth(fechaSelected);
     UI.showDayAlreadySelected();
 };
@@ -252,10 +255,14 @@ const createReserva = async (e) => {
 
     const save = await DB.saveNewReserva(reservation);
     if (save.success) {
-        document.getElementById('btnCreateReserva').textContent = 'Reserva salvada con éxito!!!';
-        setTimeout(() => {
-            renderAdminReservas();
-        }, 3000);
+        renderTemplate(UI.renderModal, 'Reserva salvada con éxito', 'modal');
+        UI.handleModal(renderAdminReservas);
+        sessionStorage.setItem('RVfechaSelected', sessionStorage.getItem('RVdaySelected'));
+        // document.getElementById('btnCreateReserva').textContent = 'Reserva salvada con éxito!!!';
+        // setTimeout(() => {
+        //     sessionStorage.setItem('RVfechaSelected', sessionStorage.getItem('RVdaySelected'));
+        //     renderAdminReservas();
+        // }, 3000);
     }
 };
 
@@ -332,7 +339,11 @@ const createService = async (e) => {
         e.preventDefault();
         const { nameService, durationService, color } = form;
         await DB.saveNewService(nameService.value, durationService.value, color.value);
-        form.reset();
+        renderTemplate(UI.renderModal, 'Servicio creado con éxito', 'modal');
+        UI.handleModal();
+        setTimeout(() => {
+            form.reset();
+        }, 500);
     }
 };
 
@@ -342,10 +353,45 @@ const renderAdminSettings = () => {
     btnCreateService.addEventListener('click', createService);
 };
 
+const sendNotification = async ({ target }) => {
+    const mensaje = target
+        .closest('.asr__citas__item')
+        .querySelector('.asr__textarea__pushNotification').value;
+
+    const sent = await sendPushNotification(target.dataset['userid'], mensaje);
+    renderTemplate(
+        UI.renderModal,
+        sent.success > 0
+            ? `Notificación enviada con éxito a ${sent.success} dispositivos del cliente`
+            : `Cliente no tiene activadas las notificaciones`,
+        'modal'
+    );
+    UI.handleModal();
+};
 const renderReservationsByDay = async () => {
     const reservas = await cumplimentReserva(sessionStorage.getItem('RVfechaSelected'));
 
     renderTemplate(UI.adminReservasDay, reservas, 'asrCitasContainer');
+
+    const iconsDetails = document.querySelectorAll('.icon-double-down, .icon-double-up');
+
+    if (iconsDetails)
+        iconsDetails.forEach((item) =>
+            item.addEventListener('click', ({ target }) => {
+                target.closest('.asr__citas__item').classList.toggle('asr__citas__item-extended');
+                if (target.className === 'icon-double-down')
+                    target
+                        .closest('.asr__citas__item__showMoreDetails')
+                        .classList.toggle('asr__icon__showMoreDetails-active');
+                else
+                    target
+                        .closest('.asr__citas__item__details')
+                        .previousElementSibling.querySelector('.asr__citas__item__showMoreDetails')
+                        .classList.toggle('asr__icon__showMoreDetails-active');
+            })
+        );
+    const btnSendNotification = document.querySelectorAll('.asr__btn__send__notification');
+    btnSendNotification.forEach((button) => button.addEventListener('click', sendNotification));
 };
 
 const incrementDay = async () => {
@@ -378,6 +424,7 @@ const cumplimentReserva = async (fecha) => {
                     year: 'numeric',
                 }),
                 time: `${new Date(reserva.date).getHours()}:00`,
+                comments: reserva.comments,
             };
         })
     );
@@ -392,9 +439,8 @@ const renderAdminReservas = async () => {
         sessionStorage.setItem('RVfechaSelected', fechaSelected);
     }
 
-    const reservas = await cumplimentReserva(fechaSelected);
-
-    renderTemplate(UI.adminShowReservasTemplate, reservas);
+    renderTemplate(UI.adminShowReservasTemplate);
+    await renderReservationsByDay();
 
     const btnNext = document.getElementById('asrBtnNext');
     const btnBack = document.getElementById('asrBtnBack');

@@ -14,7 +14,7 @@ exports.initFirestore = async () => {
         client_x509_cert_url: process.env.client_x509_cert_url,
     };
 
-    await admin.initializeApp({
+    admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         databaseURL: 'https://reservatron-7761e.firebaseio.com',
     });

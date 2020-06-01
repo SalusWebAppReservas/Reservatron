@@ -15,6 +15,18 @@ exports.insertUser = async (user) => {
     }
 };
 
+exports.updateTokensUsers = async ({ userID, token }) => {
+    try {
+        await db
+            .doc(userID)
+            .update({ webPushTokens: admin.firestore.FieldValue.arrayUnion(token) });
+        return { success: true };
+    } catch (error) {
+        console.log(error);
+        return { success: false };
+    }
+};
+
 exports.getUserID = async (user, password) => {
     try {
         const userData = await db.where('user', '==', user).where('password', '==', password).get();

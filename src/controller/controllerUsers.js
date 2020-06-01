@@ -22,9 +22,12 @@ const addUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => res.json(await dbUsers.getAllUsers());
 
+const updateTokensUsers = async (req, res) => res.json(await dbUsers.updateTokensUsers(req.body));
+
 module.exports = {
     loginUser,
     getUserData,
     addUser,
     getAllUsers,
+    updateTokensUsers,
 };

@@ -1,6 +1,6 @@
 const dbUsers = require('./firestoreUsers');
 
-exports.sendPUshNotification = async ({ userID, message }) => {
+exports.sendPushNotification = async ({ userID, message }) => {
     const { webPushTokens } = await dbUsers.getUser(userID);
 
     const admin = require('firebase-admin');

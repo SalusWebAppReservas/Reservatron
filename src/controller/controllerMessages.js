@@ -1,8 +1,8 @@
-const { sendPUshNotification } = require('../model/firebasePushNotifications');
+const { sendPushNotification } = require('../model/firebasePushNotifications');
 
 exports.sendPushNotification = async (req, res) => {
     try {
-        const result = await sendPUshNotification(req.body);
+        const result = await sendPushNotification(req.body);
         if (result) res.json(result);
         else res.json({ success: 'no tokens' });
     } catch (error) {

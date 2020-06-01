@@ -107,3 +107,12 @@
 .icon-modify:before {
   content: "\77";
 }
+.icon-double-down:before {
+  content: "\78";
+}
+.icon-bar-chart:before {
+  content: "\79";
+}
+.icon-double-up:before {
+  content: "\7a";
+}

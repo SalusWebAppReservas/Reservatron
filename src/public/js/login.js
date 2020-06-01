@@ -2,6 +2,7 @@
 /* global firebaseui */
 
 import { connectFirebase } from './model/fireBase.js';
+import { webPushInit } from './model/notifications.js';
 
 const url = window.location.href;
 
@@ -9,6 +10,7 @@ const showLoginResult = async (isLoginOk) => {
     const userID = await isLoginOk.json();
 
     if (userID) {
+        webPushInit(userID);
         sessionStorage.setItem('RVuserID', userID);
         window.location.href = url;
         return true;

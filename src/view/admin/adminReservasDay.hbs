@@ -17,11 +17,35 @@
                         <p class="asr__citas__item__texto__dia">{{time}}</p>
                     </div>
                 </div>
+                <div class="asr__citas__item__showMoreDetails">
+                    <i class="icon-double-down"></i>
+                </div>
                 <div class="asr__citas__item__texto__diaIconosContainer-right">
                     <i class="icon-new"></i>
                 </div>
             </div>
         </div>
+        <div class="asr__citas__item__details">
+            <div class="asr__citas__item__details__comentario">
+                <p>Comentario</p>
+                <textarea name="" id="" readonly>{{comments}}</textarea>
+            </div>
+            <div class="asr__citas__item__details__pushNotification">
+                <p>Notifiación Push</p>
+                <textarea class="asr__textarea__pushNotification" name="" id=""
+                    placeholder="Escriba mensaje para enviar notifiación al cliente"></textarea>
+                <button class="asr__btn__send__notification" data-userID={{userID}}>Enviar Notificacion</button>
+            </div>
+            <div class="asr__citas__item__details__buttons">
+                <button>Borrar Cita</button>
+                <button>Modificar Cita</button>
+            </div>
+            <div class="asr__citas__item__showLessDetails">
+                <i class="icon-double-up"></i>
+            </div>
+
+        </div>
     </div>
+
 </div>
 {{/each}}

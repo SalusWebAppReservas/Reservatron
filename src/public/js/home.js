@@ -258,11 +258,6 @@ const createReserva = async (e) => {
         renderTemplate(UI.renderModal, 'Reserva salvada con éxito', 'modal');
         UI.handleModal(renderAdminReservas);
         sessionStorage.setItem('RVfechaSelected', sessionStorage.getItem('RVdaySelected'));
-        // document.getElementById('btnCreateReserva').textContent = 'Reserva salvada con éxito!!!';
-        // setTimeout(() => {
-        //     sessionStorage.setItem('RVfechaSelected', sessionStorage.getItem('RVdaySelected'));
-        //     renderAdminReservas();
-        // }, 3000);
     }
 };
 
@@ -368,6 +363,21 @@ const sendNotification = async ({ target }) => {
     );
     UI.handleModal();
 };
+
+const modifyReservation = ({ target }) => {
+    console.log('modify', target.dataset['reservation_id']);
+};
+
+const deleteReservation = async ({ target }) => {
+    const { success } = await DBReservations.deleteReservation(target.dataset['reservation_id']);
+    renderTemplate(
+        UI.renderModal,
+        success ? 'Reserva eliminada con éxito' : 'Hubo un error al eliminar la reserva',
+        'modal'
+    );
+    UI.handleModal(renderAdminReservas);
+};
+
 const renderReservationsByDay = async () => {
     const reservas = await cumplimentReserva(sessionStorage.getItem('RVfechaSelected'));
 
@@ -375,21 +385,17 @@ const renderReservationsByDay = async () => {
 
     const iconsDetails = document.querySelectorAll('.icon-double-down, .icon-double-up');
 
-    if (iconsDetails)
-        iconsDetails.forEach((item) =>
-            item.addEventListener('click', ({ target }) => {
-                target.closest('.asr__citas__item').classList.toggle('asr__citas__item-extended');
-                if (target.className === 'icon-double-down')
-                    target
-                        .closest('.asr__citas__item__showMoreDetails')
-                        .classList.toggle('asr__icon__showMoreDetails-active');
-                else
-                    target
-                        .closest('.asr__citas__item__details')
-                        .previousElementSibling.querySelector('.asr__citas__item__showMoreDetails')
-                        .classList.toggle('asr__icon__showMoreDetails-active');
-            })
+    if (iconsDetails) UIAdmin.showAndHideDetails(iconsDetails);
+
+    const buttonsModifyAndDelete = document.querySelectorAll('.idButtonsDeleteModify');
+    if (buttonsModifyAndDelete)
+        buttonsModifyAndDelete.forEach((button) =>
+            button.addEventListener(
+                'click',
+                button.dataset.name === 'modify' ? modifyReservation : deleteReservation
+            )
         );
+
     const btnSendNotification = document.querySelectorAll('.asr__btn__send__notification');
     btnSendNotification.forEach((button) => button.addEventListener('click', sendNotification));
 };
@@ -425,6 +431,7 @@ const cumplimentReserva = async (fecha) => {
                 }),
                 time: `${new Date(reserva.date).getHours()}:00`,
                 comments: reserva.comments,
+                reservationID: reserva.reservationID,
             };
         })
     );

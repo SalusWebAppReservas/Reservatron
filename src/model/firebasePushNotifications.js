@@ -31,7 +31,6 @@ exports.sendPushNotification = async ({ userID, message }) => {
             enviados['success'] += Number(result.successCount);
             enviados['fail'] += Number(result.failureCount);
         });
-
         return enviados;
     }
 };

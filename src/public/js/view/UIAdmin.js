@@ -49,3 +49,20 @@ export const renderHours = (hours) => {
     options.unshift('<option value="0" selected disabled>Horas disponibles</option>');
     select.innerHTML = options;
 };
+
+export const showAndHideDetails = (iconsDetails) => {
+    iconsDetails.forEach((item) =>
+        item.addEventListener('click', ({ target }) => {
+            target.closest('.asr__citas__item').classList.toggle('asr__citas__item-extended');
+            if (target.className === 'icon-double-down')
+                target
+                    .closest('.asr__citas__item__showMoreDetails')
+                    .classList.toggle('asr__icon__showMoreDetails-active');
+            else
+                target
+                    .closest('.asr__citas__item__details')
+                    .previousElementSibling.querySelector('.asr__citas__item__showMoreDetails')
+                    .classList.toggle('asr__icon__showMoreDetails-active');
+        })
+    );
+};

@@ -224,6 +224,14 @@
     display: flex;
     flex-direction: column;
 }
+.asr__citas__item__details__buttons__crud {
+    display: flex;
+    margin-bottom: 0.5em;
+}
+
+.asr__citas__item__details__buttons__crud button {
+    flex: 1;
+}
 
 .asr__citas__item__details textarea {
     width: 100%;
@@ -231,18 +239,49 @@
     padding: 0.5em;
 }
 .asr__citas__item__details__pushNotification {
-    margin: 1em 0;
+    margin: 0.3em 0;
 }
 
-.asr__citas__item__details__pushNotification button {
-    width: 100%;
-}
-
-.asr__citas__item__details__buttons {
+.ars__citas__item__notificacion__buttons {
     display: flex;
+    justify-content: space-evenly;
+}
+.asr button {
+    color: white;
+    font-weight: 600;
+    padding: 0.5em;
+    border: none;
+    margin: 0 1em;
+    cursor: pointer;
 }
 
-.asr__citas__item__details__buttons button {
+.asr__citas__item__buttonPush {
+    background-color: #027cff;
+}
+.asr__citas__item__buttonPush:hover {
+    background-color: #0069d9;
+}
+
+.asr__citas__item__buttonEmail {
+    background-color: #027cff;
+}
+.asr__citas__item__buttonEmail:hover {
+    background-color: #0069d9;
+}
+.asr__citas__item__buttonDelete {
+    background-color: #ee2b3f;
+}
+.asr__citas__item__buttonDelete:hover {
+    background-color: #c82333;
+}
+.asr__citas__item__buttonModify {
+    background-color: rgb(255, 191, 0);
+}
+.asr__citas__item__buttonModify:hover {
+    background-color: #e0a800;
+}
+
+.asr__btn__send__notification {
     flex: 1;
 }
 

@@ -26,19 +26,30 @@
             </div>
         </div>
         <div class="asr__citas__item__details">
+
             <div class="asr__citas__item__details__comentario">
-                <p>Comentario</p>
+                <p>Comentario del cliente</p>
                 <textarea name="" id="" readonly>{{comments}}</textarea>
             </div>
             <div class="asr__citas__item__details__pushNotification">
-                <p>Notifiación Push</p>
+                <p>Mensaje para cliente</p>
                 <textarea class="asr__textarea__pushNotification" name="" id=""
                     placeholder="Escriba mensaje para enviar notifiación al cliente"></textarea>
-                <button class="asr__btn__send__notification" data-userID={{userID}}>Enviar Notificacion</button>
+                <div class="ars__citas__item__notificacion__buttons">
+                    <button class="asr__btn__send__notification asr__citas__item__buttonPush"
+                        data-userID={{userID}}>Enviar por notificacion
+                        push</button>
+                    <button class="asr__btn__send__notification asr__citas__item__buttonEmail"
+                        data-userID={{userID}}>Enviar por email</button>
+                </div>
             </div>
-            <div class="asr__citas__item__details__buttons">
-                <button>Borrar Cita</button>
-                <button>Modificar Cita</button>
+            <div class="asr__citas__item__details__buttons__crud">
+                <button class="idButtonsDeleteModify asr__citas__item__buttonDelete"
+                    data-reservation_id={{reservationID}} data-name="delete">Borrar
+                    Cita</button>
+                <button class="idButtonsDeleteModify asr__citas__item__buttonModify"
+                    data-reservation_id={{reservationID}} data-name="modify">Modificar
+                    Cita</button>
             </div>
             <div class="asr__citas__item__showLessDetails">
                 <i class="icon-double-up"></i>

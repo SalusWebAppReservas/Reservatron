@@ -13,6 +13,7 @@ const { sendPushNotification } = require('../controller/controllerMessages');
 
 const {
     addReservation,
+    deleteReservation,
     getHoursReservedDay,
     getReservationsDay,
     getReservasMonth,
@@ -37,5 +38,6 @@ router.get('/getServiceData/:serviceID', getServiceData);
 router.post('/getReservasMonth', getReservasMonth);
 router.post('/sendPushNotification', sendPushNotification);
 router.post('/updateUser', updateTokensUsers);
+router.delete('/deleteReservation', deleteReservation);
 
 module.exports = router;

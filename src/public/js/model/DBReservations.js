@@ -27,3 +27,18 @@ export const deleteReservation = async (reservationID) => {
         console.log(error);
     }
 };
+
+export const modifyReservation = async (reservationID, date) => {
+    try {
+        const isModifyOK = await fetch('/modifyReservation', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ reservationID, date }),
+        });
+        return await isModifyOK.json();
+    } catch (error) {
+        console.log(error);
+    }
+};

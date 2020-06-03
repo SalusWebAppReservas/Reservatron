@@ -1,9 +1,14 @@
 {{#each reserva}}
 <div class="asr__citas__itemContainer" data-serviceID={{serviceID}} data-userID={{userID}}>
     <div class="asr__citas__item">
-        <div class="asr__citas__item__citaNombre">
+        <div class="asr__citas__item__citaNombre {{color}}">
             <p>{{serviceName}}</p>
         </div>
+        {{!-- <div class="asr__citas_item__estado">
+            <button id="btnEstado" class="ars__citas__item__estado__button">
+                <i class="icon-check"></i>
+            </button>
+        </div> --}}
         <div class="asr__citas__item__texto">
             <p class="asr__citas__item__texto__nombre">{{userName}} {{userSurnames}}</p>
             <div class="asr__citas__item__texto__diaIconosContainer">
@@ -21,7 +26,10 @@
                     <i class="icon-double-down"></i>
                 </div>
                 <div class="asr__citas__item__texto__diaIconosContainer-right">
-                    <i class="icon-new"></i>
+                    {{#if comments }}
+                    <i class="icon-comment"></i>
+                    {{/if}}
+                    {{!-- <i class="icon-new"></i> --}}
                 </div>
             </div>
         </div>
@@ -37,19 +45,19 @@
                     placeholder="Escriba mensaje para enviar notifiación al cliente"></textarea>
                 <div class="ars__citas__item__notificacion__buttons">
                     <button class="asr__btn__send__notification asr__citas__item__buttonPush"
-                        data-userID={{userID}}>Enviar por notificacion
+                        data-userID={{userID}}>Enviar
                         push</button>
                     <button class="asr__btn__send__notification asr__citas__item__buttonEmail"
-                        data-userID={{userID}}>Enviar por email</button>
+                        data-userID={{userID}}>Enviar email</button>
                 </div>
             </div>
             <div class="asr__citas__item__details__buttons__crud">
                 <button class="idButtonsDeleteModify asr__citas__item__buttonDelete"
                     data-reservation_id={{reservationID}} data-name="delete">Borrar
-                    Cita</button>
+                    Reserva</button>
                 <button class="idButtonsDeleteModify asr__citas__item__buttonModify"
-                    data-reservation_id={{reservationID}} data-name="modify">Modificar
-                    Cita</button>
+                    data-reservation_id={{reservationID}} data-name="modify" data-date={{date}}>Modificar
+                    Reserva</button>
             </div>
             <div class="asr__citas__item__showLessDetails">
                 <i class="icon-double-up"></i>

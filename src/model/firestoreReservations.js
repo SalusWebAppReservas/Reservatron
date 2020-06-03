@@ -69,3 +69,15 @@ exports.deleteReservation = async ({ reservationID }) => {
         return { success: false };
     }
 };
+
+exports.modifyReservation = async ({ reservationID, date }) => {
+    console.log(reservationID, date);
+
+    try {
+        await db.doc(reservationID).set({ date: Number(date) }, { merge: true });
+        return { success: true };
+    } catch (error) {
+        console.log(error);
+        return { success: false };
+    }
+};

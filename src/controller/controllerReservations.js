@@ -11,3 +11,5 @@ exports.getReservationsDay = async (req, res) =>
 exports.getReservasMonth = async (req, res) => res.json(await DB.getReservasMonth(req.body));
 
 exports.deleteReservation = async (req, res) => res.json(await DB.deleteReservation(req.body));
+
+exports.modifyReservation = async (req, res) => res.json(await DB.modifyReservation(req.body));

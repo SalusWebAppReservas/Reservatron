@@ -38,7 +38,9 @@ exports.getReservationsDay = async (day) => {
             .where('date', '>', Number(day))
             .where('date', '<', Number(nextDay.getTime()))
             .get();
-        return reservations.docs.map((hour) => hour.data());
+        return reservations.docs.map((hour) => {
+            return { ...hour.data(), reservationID: hour.id };
+        });
     } catch (error) {
         console.log(error);
         return { success: false };
@@ -52,6 +54,28 @@ exports.getReservasMonth = async ({ firstDay, lastDay }) => {
             .where('date', '<=', Number(lastDay))
             .get();
         return reservations.docs.map((hour) => hour.data());
+    } catch (error) {
+        console.log(error);
+        return { success: false };
+    }
+};
+
+exports.deleteReservation = async ({ reservationID }) => {
+    try {
+        await db.doc(reservationID).delete();
+        return { success: true };
+    } catch (error) {
+        console.log(error);
+        return { success: false };
+    }
+};
+
+exports.modifyReservation = async ({ reservationID, date }) => {
+    console.log(reservationID, date);
+
+    try {
+        await db.doc(reservationID).set({ date: Number(date) }, { merge: true });
+        return { success: true };
     } catch (error) {
         console.log(error);
         return { success: false };

@@ -116,3 +116,6 @@
 .icon-double-up:before {
   content: "\7a";
 }
+.icon-comment:before {
+  content: "\43";
+}

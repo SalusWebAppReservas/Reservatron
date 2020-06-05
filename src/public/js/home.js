@@ -253,20 +253,35 @@ const createReserva = async (e) => {
         date: Number(form.selectedHour.value),
     };
 
-    const save = await DB.saveNewReserva(reservation);
-    if (save.success) {
-        renderTemplate(UI.renderModal, 'Reserva salvada con éxito', 'modal');
+    const { success } = await DB.saveNewReserva(reservation);
+    if (success) {
+        renderTemplate(
+            UI.renderModal,
+            success ? 'Reserva creada con éxito' : 'Hubo un error al crear la reserva',
+            'modal'
+        );
         UI.handleModal(renderAdminReservas);
         sessionStorage.setItem('RVfechaSelected', sessionStorage.getItem('RVdaySelected'));
-        // document.getElementById('btnCreateReserva').textContent = 'Reserva salvada con éxito!!!';
-        // setTimeout(() => {
-        //     sessionStorage.setItem('RVfechaSelected', sessionStorage.getItem('RVdaySelected'));
-        //     renderAdminReservas();
-        // }, 3000);
     }
 };
 
-const renderCreateReserva = async () => {
+const modifyReserva = async (event) => {
+    const form = document.getElementById('acrForm');
+    const date = form.selectedHour.value;
+    const reservationID = event.target.dataset['reservation_id'];
+
+    event.preventDefault();
+    const { success } = await DBReservations.modifyReservation(reservationID, date);
+    if (success) sessionStorage.setItem('RVfechaSelected', sessionStorage.getItem('RVdaySelected'));
+    renderTemplate(
+        UI.renderModal,
+        success ? 'Reserva modificada con éxito' : 'Hubo un error al modificar la reserva',
+        'modal'
+    );
+    UI.handleModal(renderAdminReservas);
+};
+
+const renderCreateReserva = async (update) => {
     const clients = await getAllClients();
     const services = await getAllServices();
 
@@ -276,8 +291,11 @@ const renderCreateReserva = async () => {
         fechaSelected = new Date();
         sessionStorage.setItem('RVfechaSelected', fechaSelected);
     }
-    const month = fechaSelected.getMonth();
-    const year = fechaSelected.getFullYear();
+
+    const month = update.date ? new Date(Number(update.date)).getMonth() : fechaSelected.getMonth();
+    const year = update.date
+        ? new Date(Number(update.date)).getFullYear()
+        : fechaSelected.getFullYear();
 
     renderTemplate(UI.adminCreateReserva);
     renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
@@ -329,8 +347,28 @@ const renderCreateReserva = async () => {
         }, 700);
     });
 
+    if (update.date) {
+        const fecha = new Date(Number(update.date));
+        fecha.setHours(0, 0, 0, 0);
+        document.getElementById('acrTitulo').textContent = 'Modifica Reserva';
+        document.getElementById(fecha.getTime()).click();
+        document
+            .querySelectorAll(
+                '.acr__form__titulo, .acr__form__clients,.acr__form__service__titulo,.acr__form__services,.acr__form__notes'
+            )
+            .forEach((e) => (e.innerHTML = ''));
+        const form = document.getElementById('acrForm');
+        console.log(form);
+        form.style.backgroundColor = 'transparent';
+        form.style.boxShadow = '0px 0px 0px black';
+        form.style.marginTop = '-2em';
+        const btnReserva = document.getElementById('btnCreateReserva');
+        btnReserva.textContent = 'Modificar Reserva';
+        btnReserva.dataset['reservation_id'] = update.reservationID;
+    }
+
     const btnCreateReserva = document.getElementById('btnCreateReserva');
-    btnCreateReserva.addEventListener('click', createReserva);
+    btnCreateReserva.addEventListener('click', update.date ? modifyReserva : createReserva);
 };
 
 const createService = async (e) => {
@@ -363,11 +401,28 @@ const sendNotification = async ({ target }) => {
         UI.renderModal,
         sent.success > 0
             ? `Notificación enviada con éxito a ${sent.success} dispositivos del cliente`
-            : `Cliente no tiene activadas las notificaciones`,
+            : `Cliente no tiene activadas las notificaciones push`,
         'modal'
     );
     UI.handleModal();
 };
+
+const renderModifyReservation = ({ target }) => {
+    const reservationID = target.dataset['reservation_id'];
+    const date = target.dataset['date'];
+    renderCreateReserva({ reservationID, date });
+};
+
+const deleteReservation = async ({ target }) => {
+    const { success } = await DBReservations.deleteReservation(target.dataset['reservation_id']);
+    renderTemplate(
+        UI.renderModal,
+        success ? 'Reserva eliminada con éxito' : 'Hubo un error al eliminar la reserva',
+        'modal'
+    );
+    UI.handleModal(renderAdminReservas);
+};
+
 const renderReservationsByDay = async () => {
     const reservas = await cumplimentReserva(sessionStorage.getItem('RVfechaSelected'));
 
@@ -375,21 +430,17 @@ const renderReservationsByDay = async () => {
 
     const iconsDetails = document.querySelectorAll('.icon-double-down, .icon-double-up');
 
-    if (iconsDetails)
-        iconsDetails.forEach((item) =>
-            item.addEventListener('click', ({ target }) => {
-                target.closest('.asr__citas__item').classList.toggle('asr__citas__item-extended');
-                if (target.className === 'icon-double-down')
-                    target
-                        .closest('.asr__citas__item__showMoreDetails')
-                        .classList.toggle('asr__icon__showMoreDetails-active');
-                else
-                    target
-                        .closest('.asr__citas__item__details')
-                        .previousElementSibling.querySelector('.asr__citas__item__showMoreDetails')
-                        .classList.toggle('asr__icon__showMoreDetails-active');
-            })
+    if (iconsDetails) UIAdmin.showAndHideDetails(iconsDetails);
+
+    const buttonsModifyAndDelete = document.querySelectorAll('.idButtonsDeleteModify');
+    if (buttonsModifyAndDelete)
+        buttonsModifyAndDelete.forEach((button) =>
+            button.addEventListener(
+                'click',
+                button.dataset.name === 'modify' ? renderModifyReservation : deleteReservation
+            )
         );
+
     const btnSendNotification = document.querySelectorAll('.asr__btn__send__notification');
     btnSendNotification.forEach((button) => button.addEventListener('click', sendNotification));
 };
@@ -407,27 +458,34 @@ const decreaseDay = () => {
 const cumplimentReserva = async (fecha) => {
     const fechaSelected = new Date(fecha);
     const reservas = await DB.getReservas(fechaSelected.getTime());
-
-    return Promise.all(
-        reservas.map(async (reserva) => {
-            const userData = await DBUsers.getUserData(reserva.clientID);
-            const serviceData = await DBServices.getServiceData(reserva.serviceID);
-            return {
-                serviceID: reserva.serviceID,
-                userID: reserva.clientID,
-                serviceName: serviceData.nameService,
-                userName: userData.userName,
-                userSurnames: userData.userSurnames,
-                day: new Date(reserva.date).toLocaleDateString('es-ES', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                }),
-                time: `${new Date(reserva.date).getHours()}:00`,
-                comments: reserva.comments,
-            };
-        })
-    );
+    try {
+        return Promise.all(
+            reservas.map(async (reserva) => {
+                const userData = await DBUsers.getUserData(reserva.clientID);
+                const serviceData = await DBServices.getServiceData(reserva.serviceID);
+                if (userData && serviceData)
+                    return {
+                        serviceID: reserva.serviceID,
+                        userID: reserva.clientID,
+                        serviceName: serviceData.nameService,
+                        userName: userData.userName,
+                        userSurnames: userData.userSurnames,
+                        day: new Date(reserva.date).toLocaleDateString('es-ES', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                        }),
+                        time: `${new Date(reserva.date).getHours()}:00`,
+                        comments: reserva.comments,
+                        reservationID: reserva.reservationID,
+                        date: reserva.date,
+                        color: serviceData.color,
+                    };
+            })
+        );
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 const renderAdminReservas = async () => {
@@ -502,7 +560,7 @@ const renderClientReservas = async () => {
     settings.addEventListener('click', renderClientCreateReserva);
 };
 
-const renderHome = async () => {
+export const renderHome = async () => {
     // Falta chequear si el usuario es admin
     if (await isUserLogued())
         if (sessionStorage.getItem('RVadmin') === 'true') renderAdminReservas();

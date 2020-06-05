@@ -10,7 +10,7 @@ const showLoginResult = async (isLoginOk) => {
     const userID = await isLoginOk.json();
 
     if (userID) {
-        await webPushInit(userID);
+        if (!url.includes('192.168')) await webPushInit(userID);
         sessionStorage.setItem('RVuserID', userID);
         window.location.href = url;
         return true;

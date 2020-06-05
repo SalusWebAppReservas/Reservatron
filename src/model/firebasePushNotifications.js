@@ -35,12 +35,11 @@ exports.sendPushNotification = async ({ userID, message }) => {
         return enviados;
     }
 };
-async function main({ email, message }) {
-
+exports.sendEmail = async ({ email, message }) => {
     let testAccount = await nodemailer.createTestAccount();
 
     let transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
+        host: 'smtp.ethereal.email',
         port: 587,
         secure: false,
         auth: {
@@ -53,10 +52,8 @@ async function main({ email, message }) {
     await transporter.sendMail({
         from: '"Admin" <foo@example.com>',
         to: `${email}`,
-        subject: "Reservatron",
+        subject: 'Reservatron',
         text: `${message}`,
         //html: "<b>Hello world?</b>",
     });
-}
-
-main().catch(console.error);
+};

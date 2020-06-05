@@ -358,7 +358,6 @@ const renderCreateReserva = async (update) => {
             )
             .forEach((e) => (e.innerHTML = ''));
         const form = document.getElementById('acrForm');
-        console.log(form);
         form.style.backgroundColor = 'transparent';
         form.style.boxShadow = '0px 0px 0px black';
         form.style.marginTop = '-2em';
@@ -488,6 +487,46 @@ const cumplimentReserva = async (fecha) => {
     }
 };
 
+const renderChart = async () => {
+    const year = sessionStorage.getItem('RVyearChart') || new Date().getFullYear();
+    if (!sessionStorage.getItem('RVyearChart')) sessionStorage.setItem('RVyearChart', year);
+    const {
+        registeredUsers,
+        reservationsDone,
+        topClient,
+        totalReservas,
+        totalUsers,
+    } = await DB.getDataForChart(year);
+    const data = { year, totalUsers, totalReservas };
+    renderTemplate(UI.adminChart, data);
+
+    registeredUsers['chartName'] = 'Clientes';
+    reservationsDone['chartName'] = 'Reservas';
+    topClient['chartName'] = 'Mejor Cliente';
+
+    UIAdmin.renderChart(registeredUsers, reservationsDone, topClient);
+    const btnBackYear = document.getElementById('btnBack');
+    const btnNextYear = document.getElementById('btnNext');
+    btnNextYear.addEventListener('click', () => {
+        sessionStorage.getItem('RVyearChart')
+            ? sessionStorage.setItem(
+                  'RVyearChart',
+                  Number(sessionStorage.getItem('RVyearChart')) + 1
+              )
+            : sessionStorage.setItem('RVyearChart', new Date(new Date().getFullYear() + 1));
+        renderChart();
+    });
+    btnBackYear.addEventListener('click', () => {
+        sessionStorage.getItem('RVyearChart')
+            ? sessionStorage.setItem(
+                  'RVyearChart',
+                  Number(sessionStorage.getItem('RVyearChart')) - 1
+              )
+            : sessionStorage.setItem('RVyearChart', new Date(new Date().getFullYear() - 1));
+        renderChart();
+    });
+};
+
 const renderAdminReservas = async () => {
     let fechaSelected = sessionStorage.getItem('RVfechaSelected');
     if (fechaSelected) fechaSelected = new Date(fechaSelected);
@@ -523,6 +562,9 @@ const renderAdminReservas = async () => {
     const allReservas = document.getElementById('footerAll');
     allReservas.addEventListener('click', renderHome);
 
+    const charts = document.getElementById('footerChart');
+    charts.addEventListener('click', renderChart);
+
     const settings = document.getElementById('footerSettings');
     settings.addEventListener('click', renderAdminSettings);
 };
@@ -550,8 +592,8 @@ const renderClientReservas = async () => {
     const btnDia = document.getElementById('acrCalendar');
     btnDia.addEventListener('click', selectDay);
 
-    // const reservas = await getReservas();
-    // renderTemplate(UI.clientReservasDay, reservas, 'asCitas');
+    const reservas = await DB.getReservas(fechaSelected);
+    renderTemplate(UI.clientReservasDay, reservas, 'asCitas');
 
     const allReservas = document.getElementById('footerAll');
     allReservas.addEventListener('click', renderHome);

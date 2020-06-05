@@ -75,3 +75,12 @@ export const saveNewReserva = async (reservation) => {
         return { success: false };
     }
 };
+
+export const getDataForChart = async (year) => {
+    try {
+        const data = await fetch(`/getDataForChart/${year}`);
+        return await data.json();
+    } catch (error) {
+        console.log(error);
+    }
+};

@@ -17,3 +17,5 @@ app.use(express.json());
 app.use('/', router);
 
 app.listen(port, () => console.log(`APP funcionado en http://localhost:${port}`));
+
+require('./model/firestoreChart');

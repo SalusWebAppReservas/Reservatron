@@ -1,3 +1,5 @@
+import { showChart } from './UIChart.js';
+
 export const selectOption = (name, dbData, selectID, inputID) => {
     const select = document.getElementById(selectID);
     const input = document.getElementById(inputID);
@@ -65,4 +67,8 @@ export const showAndHideDetails = (iconsDetails) => {
                     .classList.toggle('asr__icon__showMoreDetails-active');
         })
     );
+};
+
+export const renderChart = (datos, datos2, datos3) => {
+    showChart(datos, datos2, datos3);
 };

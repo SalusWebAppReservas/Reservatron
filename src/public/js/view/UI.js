@@ -16,6 +16,7 @@ import './precompiled/adminReservasMonth.precompiled.js';
 import './precompiled/adminCreateReserva.precompiled.js';
 import './precompiled/adminCreateReservaMonth.precompiled.js';
 import './precompiled/adminSettings.precompiled.js';
+import './precompiled/adminChart.precompiled.js';
 
 import './precompiled/clientReservasDay.precompiled.js';
 import './precompiled/clientReservas.precompiled.js';
@@ -36,6 +37,7 @@ export const handleModal = (cb) => {
 
 export const adminCreateReserva = () => Handlebars.templates['adminCreateReserva.hbs']();
 export const adminSettings = () => Handlebars.templates['adminSettings.hbs']();
+export const adminChart = (data) => Handlebars.templates['adminChart.hbs'](data);
 
 export const adminShowReservasTemplate = (reserva) =>
     Handlebars.templates['adminShowReservas.hbs']({ reserva });

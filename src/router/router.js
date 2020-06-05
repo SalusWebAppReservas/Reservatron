@@ -20,6 +20,8 @@ const {
     getReservasMonth,
 } = require('../controller/controllerReservations');
 
+const { getDataForChart } = require('../controller/controllerChart');
+
 const { registro } = require('../controller/controllerRegistro');
 const router = express.Router();
 
@@ -41,5 +43,6 @@ router.post('/sendPushNotification', sendPushNotification);
 router.post('/updateUser', updateTokensUsers);
 router.delete('/deleteReservation', deleteReservation);
 router.put('/modifyReservation', modifyReservation);
+router.get('/getDataForChart/:year', getDataForChart);
 
 module.exports = router;

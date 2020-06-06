@@ -49,3 +49,18 @@ export const sendPushNotification = async (userID, message) => {
         console.log(error);
     }
 };
+
+export const sendEmailtoClient = async (userID, message) => {
+    try {
+        const isSentOk = await fetch('/sendEmailtoClient', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userID, message }),
+        });
+        return await isSentOk.json();
+    } catch (error) {
+        console.log(error);
+    }
+};

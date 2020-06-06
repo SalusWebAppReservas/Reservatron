@@ -9,7 +9,7 @@ const {
     updateTokensUsers,
 } = require('../controller/controllerUsers');
 const { addService, getAllServices, getServiceData } = require('../controller/controllerServices');
-const { sendPushNotification } = require('../controller/controllerMessages');
+const { sendPushNotification, sendEmailtoClient } = require('../controller/controllerMessages');
 
 const {
     addReservation,
@@ -40,6 +40,7 @@ router.get('/getReservationsDay/:day', getReservationsDay);
 router.get('/getServiceData/:serviceID', getServiceData);
 router.post('/getReservasMonth', getReservasMonth);
 router.post('/sendPushNotification', sendPushNotification);
+router.post('/sendEmailtoClient', sendEmailtoClient);
 router.post('/updateUser', updateTokensUsers);
 router.delete('/deleteReservation', deleteReservation);
 router.put('/modifyReservation', modifyReservation);

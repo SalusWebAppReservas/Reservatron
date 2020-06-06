@@ -29,6 +29,9 @@
                     {{#if comments }}
                     <i class="icon-comment"></i>
                     {{/if}}
+                    <i class="icon-user-info" data-userName='"{{userName}}"' data-userSurnames='"{{userSurnames}}"'
+                        data-userAddress='"{{userAddress}}"' data-userPostalCode='"{{userPostalCode}}"'
+                        data-userPhone='"{{userPhone}}"' data-created='"{{created}}"'></i>
                     {{!-- <i class="icon-new"></i> --}}
                 </div>
             </div>
@@ -41,7 +44,7 @@
             </div>
             <div class="asr__citas__item__details__pushNotification">
                 <p>Mensaje para cliente</p>
-                <textarea class="asr__textarea__pushNotification" name="" id=""
+                <textarea class="asr__textarea__message" name="" id=""
                     placeholder="Escriba mensaje para enviar notifiación al cliente"></textarea>
                 <div class="ars__citas__item__notificacion__buttons">
                     <button class="asr__btn__send__notification asr__citas__item__buttonPush"

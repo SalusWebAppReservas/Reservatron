@@ -17,6 +17,7 @@ import './precompiled/adminCreateReserva.precompiled.js';
 import './precompiled/adminCreateReservaMonth.precompiled.js';
 import './precompiled/adminSettings.precompiled.js';
 import './precompiled/adminChart.precompiled.js';
+import './precompiled/adminUserInfo.precompiled.js';
 
 import './precompiled/clientReservasDay.precompiled.js';
 import './precompiled/clientReservas.precompiled.js';
@@ -44,6 +45,8 @@ export const adminShowReservasTemplate = (reserva) =>
 
 export const adminReservasDay = (reserva) =>
     Handlebars.templates['adminReservasDay.hbs']({ reserva });
+
+export const adminUserInfo = (userInfo) => Handlebars.templates['adminUserInfo.hbs'](userInfo);
 
 export const adminReservasMonth = ({ month, year }) => {
     const dias = daysOfMonth({ month, year });

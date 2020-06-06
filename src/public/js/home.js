@@ -2,7 +2,7 @@
 import { connectFirebase } from './model/fireBase.js';
 import verifyUserBySMS from './userRegistration.js';
 import { verifyLoginUser, sendLoginUser } from './login.js';
-import { sendPushNotification } from './model/notifications.js';
+import { sendPushNotification, sendEmailtoClient } from './model/notifications.js';
 import * as DB from './model/db.js';
 import * as DBUsers from './model/DBUsers.js';
 import * as DBServices from './model/DBServices.js';
@@ -391,9 +391,8 @@ const renderAdminSettings = () => {
 };
 
 const sendNotification = async ({ target }) => {
-    const mensaje = target
-        .closest('.asr__citas__item')
-        .querySelector('.asr__textarea__pushNotification').value;
+    const mensaje = target.closest('.asr__citas__item').querySelector('.asr__textarea__message')
+        .value;
 
     const sent = await sendPushNotification(target.dataset['userid'], mensaje);
     renderTemplate(
@@ -401,6 +400,19 @@ const sendNotification = async ({ target }) => {
         sent.success > 0
             ? `Notificación enviada con éxito a ${sent.success} dispositivos del cliente`
             : `Cliente no tiene activadas las notificaciones push`,
+        'modal'
+    );
+    UI.handleModal();
+};
+
+const sendEmail = async ({ target }) => {
+    const mensaje = target.closest('.asr__citas__item').querySelector('.asr__textarea__message')
+        .value;
+
+    const sent = await sendEmailtoClient(target.dataset['userid'], mensaje);
+    renderTemplate(
+        UI.renderModal,
+        sent.success ? `Email enviado con éxito al cliente` : `No se pudo enviar el email`,
         'modal'
     );
     UI.handleModal();
@@ -422,10 +434,28 @@ const deleteReservation = async ({ target }) => {
     UI.handleModal(renderAdminReservas);
 };
 
+const showUserInfo = ({ target }) => {
+    let data = {};
+
+    Object.keys(target.dataset).forEach((key) => (data[key] = target.dataset[key].slice(1, -1)));
+
+    const phoneFormated = data.userphone
+        .slice(3)
+        .replace(/^(\d{3})(\d{2})(\d{2})(\d{2})$/, '$1 $2 $3 $4');
+
+    renderTemplate(UI.adminUserInfo, { ...data, userphone: phoneFormated }, 'userInfo');
+
+    const btnClose = document.getElementById('btnClose');
+    btnClose.addEventListener('click', () => (document.getElementById('userInfo').innerHTML = ''));
+};
+
 const renderReservationsByDay = async () => {
     const reservas = await cumplimentReserva(sessionStorage.getItem('RVfechaSelected'));
 
     renderTemplate(UI.adminReservasDay, reservas, 'asrCitasContainer');
+
+    const btnUserInfo = document.querySelectorAll('.icon-user-info');
+    btnUserInfo.forEach((button) => button.addEventListener('click', showUserInfo));
 
     const iconsDetails = document.querySelectorAll('.icon-double-down, .icon-double-up');
 
@@ -440,8 +470,11 @@ const renderReservationsByDay = async () => {
             )
         );
 
-    const btnSendNotification = document.querySelectorAll('.asr__btn__send__notification');
+    const btnSendNotification = document.querySelectorAll('.asr__citas__item__buttonPush');
     btnSendNotification.forEach((button) => button.addEventListener('click', sendNotification));
+
+    const btnSendEmail = document.querySelectorAll('.asr__citas__item__buttonEmail');
+    btnSendEmail.forEach((button) => button.addEventListener('click', sendEmail));
 };
 
 const incrementDay = async () => {
@@ -479,6 +512,14 @@ const cumplimentReserva = async (fecha) => {
                         reservationID: reserva.reservationID,
                         date: reserva.date,
                         color: serviceData.color,
+                        userAddress: userData.userAddress,
+                        userPostalCode: userData.userPostalCode,
+                        userPhone: userData.userPhone,
+                        created: new Date(userData.created).toLocaleString('es-ES', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                        }),
                     };
             })
         );

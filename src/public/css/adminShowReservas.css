@@ -239,6 +239,7 @@
 .asr__citas__item__texto__diaIconosContainer-right i {
     font-size: 2rem;
     display: flex;
+    cursor: pointer;
 }
 
 .asr__citas__item-extended {

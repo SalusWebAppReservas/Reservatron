@@ -119,3 +119,6 @@
 .icon-comment:before {
   content: "\43";
 }
+.icon-user-info:before {
+  content: "\41";
+}

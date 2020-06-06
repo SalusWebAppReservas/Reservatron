@@ -1,5 +1,6 @@
 const dbUsers = require('./firestoreUsers');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 exports.sendPushNotification = async ({ userID, message }) => {
     const { webPushTokens } = await dbUsers.getUser(userID);
@@ -35,25 +36,27 @@ exports.sendPushNotification = async ({ userID, message }) => {
         return enviados;
     }
 };
-exports.sendEmail = async ({ email, message }) => {
-    let testAccount = await nodemailer.createTestAccount();
+exports.sendEmailtoClient = async ({ userID, message }) => {
+    const { userEmail } = await dbUsers.getUser(userID);
 
-    let transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
+    const transporter = nodemailer.createTransport({
+        service: 'hotmail',
         auth: {
-            user: testAccount.user,
-            pass: testAccount.pass,
+            user: process.env.emailUser,
+            pass: process.env.emailPassword,
         },
     });
-
-    // send mail with defined transport object
-    await transporter.sendMail({
-        from: '"Admin" <foo@example.com>',
-        to: `${email}`,
-        subject: 'Reservatron',
-        text: `${message}`,
-        //html: "<b>Hello world?</b>",
-    });
+    try {
+        const { accepted } = await transporter.sendMail({
+            from: '"Reservatron App" <reservatronapp@hotmail.com>',
+            to: `${userEmail}`,
+            subject: 'Notificación',
+            text: `${message}`,
+        });
+        if (accepted) return { success: true };
+        return { success: false };
+    } catch (error) {
+        console.log(error);
+        return { success: false };
+    }
 };

@@ -4,7 +4,7 @@ import './plugins/chart-min.js';
 
 export const showChart = (usersRegistered, reservasDone, topClients) => {
     new Chart('chartContainer', {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: usersRegistered.map((dato) => Object.keys(dato)),
             datasets: [

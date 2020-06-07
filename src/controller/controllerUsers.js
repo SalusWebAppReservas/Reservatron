@@ -12,11 +12,12 @@ const getUserData = async (req, res) => {
 const addUser = async (req, res) => {
     const user = req.body;
     try {
-        await dbUsers.insertUser(user);
-        res.status(200);
+        const result = await dbUsers.insertUser(user);
+        console.log(result);
+        res.json(result);
     } catch (err) {
         console.log(err);
-        res.status(400);
+        res.json({ success: false });
     }
 };
 

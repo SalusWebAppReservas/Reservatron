@@ -19,6 +19,7 @@
     </div>
 
     <form id="acrForm" class="acr__form acr__form-hidden">
+        {{#if admin }}
         <div class="acr__form__titulo">
             <h2>Cliente</h2>
         </div>
@@ -28,8 +29,7 @@
             <ul id="selectClients" class="acr__form__clients__select" name="clients" id="" hidden>
             </ul>
         </div>
-
-
+        {{/if}}
 
         <div class="acr__form__service__titulo">
             <h2>Servicio</h2>

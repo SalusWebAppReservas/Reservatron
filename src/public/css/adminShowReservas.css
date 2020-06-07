@@ -207,6 +207,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    overflow: hidden;
 }
 
 .asr__citas__item__texto__diaContainer {
@@ -243,7 +244,7 @@
 }
 
 .asr__citas__item-extended {
-    max-height: 32.5em;
+    max-height: 35.5em;
     transition: all 1s ease-in-out;
 }
 
@@ -261,7 +262,7 @@
 }
 
 .asr__citas__item__details {
-    margin: 1em;
+    margin: 1em 1em 0 1em;
     display: flex;
     flex-direction: column;
 }
@@ -332,5 +333,6 @@
     font-size: 2rem;
     align-self: center;
     cursor: pointer;
-    margin-top: -0.2em;
+    /* margin-top: -0.2em; */
+    /* margin-bottom: -0.4em; */
 }

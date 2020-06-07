@@ -53,7 +53,9 @@ exports.getReservasMonth = async ({ firstDay, lastDay }) => {
             .where('date', '>=', Number(firstDay))
             .where('date', '<=', Number(lastDay))
             .get();
-        return reservations.docs.map((hour) => hour.data());
+        return reservations.docs.map((hour) => {
+            return { ...hour.data(), reservationID: hour.id };
+        });
     } catch (error) {
         console.log(error);
         return { success: false };
@@ -109,7 +111,16 @@ exports.getDataForYearChart = async (year) => {
     });
     const topClients = topClientByMonth.map((client) => {
         const max = Object.values(client).length > 0 ? Math.max.apply(0, Object.values(client)) : 0;
-        return { [Object.keys(client).filter((id) => client[id] === max)]: max };
+        let empate = false;
+        return {
+            [Object.keys(client).filter((id) => {
+                if (client[id] === max) {
+                    if (empate) return false;
+                    empate = true;
+                }
+                return client[id] === max;
+            })]: max,
+        };
     });
 
     const totalReservas = reservas.docs.length;

@@ -27,6 +27,10 @@
     font-weight: 500;
     padding: 1em;
     box-shadow: 0px 0px 10px black;
+    background-color: #f8f5de;
+    letter-spacing: 0.05em;
+    line-height: 1.8;
+    border: 10px dashed rgb(218, 100, 22);
 }
 
 .aui__close {
@@ -44,7 +48,8 @@
 }
 .aui__data {
     display: flex;
-    justify-content: center;
+    justify-content: left;
+    margin-left: 1em;
 }
 .aui__campo {
     text-align: right;
@@ -59,12 +64,47 @@
 
 .aui__image {
     margin-bottom: 0em;
-    padding: 2em;
     margin-top: -2em;
+    margin-right: auto;
+    margin-left: 4.25em;
 }
 .aui .icon-user {
     font-size: 4rem;
-    background-color: rgb(184, 182, 179);
+    /* background-color: rgb(184, 182, 179); */
     border-radius: 50%;
     padding: 0.25em 0.25em 0 0.25em;
+}
+
+@media (max-width: 700px) {
+    .aui {
+        margin: 4em auto;
+    }
+    .aui p {
+        font-size: 0.7rem;
+    }
+    .aui__image {
+        margin: -3em 0 0em 0;
+    }
+    .aui__data {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-left: 0;
+    }
+    .aui__campo {
+        text-align: right;
+        margin-right: 0em;
+    }
+
+    .aui__valores {
+        margin-left: 0.5em;
+        text-align: right;
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 600px) {
+    .aui {
+        margin: auto;
+    }
 }

@@ -7,15 +7,26 @@ import { webPushInit } from './model/notifications.js';
 const url = window.location.href;
 
 const showLoginResult = async (isLoginOk) => {
-    const userID = await isLoginOk.json();
+    let data;
+    try {
+        data = await isLoginOk.json();
+    } catch (error) {
+        console.log('no hay datos de ese usuario');
+    }
+    const { userID, success } = data;
 
-    if (userID) {
-        if (!url.includes('192.168')) await webPushInit(userID);
-        sessionStorage.setItem('RVuserID', userID);
-        window.location.href = url;
-        return true;
-    } else alert('Datos de login incorrectos');
-    return false;
+    try {
+        if (success) {
+            if (!url.includes('192.168')) await webPushInit(userID);
+            sessionStorage.setItem('RVuserID', userID);
+            window.location.href = url;
+            return true;
+        } else document.querySelector('.login__error').classList.add('login__showError');
+        return false;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 };
 export const sendLoginUser = async (event) => {
     const user = document.getElementById('user').value;
@@ -30,6 +41,7 @@ export const sendLoginUser = async (event) => {
         sessionStorage.setItem('RVadmin', user === 'admin' ? true : false);
 
         const isLoginOk = await fetch(`${url}loginUser/${JSON.stringify(login)}`);
+
         showLoginResult(isLoginOk);
     }
 };

@@ -2,11 +2,11 @@
 {{#each reserva}}
 <div class="asr__citas__itemContainer" data-serviceID={{serviceID}} data-userID={{userID}}>
     <div class="asr__citas__item">
-        <div class="asr__citas__item__citaNombre">
+        <div class="asr__citas__item__citaNombre {{color}}">
             <p>{{serviceName}}</p>
         </div>
         <div class="asr__citas__item__texto">
-            <p class="asr__citas__item__texto__nombre">Especialista <br> <span>{{userName}} {{userSurnames}}</span></p>
+            {{!-- <p class="asr__citas__item__texto__nombre">Especialista <br> <span>{{userName}} {{userSurnames}}</span></p> --}}
             <div class="asr__citas__item__texto__diaIconosContainer">
                 <div class="asr__citas__item__texto__diaIconosContainer-left">
                     <div class="asr__citas__item__texto__diaContainer first">
@@ -20,8 +20,8 @@
                 </div>
 
                 <div class="asr__citas__item__texto__diaIconosContainer-right">
-                    <i class="icon-modify"></i>
-                    <i class="icon-calendar-delete"></i>
+                    <i class="icon-modify" data-reservation_id={{reservationID}} data-date={{date}}></i>
+                    <i class="icon-calendar-delete" data-reservation_id={{reservationID}}></i>
                 </div>
             </div>
         </div>

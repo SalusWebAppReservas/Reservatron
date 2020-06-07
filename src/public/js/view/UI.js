@@ -36,7 +36,7 @@ export const handleModal = (cb) => {
     });
 };
 
-export const adminCreateReserva = () => Handlebars.templates['adminCreateReserva.hbs']();
+export const adminCreateReserva = (data) => Handlebars.templates['adminCreateReserva.hbs'](data);
 export const adminSettings = () => Handlebars.templates['adminSettings.hbs']();
 export const adminChart = (data) => Handlebars.templates['adminChart.hbs'](data);
 

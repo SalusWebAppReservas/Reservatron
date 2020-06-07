@@ -22,6 +22,7 @@ nav {
     color: #f3731b;
     font-size: 0.7rem;
     z-index: 100;
+    transition: all 1s ease-in-out;
 }
 
 .nav__container {
@@ -48,6 +49,68 @@ nav {
     cursor: pointer;
 }
 
+.nav__menuExtended {
+    color: white;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.918);
+    height: 0em;
+    font-weight: 700;
+    overflow: hidden;
+    top: 3.1em;
+    right: 0em;
+    width: 0em;
+    font-size: 1rem;
+
+    overflow: hidden;
+    text-align: left;
+    transition: all 1s ease-in-out;
+}
+nav ul p {
+    margin-right: 1em;
+    font-size: 1.5rem;
+    padding: 1em;
+}
+nav ul {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    overflow: hidden;
+    height: 100%;
+}
+nav li {
+    padding: 1em 2em;
+    cursor: pointer;
+    overflow: hidden;
+}
+nav li:hover {
+    background-color: tomato;
+    color: white;
+}
+
+nav .extended {
+    min-height: 100vh;
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+}
+
+nav .ulMenu {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.nav__close {
+    color: orange;
+    cursor: pointer;
+}
+nav .hidden {
+    visibility: hidden;
+}
+
+nav .noDisplay {
+    display: none;
+}
 footer {
     position: fixed;
     bottom: 0;

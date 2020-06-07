@@ -12,7 +12,7 @@
 }
 
 .login__form {
-    margin: 2em 0 1em;
+    margin: 2em 0 0;
     display: flex;
     flex-direction: column;
 }
@@ -44,8 +44,21 @@
     background-color: #4b71e2;
     color: white;
     font-weight: 600;
+    cursor: pointer;
 }
-.login__form p {
+.login__error {
+    color: red;
+    margin: -0.5em 0 0.5em;
+    font-weight: 500;
     text-align: center;
-    margin-top: 2em;
+    font-size: 0.9rem;
+    visibility: hidden;
+}
+.login__options {
+    text-align: center;
+    margin-top: 1em;
+}
+
+.login__showError {
+    visibility: visible;
 }

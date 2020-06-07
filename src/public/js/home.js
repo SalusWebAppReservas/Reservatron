@@ -12,10 +12,12 @@ import * as UIAdmin from './view/UIAdmin.js';
 
 const login = document.getElementById('mainLogin');
 const logoHome = document.getElementById('logoHome');
+const navMenu = document.getElementById('navMenu');
 
 const logout = async () => {
     if (firebase.apps.length !== 0 && firebase) await firebase.auth().signOut();
     sessionStorage.removeItem('RVuserID');
+    sessionStorage.removeItem('RVadmin');
     renderHome();
     UI.changeIconToLogIn();
     login.removeEventListener('click', logout);
@@ -30,24 +32,26 @@ const isUserLogued = async () => {
         login.removeEventListener('click', renderLogin);
         login.addEventListener('click', logout);
         return true;
-    }
-    const promesa = new Promise((resolve) => {
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                renderAdminReservas();
-                UI.changeIconToLogOut();
-                login.removeEventListener('click', renderLogin);
-                login.addEventListener('click', logout);
-                resolve(true);
-            } else {
-                UI.changeIconToLogIn();
-                login.removeEventListener('click', logout);
-                login.addEventListener('click', renderLogin);
-                resolve(false);
-            }
-        });
-    });
-    return promesa;
+    } else return false;
+    // const promesa = new Promise((resolve) => {
+    //     firebase.auth().onAuthStateChanged((user) => {
+    //         const admin = sessionStorage.getItem('RVadmin') === 'true';
+    //         if (user) {
+    //             if (admin) renderAdminReservas();
+    //             renderClientReservas();
+    //             UI.changeIconToLogOut();
+    //             login.removeEventListener('click', renderLogin);
+    //             login.addEventListener('click', logout);
+    //             resolve(true);
+    //         } else {
+    //             UI.changeIconToLogIn();
+    //             login.removeEventListener('click', logout);
+    //             login.addEventListener('click', renderLogin);
+    //             resolve(false);
+    //         }
+    //     });
+    // });
+    // return promesa;
 };
 
 const renderTemplate = (template, datos, container = 'contenedor') => {
@@ -88,15 +92,21 @@ const subtractMonth = () => {
 };
 
 const colorizeMonth = async () => {
+    const idClient = sessionStorage.getItem('RVuserID');
+    const admin = sessionStorage.getItem('RVadmin');
     const monthWidget = document.getElementById('monthWidget');
     const firstDay = monthWidget.firstElementChild.id;
     const lastDay = monthWidget.lastElementChild.id;
 
     const reservasMonth = await DBReservations.getReservasMonth(firstDay, lastDay);
+    let reservasMonthFiltered;
+    if (admin === 'false')
+        reservasMonthFiltered = reservasMonth.filter(({ clientID }) => clientID === idClient);
+    else reservasMonthFiltered = reservasMonth;
 
     let daysToColorize = {};
 
-    reservasMonth.forEach((reserva) => {
+    reservasMonthFiltered.forEach((reserva) => {
         const date = new Date(reserva.date);
         date.setHours(0, 0, 0, 0);
         const day = date.getTime();
@@ -109,6 +119,7 @@ const colorizeMonth = async () => {
         const contador = day[1];
         document.getElementById(id).classList.add(contador < 8 ? 'orange' : 'red');
     });
+    return reservasMonthFiltered;
 };
 
 const backToDay = ({ target }) => {
@@ -240,6 +251,8 @@ const getAllServices = async () => await DB.getAllServices();
 
 const createReserva = async (e) => {
     const form = document.getElementById('acrForm');
+    const admin = sessionStorage.getItem('RVadmin') === 'true';
+    const userID = sessionStorage.getItem('RVuserID');
 
     if (form.selectedHour.value === '0')
         form.selectedHour.setCustomValidity('Tienes que seleccionar una hora');
@@ -247,7 +260,7 @@ const createReserva = async (e) => {
     e.preventDefault();
 
     const reservation = {
-        clientID: form.clientName.dataset.id,
+        clientID: admin ? form.clientName.dataset.id : userID,
         serviceID: form.serviceName.dataset.id,
         comments: form.comments.value,
         date: Number(form.selectedHour.value),
@@ -260,13 +273,14 @@ const createReserva = async (e) => {
             success ? 'Reserva creada con éxito' : 'Hubo un error al crear la reserva',
             'modal'
         );
-        UI.handleModal(renderAdminReservas);
+        UI.handleModal(admin ? renderAdminReservas : renderClientReservas);
         sessionStorage.setItem('RVfechaSelected', sessionStorage.getItem('RVdaySelected'));
     }
 };
 
 const modifyReserva = async (event) => {
     const form = document.getElementById('acrForm');
+    const admin = sessionStorage.getItem('RVadmin') === 'true';
     const date = form.selectedHour.value;
     const reservationID = event.target.dataset['reservation_id'];
 
@@ -278,10 +292,11 @@ const modifyReserva = async (event) => {
         success ? 'Reserva modificada con éxito' : 'Hubo un error al modificar la reserva',
         'modal'
     );
-    UI.handleModal(renderAdminReservas);
+    UI.handleModal(admin ? renderAdminReservas : renderClientReservas);
 };
 
 const renderCreateReserva = async (update) => {
+    const admin = sessionStorage.getItem('RVadmin') === 'true';
     const clients = await getAllClients();
     const services = await getAllServices();
 
@@ -297,7 +312,8 @@ const renderCreateReserva = async (update) => {
         ? new Date(Number(update.date)).getFullYear()
         : fechaSelected.getFullYear();
 
-    renderTemplate(UI.adminCreateReserva);
+    renderTemplate(UI.adminCreateReserva, { admin });
+
     renderTemplate(UI.adminCreateReservaMonth, { month, year }, 'acrCalendar');
     UI.showNameMonth(fechaSelected);
 
@@ -310,24 +326,25 @@ const renderCreateReserva = async (update) => {
 
     const btnDia = document.getElementById('acrCalendar');
     btnDia.addEventListener('click', selectDay);
-
-    const inputClientName = document.getElementById('inputClientName');
-    inputClientName.addEventListener('keyup', ({ target }) =>
-        UIAdmin.selectOption(target.value, clients, 'selectClients', 'inputClientName')
-    );
-    inputClientName.addEventListener('focus', () => {
-        inputClientName.value = '';
-        delete inputClientName.dataset['id'];
-    });
-    inputClientName.addEventListener('blur', () => {
-        const ul = document.getElementById('selectClients');
-        setTimeout(() => {
-            if (ul.childElementCount !== 0 && !inputClientName.dataset.id) {
-                ul.innerHTML = '';
-                inputClientName.value = '';
-            }
-        }, 700);
-    });
+    if (admin) {
+        const inputClientName = document.getElementById('inputClientName');
+        inputClientName.addEventListener('keyup', ({ target }) =>
+            UIAdmin.selectOption(target.value, clients, 'selectClients', 'inputClientName')
+        );
+        inputClientName.addEventListener('focus', () => {
+            inputClientName.value = '';
+            delete inputClientName.dataset['id'];
+        });
+        inputClientName.addEventListener('blur', () => {
+            const ul = document.getElementById('selectClients');
+            setTimeout(() => {
+                if (ul.childElementCount !== 0 && !inputClientName.dataset.id) {
+                    ul.innerHTML = '';
+                    inputClientName.value = '';
+                }
+            }, 700);
+        });
+    }
 
     const inputServiceName = document.getElementById('inputServiceName');
     inputServiceName.addEventListener('keyup', ({ target }) =>
@@ -393,15 +410,21 @@ const renderAdminSettings = () => {
 const sendNotification = async ({ target }) => {
     const mensaje = target.closest('.asr__citas__item').querySelector('.asr__textarea__message')
         .value;
-
-    const sent = await sendPushNotification(target.dataset['userid'], mensaje);
-    renderTemplate(
-        UI.renderModal,
-        sent.success > 0
-            ? `Notificación enviada con éxito a ${sent.success} dispositivos del cliente`
-            : `Cliente no tiene activadas las notificaciones push`,
-        'modal'
-    );
+    if (mensaje) {
+        const sent = await sendPushNotification(target.dataset['userid'], mensaje);
+        renderTemplate(
+            UI.renderModal,
+            sent.success > 0
+                ? `Notificación enviada con éxito a ${sent.success} dispositivos del cliente`
+                : `Cliente no tiene activadas las notificaciones push`,
+            'modal'
+        );
+    } else
+        renderTemplate(
+            UI.renderModal,
+            'Debe de escribir un mensaje, pulse OK para volver',
+            'modal'
+        );
     UI.handleModal();
 };
 
@@ -425,13 +448,14 @@ const renderModifyReservation = ({ target }) => {
 };
 
 const deleteReservation = async ({ target }) => {
+    const admin = sessionStorage.getItem('RVadmin') === 'true';
     const { success } = await DBReservations.deleteReservation(target.dataset['reservation_id']);
     renderTemplate(
         UI.renderModal,
         success ? 'Reserva eliminada con éxito' : 'Hubo un error al eliminar la reserva',
         'modal'
     );
-    UI.handleModal(renderAdminReservas);
+    UI.handleModal(admin ? renderAdminReservas : renderClientReservas);
 };
 
 const showUserInfo = ({ target }) => {
@@ -515,6 +539,7 @@ const cumplimentReserva = async (fecha) => {
                         userAddress: userData.userAddress,
                         userPostalCode: userData.userPostalCode,
                         userPhone: userData.userPhone,
+                        userEmail: userData.userEmail,
                         created: new Date(userData.created).toLocaleString('es-ES', {
                             day: '2-digit',
                             month: '2-digit',
@@ -530,6 +555,7 @@ const cumplimentReserva = async (fecha) => {
 
 const renderChart = async () => {
     const year = sessionStorage.getItem('RVyearChart') || new Date().getFullYear();
+
     if (!sessionStorage.getItem('RVyearChart')) sessionStorage.setItem('RVyearChart', year);
     const {
         registeredUsers,
@@ -538,6 +564,7 @@ const renderChart = async () => {
         totalReservas,
         totalUsers,
     } = await DB.getDataForChart(year);
+
     const data = { year, totalUsers, totalReservas };
     renderTemplate(UI.adminChart, data);
 
@@ -611,7 +638,94 @@ const renderAdminReservas = async () => {
 };
 
 const renderClientCreateReserva = () => {
-    renderTemplate(UI.clientCreateReserva);
+    const update = {};
+    renderCreateReserva(update, false);
+};
+
+const ClientCumplimentReserva = async (reservas, clientID) => {
+    try {
+        return Promise.all(
+            reservas.map(async (reserva) => {
+                const userData = await DBUsers.getUserData(clientID);
+                const serviceData = await DBServices.getServiceData(reserva.serviceID);
+                if (userData && serviceData)
+                    return {
+                        serviceID: reserva.serviceID,
+                        userID: reserva.clientID,
+                        serviceName: serviceData.nameService,
+                        userName: userData.userName,
+                        userSurnames: userData.userSurnames,
+                        day: new Date(reserva.date).toLocaleDateString('es-ES', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                        }),
+                        time: `${new Date(reserva.date).getHours()}:00`,
+                        comments: reserva.comments,
+                        reservationID: reserva.reservationID,
+                        date: reserva.date,
+                        color: serviceData.color,
+                        userAddress: userData.userAddress,
+                        userPostalCode: userData.userPostalCode,
+                        userPhone: userData.userPhone,
+                        userEmail: userData.userEmail,
+                        created: new Date(userData.created).toLocaleString('es-ES', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                        }),
+                    };
+            })
+        );
+    } catch (error) {
+        console.log(error);
+    }
+};
+const clientSelectDay = async ({ target }) => {
+    if (target.className === 'acrContainer') return;
+
+    unselectDay();
+
+    let date;
+    if (target.tagName === 'P') {
+        date = new Date(Number(target.parentNode.id));
+        target.parentNode.classList.add('acr__day-active');
+    } else {
+        date = new Date(Number(target.id));
+        target.classList.add('acr__day-active');
+    }
+
+    sessionStorage.setItem('RVdaySelected', date);
+
+    const nombreDia = document.getElementById('nombreDia');
+    nombreDia.textContent = date.toLocaleString('es-ES', {
+        weekday: 'long',
+        day: '2-digit',
+        month: 'long',
+    });
+    await clientShowReservasDay();
+};
+
+const clientShowReservasDay = async () => {
+    const fechaSelected = sessionStorage.getItem('RVdaySelected');
+    const userID = sessionStorage.getItem('RVuserID');
+    const reservas = await colorizeMonth(userID);
+
+    const filterReservasByDay = reservas.filter((reserva) => {
+        const dayReserva = new Date(reserva.date).setHours(0, 0, 0, 0);
+
+        return new Date(dayReserva).getTime() === new Date(fechaSelected).getTime();
+    });
+
+    const complimentedReservas = await ClientCumplimentReserva(filterReservasByDay, userID);
+    console.log('render');
+
+    renderTemplate(UI.clientReservasDay, complimentedReservas, 'asCitas');
+    const btnModifyReserva = document.querySelectorAll('.icon-modify');
+    btnModifyReserva.forEach((button) => button.addEventListener('click', renderModifyReservation));
+
+    const btnDeleteReserva = document.querySelectorAll('.icon-calendar-delete');
+    btnDeleteReserva.forEach((button) => button.addEventListener('click', deleteReservation));
 };
 
 const renderClientReservas = async () => {
@@ -631,11 +745,10 @@ const renderClientReservas = async () => {
     btnNext.addEventListener('click', createReservaNextMonth);
     btnBack.addEventListener('click', createReservaBackMonth);
     const btnDia = document.getElementById('acrCalendar');
-    btnDia.addEventListener('click', selectDay);
+    btnDia.addEventListener('click', clientSelectDay);
 
-    const reservas = await DB.getReservas(fechaSelected);
-    renderTemplate(UI.clientReservasDay, reservas, 'asCitas');
-
+    await clientShowReservasDay();
+    UI.showDayAlreadySelected();
     const allReservas = document.getElementById('footerAll');
     allReservas.addEventListener('click', renderHome);
 
@@ -647,7 +760,11 @@ export const renderHome = async () => {
     // Falta chequear si el usuario es admin
     if (await isUserLogued())
         if (sessionStorage.getItem('RVadmin') === 'true') renderAdminReservas();
-        else renderClientReservas();
+        else {
+            renderClientReservas();
+            document.getElementById('footerChart').style.display = 'none';
+            document.getElementById('footerSettings').style.display = 'none';
+        }
     else {
         renderTemplate(UI.homeTemplate);
         const register = document.getElementById('btnRegister');
@@ -664,6 +781,21 @@ const renderLogin = async (e) => {
         const btnLogin = document.getElementById('btnLogin');
         btnLogin.addEventListener('click', sendLoginUser);
     }
+};
+
+export const setUserID = async (user, password) => {
+    sessionStorage.setItem('RVadmin', user === 'admin' ? true : false);
+    const login = { user, password };
+    let result = await fetch(`/loginUser/${JSON.stringify(login)}`);
+    let data;
+    try {
+        data = await result.json();
+    } catch (error) {
+        console.log('no hay datos de ese usuario');
+    }
+    const { userID } = data;
+    sessionStorage.setItem('RVuserID', userID);
+    logout();
 };
 
 const renderRegister = (e) => {
@@ -685,8 +817,22 @@ const renderRegister = (e) => {
     const btnCreateAccount = document.getElementById('btnCreateAccount');
     btnCreateAccount.addEventListener('click', verifyUserBySMS);
 };
-
 renderHome();
-
 login.addEventListener('click', renderLogin);
 logoHome.addEventListener('click', renderHome);
+navMenu.addEventListener('click', () => {
+    document.querySelector('.nav__menuExtended').classList.toggle('extended');
+    navMenu.classList.toggle('hidden');
+});
+
+const navClose = document.getElementById('navClose');
+navClose.addEventListener('click', () => {
+    document.querySelector('.nav__menuExtended').classList.toggle('extended');
+    navMenu.classList.toggle('hidden');
+});
+
+document.querySelector('nav ul').addEventListener('click', ({ target }) => {
+    if (target.tagName === 'P') return;
+    renderTemplate(UI.renderModal, 'Menú sólo disponible para usuarios premium', 'modal');
+    UI.handleModal();
+});

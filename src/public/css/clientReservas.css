@@ -71,10 +71,10 @@
     border: 2px solid whitesmoke;
 }
 
-.acr__day:nth-of-type(11n) {
+/* .acr__day:nth-of-type(11n) {
     background-color: rgb(228, 243, 212);
     color: rgb(39, 39, 39);
-}
+} */
 
 .acr__day:nth-of-type(7n) {
     background-color: rgb(192, 119, 119);

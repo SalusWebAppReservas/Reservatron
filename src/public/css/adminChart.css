@@ -10,10 +10,11 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    min-height: 100vh;
     padding: 3.5em 0 6.5em;
     background-color: #f7fbfe;
     color: #667f96;
+    height: fit-content;
+    min-height: 100vh;
 }
 .ac__year {
     display: flex;
@@ -35,6 +36,7 @@
 .ac__chart {
     margin: auto;
     max-width: 700px;
+    height: 25em;
 }
 
 .ac span {

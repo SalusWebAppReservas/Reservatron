@@ -90,7 +90,7 @@ export const verifyLoginUser = async () => {
     };
 
     // The start method will wait until the DOM is loaded.
-    ui.start('#loginContainer', uiConfig);
+    // ui.start('#loginContainer', uiConfig);
 };
 
 // btnLogin.addEventListener('click', sendLoginUser);

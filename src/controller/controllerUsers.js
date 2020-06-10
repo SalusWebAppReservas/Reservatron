@@ -1,23 +1,34 @@
-const { getUserID, getUser, insertUser } = require('../model/modelUsers.js');
+const dbUsers = require('../model/firestoreUsers.js');
 
 const loginUser = async (req, res) => {
     const { user, password } = JSON.parse(req.params.user);
-    res.json(await getUserID(user, password));
+    res.json(await dbUsers.getUserID(user, password));
 };
 
 const getUserData = async (req, res) => {
     const { userID } = req.params;
-    res.json(await getUser(userID).String());
+    res.json(await dbUsers.getUser(userID));
 };
-const addUser = (req, res) => {
+const addUser = async (req, res) => {
     const user = req.body;
-    insertUser(user);
+    try {
+        const result = await dbUsers.insertUser(user);
+        console.log(result);
+        res.json(result);
+    } catch (err) {
+        console.log(err);
+        res.json({ success: false });
+    }
 };
-const modifyUser = (req, res) => {};
+
+const getAllUsers = async (req, res) => res.json(await dbUsers.getAllUsers());
+
+const updateTokensUsers = async (req, res) => res.json(await dbUsers.updateTokensUsers(req.body));
 
 module.exports = {
     loginUser,
     getUserData,
     addUser,
-    modifyUser,
+    getAllUsers,
+    updateTokensUsers,
 };

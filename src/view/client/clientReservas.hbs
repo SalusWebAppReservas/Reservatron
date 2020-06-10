@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="css/clientReservas.css">
+<div class="acr">
+    <div class="acr__titulo">
+        <h1>Mis Reservas</h1>
+        <p id="nombreDia">Selecciona un día</p>
+    </div>
+
+    <div class="acr__fecha">
+        <i id="acrBtnBack" class="icon-back"></i>
+        <div class="acr__fecha__diaMes">
+            <p id="asrFechaNombreDia"></p>
+            <p id="asrFechaDDMMYYYY"></p>
+        </div>
+        <i id="acrBtnNext" class="icon-next"></i>
+    </div>
+
+    <div id="acrCalendar" class="acr__mes__container">
+        {{#each dias}}
+        <div id={{date}} class="acr__day">
+            <p class="acr__day__number">{{day}}</p>
+            <p class="acr__day__name">{{name}}</p>
+        </div>
+        {{/each}}
+    </div>
+    <div id="asCitas"></div>
+</div>

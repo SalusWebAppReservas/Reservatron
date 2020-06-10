@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const hbs = require('express-handlebars');
-const router = require('./router/router.js');
+const router = require('./router/router');
 const { join } = require('path');
 
 const port = process.env.PORT || 3000;
@@ -17,3 +17,5 @@ app.use(express.json());
 app.use('/', router);
 
 app.listen(port, () => console.log(`APP funcionado en http://localhost:${port}`));
+
+require('./model/firestoreChart');

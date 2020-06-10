@@ -1,4 +1,7 @@
+/* global firebaseui */
+/* global firebase */
 import { connectFirebase } from './model/fireBase.js';
+import { setUserID } from './home.js';
 
 const url = window.location.href;
 
@@ -29,23 +32,27 @@ const verifyUserBySMS = async (e) => {
 
         var uiConfig = {
             callbacks: {
-                signInSuccessWithAuthResult: (authResult) => {
-                    const userDataWithPhone = {
+                signInSuccessWithAuthResult: async (authResult) => {
+                    const user = {
                         ...userData,
                         userPhone: authResult.user.phoneNumber,
+                        created: new Date().getTime(),
                     };
-                    fetch(`${url}addUser`, {
+                    const token = await firebase.auth().currentUser.getIdToken();
+                    await fetch('/addUser', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(userDataWithPhone),
+                        body: JSON.stringify({ user, token }),
                     });
+                    await setUserID(user.user, user.password);
+
                     return false;
                 },
             },
             signInFlow: 'popup',
-            signInSuccessUrl: url,
+            signInSuccessUrl: '/',
             signInOptions: [
                 {
                     provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,

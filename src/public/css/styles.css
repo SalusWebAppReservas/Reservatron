@@ -101,3 +101,24 @@
 .icon-logout:before {
   content: "\75";
 }
+.icon-calendar-delete:before {
+  content: "\76";
+}
+.icon-modify:before {
+  content: "\77";
+}
+.icon-double-down:before {
+  content: "\78";
+}
+.icon-bar-chart:before {
+  content: "\79";
+}
+.icon-double-up:before {
+  content: "\7a";
+}
+.icon-comment:before {
+  content: "\43";
+}
+.icon-user-info:before {
+  content: "\41";
+}

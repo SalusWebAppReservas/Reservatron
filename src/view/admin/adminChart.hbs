@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="css/adminChart.css">
+<div class="ac__container">
+    <div class="ac">
+        <h2>Estadística anual</h2>
+        <div class="ac__year">
+            <i id="btnBack" class="icon-back"></i>
+            <h3>{{year}}</h3>
+            <i id="btnNext" class="icon-next"></i>
+        </div>
+
+        <canvas id="chartContainer" class="ac__chart"></canvas>
+        <div class="ac__totales">
+            <p>Usuarios registrados <br> año {{year}} <br> <span>{{totalUsers}}</span></p>
+            <p>Reservas realizadas<br>año {{year}}<br> <span>{{totalReservas}}</span></p>
+        </div>
+    </div>
+</div>

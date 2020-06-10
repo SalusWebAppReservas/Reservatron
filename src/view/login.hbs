@@ -7,10 +7,11 @@
         <div id="loginContainer" class="loginContainer__subContainerForm">
             <div class="login__form">
                 <input id="user" type="text" placeholder="Introduce Usuario" required>
-                <input id="password" type="text" placeholder="Contraseña" required>
+                <input id="password" type="password" placeholder="Contraseña" required>
+                <p class="login__error">Usuario o contraseña incorrectos</p>
                 <button id="btnLogin">Iniciar sesión</button>
-                <p>o puedes usar:</p>
-                <div id="firebaseui-login"></div>
+                {{!-- <p class="login__options">o puedes usar:</p>
+                <div id="firebaseui-login"></div> --}}
             </div>
         </div>
 

@@ -1,11 +1,28 @@
 const express = require('express');
-const { renderAPP } = require('../controller/controllerMain.js');
-const { getFirebaseConfig } = require('../controller/controllerFirebase.js');
-const { loginUser, getUserData, addUser, modifyUser } = require('../controller/controllerUsers.js');
+const { renderAPP } = require('../controller/controllerMain');
+const { getFirebaseConfig } = require('../controller/controllerFirebase');
+const {
+    loginUser,
+    getUserData,
+    addUser,
+    getAllUsers,
+    updateTokensUsers,
+} = require('../controller/controllerUsers');
+const { addService, getAllServices, getServiceData } = require('../controller/controllerServices');
+const { sendPushNotification, sendEmailtoClient } = require('../controller/controllerMessages');
 
-const { getReservas } = require('../controller/controllerReservas.js');
+const {
+    addReservation,
+    deleteReservation,
+    modifyReservation,
+    getHoursReservedDay,
+    getReservationsDay,
+    getReservasMonth,
+} = require('../controller/controllerReservations');
 
-const { registro } = require('../controller/controllerRegistro.js');
+const { getDataForChart } = require('../controller/controllerChart');
+
+const { registro } = require('../controller/controllerRegistro');
 const router = express.Router();
 
 router.get('/', renderAPP);
@@ -14,7 +31,19 @@ router.get('/getFirebaseConfig', getFirebaseConfig);
 router.get('/loginUser/:user', loginUser);
 router.get('/getUserData/:userID', getUserData);
 router.post('/addUser', addUser);
-router.get('/modifyUser/:user', modifyUser);
-router.post('/getReservas', getReservas);
+router.post('/addService', addService);
+router.get('/getAllUsers', getAllUsers);
+router.get('/getAllServices', getAllServices);
+router.post('/addReservation', addReservation);
+router.get('/getHoursReservedDay/:day', getHoursReservedDay);
+router.get('/getReservationsDay/:day', getReservationsDay);
+router.get('/getServiceData/:serviceID', getServiceData);
+router.post('/getReservasMonth', getReservasMonth);
+router.post('/sendPushNotification', sendPushNotification);
+router.post('/sendEmailtoClient', sendEmailtoClient);
+router.post('/updateUser', updateTokensUsers);
+router.delete('/deleteReservation', deleteReservation);
+router.put('/modifyReservation', modifyReservation);
+router.get('/getDataForChart/:year', getDataForChart);
 
 module.exports = router;

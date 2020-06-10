@@ -1,3 +1,18 @@
+.bgPink {
+    background-color: #ff69b4;
+}
+
+.bgGreen {
+    background-color: #006680;
+}
+.bgBlue {
+    background-color: #00a2ff;
+}
+
+.bgOrange {
+    background-color: #f7a878;
+}
+
 .asr {
     min-height: 82vh;
     background-color: #f7fbfe;
@@ -14,7 +29,6 @@
     z-index: 50;
     width: 100%;
     background-color: #f7fbfe;
-    /* box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.13); */
 }
 
 .asr__title {
@@ -92,25 +106,25 @@
     margin-top: 0em;
 }
 
-.asr__citas__itemContainer:nth-of-type(2n) .asr__citas__item__citaNombre {
-    background-color: hotpink;
+/* .asr__citas__itemContainer:nth-of-type(2n) .asr__citas__item__citaNombre {
+    background-color: #ff69b4;
 }
 .asr__citas__itemContainer:nth-of-type(3n) .asr__citas__item__citaNombre {
-    background-color: rgb(0, 102, 128);
+    background-color: #006680;
 }
 .asr__citas__itemContainer:nth-of-type(4n) .asr__citas__item__citaNombre {
-    background-color: rgb(0, 162, 255);
-}
+    background-color: #00a2ff;
+} */
 
-.asr__citas__itemContainer:nth-of-type(2n)::before {
+/* .asr__citas__itemContainer:nth-of-type(2n)::before {
     content: 'p';
 }
 .asr__citas__itemContainer:nth-of-type(3n)::before {
-    content: 't';
+    content: var(--icono);
 }
 .asr__citas__itemContainer:nth-of-type(4n)::before {
     content: 'r';
-}
+} */
 
 .asr__citas__itemContainer:last-of-type {
     padding-bottom: 5em;
@@ -119,17 +133,18 @@
 .asr__citas__item {
     background-color: white;
     margin: 0 2em;
-    height: fit-content;
+    max-height: 5.9em;
     border: 1px solid #f7a878;
     color: #f7a878;
     box-shadow: 0px 0px 13px #e2a64b70;
     border-radius: 30px 0 30px 0;
     margin-top: 1em;
-
     overflow: hidden;
+    transition: all 1s ease-in-out;
+    position: relative;
 }
 
-.asr__citas__itemContainer::before {
+/* .asr__citas__itemContainer::before {
     content: 'l';
     font-family: 'reservatron';
     position: absolute;
@@ -137,20 +152,39 @@
     left: 0.5em;
     width: 40px;
     height: 40px;
-    /* background: linear-gradient(-10deg, #ff8500, #fff4ee); */
-    /* background: linear-gradient(-10deg, black, #0092ff); */
     background: linear-gradient(-10deg, #cd3521, #f3991a);
     border-radius: 50%;
     color: white;
     text-align: center;
     line-height: 2.5rem;
     font-size: 1.5rem;
+    z-index: 50;
+} */
+/* .ars__citas__item__estado__button {
+    font-family: 'reservatron';
+    position: absolute;
+    top: 4em;
+    left: 15em;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(-10deg, #cd3521, #f3991a);
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    line-height: 2.5rem;
+    font-size: 1.5rem;
+    overflow: visible;
+    z-index: 50;
+} */
+
+.ars__citas__item__estado__button i {
+    font-size: 1.5rem;
 }
 
 .asr__citas__item__citaNombre {
     width: 100%;
     height: 1em;
-    background-color: #ff6200af;
+    /* background-color: #ff6200af; */
 }
 
 .asr__citas__item__citaNombre p {
@@ -162,7 +196,7 @@
 }
 
 .asr__citas__item__texto {
-    margin: 0.3em 1em 0.3em 2em;
+    margin: 0.3em 1em;
 }
 
 .asr__citas__item__texto__nombre {
@@ -173,6 +207,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    overflow: hidden;
 }
 
 .asr__citas__item__texto__diaContainer {
@@ -195,8 +230,109 @@
     margin-left: 0.5em;
     font-weight: 600;
 }
-.asr__citas__item__texto__diaIconosContainer-right i {
-    font-size: 3rem;
+
+.asr__citas__item__texto__diaIconosContainer-right {
     display: flex;
-    color: blueviolet;
+    justify-content: flex-end;
+    width: 4em;
+}
+
+.asr__citas__item__texto__diaIconosContainer-right i {
+    font-size: 2rem;
+    display: flex;
+    cursor: pointer;
+}
+
+.asr__citas__item-extended {
+    max-height: 35.5em;
+    transition: all 1s ease-in-out;
+}
+
+.asr__citas__item__showMoreDetails {
+    font-size: 2rem;
+    align-self: flex-end;
+    margin-right: 0.75em;
+    margin-bottom: -0.5em;
+    cursor: pointer;
+    transition: all 1s ease-in-out;
+}
+.asr__icon__showMoreDetails-active {
+    opacity: 0;
+    transition: all 1s ease-in-out;
+}
+
+.asr__citas__item__details {
+    margin: 1em 1em 0 1em;
+    display: flex;
+    flex-direction: column;
+}
+.asr__citas__item__details__buttons__crud {
+    display: flex;
+    margin-bottom: 0.5em;
+}
+
+.asr__citas__item__details__buttons__crud button {
+    flex: 1;
+}
+
+.asr__citas__item__details textarea {
+    width: 100%;
+    height: 10em;
+    padding: 0.5em;
+}
+.asr__citas__item__details__pushNotification {
+    margin: 0.3em 0;
+}
+
+.ars__citas__item__notificacion__buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 0.5em;
+}
+.asr button {
+    color: white;
+    font-weight: 600;
+    padding: 0.5em;
+    border: none;
+    margin: 0 0.5em;
+    cursor: pointer;
+    font-size: 0.7rem;
+}
+
+.asr__citas__item__buttonPush {
+    background-color: #027cff;
+}
+.asr__citas__item__buttonPush:hover {
+    background-color: #0069d9;
+}
+
+.asr__citas__item__buttonEmail {
+    background-color: #1cb6ce;
+}
+.asr__citas__item__buttonEmail:hover {
+    background-color: #138496;
+}
+.asr__citas__item__buttonDelete {
+    background-color: #ee2b3f;
+}
+.asr__citas__item__buttonDelete:hover {
+    background-color: #c82333;
+}
+.asr__citas__item__buttonModify {
+    background-color: rgb(255, 191, 0);
+}
+.asr__citas__item__buttonModify:hover {
+    background-color: #e0a800;
+}
+
+.asr__btn__send__notification {
+    flex: 1;
+}
+
+.asr__citas__item__showLessDetails {
+    font-size: 2rem;
+    align-self: center;
+    cursor: pointer;
+    /* margin-top: -0.2em; */
+    /* margin-bottom: -0.4em; */
 }

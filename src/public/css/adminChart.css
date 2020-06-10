@@ -1,0 +1,52 @@
+.ac__container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+}
+
+.ac {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3.5em 0 6.5em;
+    background-color: #f7fbfe;
+    color: #667f96;
+    height: fit-content;
+    min-height: 100vh;
+}
+.ac__year {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.ac__year h3 {
+    margin: 0 0.5em;
+    font-size: 1.25rem;
+}
+
+.ac__year i {
+    display: flex;
+    font-size: 2rem;
+    cursor: pointer;
+}
+.ac__chart {
+    margin: auto;
+    max-width: 700px;
+    height: 25em;
+}
+
+.ac span {
+    font-weight: 600;
+    font-size: 2rem;
+}
+
+.ac__totales {
+    display: flex;
+    justify-content: space-evenly;
+    width: 95%;
+    text-align: center;
+}

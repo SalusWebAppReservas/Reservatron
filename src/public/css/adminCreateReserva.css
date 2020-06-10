@@ -1,0 +1,257 @@
+.acr {
+    background-color: #f7fbfe;
+    min-height: 100vh;
+    color: #667f96;
+    max-width: 700px;
+    margin: auto;
+}
+
+.acr * {
+    border-width: 1px;
+}
+
+.acr__titulo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* background-color: darkgray; */
+    margin: 4em auto 1em;
+}
+
+.acr__titulo h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.acr__titulo p {
+    font-size: 1rem;
+    font-weight: 500;
+}
+.acr__titulo span {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.acr__fecha {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.acr__fecha__diaMes {
+    text-align: center;
+    font-weight: 600;
+}
+.acr__fecha i {
+    display: flex;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.acrContainer {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 1em;
+    padding: 1em;
+    height: 20em;
+    width: 135%;
+    margin-top: 0.5em;
+    margin-left: 0.3em;
+}
+
+.acr__day {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 1.8em;
+    border-radius: 15px 0px 15px 0px;
+    box-shadow: 0px 0px 5px black;
+    cursor: pointer;
+}
+
+.acr__day.orange {
+    background-color: rgb(255, 115, 0);
+    color: whitesmoke;
+}
+
+.acr__day.red {
+    background-color: rgb(255, 0, 0);
+    color: whitesmoke;
+}
+
+.acr__day.red.acr__day-active,
+.acr__day.orange.acr__day-active {
+    box-shadow: 0px 0px 3px 3px blueviolet;
+}
+
+.acr__day-active {
+    background-color: blueviolet;
+    color: whitesmoke;
+}
+
+.acr__day:nth-of-type(7n) {
+    background-color: rgb(192, 119, 119);
+    color: rgb(39, 39, 39);
+    visibility: hidden;
+}
+
+.acr__day:nth-of-type(7n-1) {
+    background-color: rgb(162, 190, 199);
+    color: rgb(22, 75, 75);
+    visibility: hidden;
+}
+
+.acr__day__number {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.acr__day__name {
+    font-size: 0.6rem;
+    font-weight: 600;
+}
+
+.acr__form {
+    margin: 0em auto 4em;
+    padding: 1em 2em 0em 2em;
+    border-radius: 25px 0px 25px 0px;
+    background-color: #fff4f2;
+    box-shadow: 0px 0px 5px #d8c1bd;
+    width: 90%;
+}
+
+.acr__form-hidden {
+    visibility: hidden;
+}
+
+.acr__form__titulo,
+.acr__form__service,
+.acr__form__notes {
+    width: 100%;
+}
+
+.acr__form h2 {
+    margin-bottom: 0.25em;
+
+    text-align: left;
+}
+
+.acr__form__clients,
+.acr__form__services {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: visible;
+    margin-bottom: 1em;
+}
+
+.acr__form__clients__inputClient,
+.acr__form__services__inputService {
+    padding: 0.5em;
+    width: 100%;
+    background-color: white;
+}
+
+.acr__form__clients__select,
+.acr__form__services__select {
+    top: 1.95em;
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
+    outline: none;
+    z-index: 100;
+    background-color: white;
+}
+
+.acr__form__clients__select option,
+.acr__form__services__select option {
+    padding: 0.5em;
+}
+
+.acr ul {
+    background-color: rgb(175, 88, 156);
+    color: white;
+}
+
+.acr li {
+    cursor: pointer;
+    padding: 0.5em;
+}
+
+.acr option {
+    color: white;
+}
+
+.acr li:not(.acr__li__active):hover {
+    background-color: rgb(117, 20, 80);
+    font-weight: 500;
+}
+
+.acr__li__active {
+    background-color: #57a5ff;
+    color: white;
+    font-weight: 700;
+}
+
+.acr__form__notes {
+    width: 100%;
+}
+
+.acr__form__notes textarea {
+    width: 100%;
+    padding: 0.5em;
+}
+
+.acr__form__selectContainer {
+    margin: 1em 0em;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.acr__form__horasDisponibles {
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
+.acr__form__horasDisponibles select {
+    padding: 0.5em;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.acr__form__horasDisponibles option {
+    color: black;
+}
+
+.acr__form__selectContainer i {
+    display: flex;
+    font-size: 2rem;
+    margin-right: 0.5em;
+    color: purple;
+}
+
+.acr__form__button {
+    background-color: #505d8b;
+    color: white;
+    width: calc(100% + 5em);
+    margin-left: -2.5em;
+    height: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+}
+
+.acr__form__button:not([data-valid='false']):hover {
+    background-color: #2d4ab3;
+}

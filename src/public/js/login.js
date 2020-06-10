@@ -1,18 +1,32 @@
+/* global firebase */
+/* global firebaseui */
+
 import { connectFirebase } from './model/fireBase.js';
+import { webPushInit } from './model/notifications.js';
 
 const url = window.location.href;
-const btnLogin = document.getElementById('btnLogin');
 
 const showLoginResult = async (isLoginOk) => {
-    const { user, userID } = await isLoginOk.json();
-
-    if (userID) {
-        sessionStorage.setItem('RVuserID', userID);
-        window.location.href = url;
-        return true;
+    let data;
+    try {
+        data = await isLoginOk.json();
+    } catch (error) {
+        console.log('no hay datos de ese usuario');
     }
-    if (user) alert('Password incorrecto');
-    else alert('Usuario no existe');
+    const { userID, success } = data;
+
+    try {
+        if (success) {
+            if (!url.includes('192.168')) await webPushInit(userID);
+            sessionStorage.setItem('RVuserID', userID);
+            window.location.href = url;
+            return true;
+        } else document.querySelector('.login__error').classList.add('login__showError');
+        return false;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
 };
 export const sendLoginUser = async (event) => {
     const user = document.getElementById('user').value;
@@ -24,8 +38,10 @@ export const sendLoginUser = async (event) => {
             user,
             password,
         };
+        sessionStorage.setItem('RVadmin', user === 'admin' ? true : false);
 
         const isLoginOk = await fetch(`${url}loginUser/${JSON.stringify(login)}`);
+
         showLoginResult(isLoginOk);
     }
 };
@@ -37,7 +53,7 @@ export const verifyLoginUser = async () => {
     let ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
     var uiConfig = {
         callbacks: {
-            signInSuccessWithAuthResult: (authResult) => {
+            signInSuccessWithAuthResult: () => {
                 // const userDataWithPhone = { ...userData, userPhone: authResult.user.phoneNumber };
                 // fetch(`${url}addUser`, {
                 //     method: 'POST',
@@ -74,7 +90,7 @@ export const verifyLoginUser = async () => {
     };
 
     // The start method will wait until the DOM is loaded.
-    ui.start('#loginContainer', uiConfig);
+    // ui.start('#loginContainer', uiConfig);
 };
 
 // btnLogin.addEventListener('click', sendLoginUser);
